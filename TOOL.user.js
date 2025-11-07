@@ -4,6 +4,7 @@
 // @namespace    tanphan.toolv3
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=http://anonymouse.org/
 // @description  Một số công cụ hỗ trợ công việc
+// @license      MIT
 // @author       Phan Nhật Tân
 // @match        *://*/*
 // @grant        none
