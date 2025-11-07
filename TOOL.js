@@ -14,7 +14,7 @@
 (function() {
 	'use strict';
 	// Code của bạn
-	const VERSION = '0.0.6';
+	const VERSION = '0.0.1';
 			
 	async function getUrlServer(owner = "pntan", repo = "TOOLv3", path = "version", branch = "main") {
 		try {
@@ -62,5 +62,9 @@
 	}
 
 	check_version();
+
+	function INIT_CONFIG(){
+		// Khởi tạo cấu hình
+	}
 
 })();
