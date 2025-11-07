@@ -5,9 +5,11 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=http://anonymouse.org/
 // @description  Một số công cụ hỗ trợ công việc
 // @license      MIT
-// @author       Phan Nhật Tân
+// @author       TânPhan
+// @copyright    2025, TanPhan (nhattanphan2014@gmail.com)
 // @match        *://*/*
 // @grant        none
+// @updateURL    https://openuserjs.org/meta/pntan/TOOL.user.js
 // @updateURL    https://cdn.jsdelivr.net/gh/pntan/TOOLv3@0.0.1/TOOL.js
 // @downloadURL  https://cdn.jsdelivr.net/gh/pntan/TOOLv3@0.0.1/TOOL.js
 // ==/UserScript==
