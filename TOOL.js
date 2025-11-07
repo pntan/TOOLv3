@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         CÔNG CỤ HỖ TRỢ V3
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=http://anonymouse.org/
+// @version      0.0.1
 // @namespace    tanphan.toolv3
-// @version      0.0.6
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=http://anonymouse.org/
 // @description  Một số công cụ hỗ trợ công việc
 // @author       Phan Nhật Tân
 // @match        *://*/*
