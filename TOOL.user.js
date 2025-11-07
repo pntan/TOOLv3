@@ -147,8 +147,11 @@
 
 		$(root_div).append(`
 			<div class="tp-container tp-main">
-				<h2>TOOL HỖ TRỢ V4 - Phiên bản ${VERSION}</h2>
-				<p>Đây là một số công cụ hỗ trợ công việc.</p>
+				<div class="tp-header">
+					<div class="time">00:00:00</div>
+					<div class="notifications-bar">0</div>
+					<div class="theme-mode">🌙</div>
+				</div>
 			</div>
 
 			<style nonce="${getNonce()}">
@@ -161,8 +164,10 @@
 
 				.tp-container.tp-main{
 					position: fixed;
-					top; 5%
+					top: 5%;
 					left: 5%;
+					width: fit-content;
+					height: fit-content;
 				}
 		`);
 	}
