@@ -12,6 +12,7 @@
 // @updateURL    https://openuserjs.org/meta/pntan/TOOL.user.js
 // @updateURL    https://cdn.jsdelivr.net/gh/pntan/TOOLv3@0.0.1/TOOL.js
 // @downloadURL  https://cdn.jsdelivr.net/gh/pntan/TOOLv3@0.0.1/TOOL.js
+// @require      https://code.jquery.com/jquery-3.7.1.min.js
 // ==/UserScript==
 
 (function() {
@@ -66,6 +67,16 @@
 		}
 	}
 
+	// Chờ
+ /**
+  * @func delay
+  * @description 'Tăng thời gian chờ'
+  * @param ms 5000 (5s)'params0'
+  */
+	function delay(ms = 5000) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+
 	// Kiểm tra phiên bản
  /**
   * @func check_version
@@ -74,6 +85,10 @@
 	var check_version = () => {
 		boxAlert(`Đang kiểm tra phiên bản...`, "log");
 		getUrlServer().then(latest_version => {
+			if(!latest_version) {
+				boxAlert("Không thể lấy phiên bản từ server!", "error");
+				return;
+			}
 			if (latest_version != VERSION) 
 				boxAlert(`Phiên bản mới đã có: ${latest_version}. Vui lòng cập nhật!`, "warn");
 			else
@@ -97,6 +112,59 @@
   */
 	function INIT_UI(){
 		// Khởi tạo giao diện
+		var root_div = ["#root", "#app", "body"].find(id => document.querySelector(id) != null);
+		
+		if(!root_div) {
+			boxAlert("Không tìm thấy phần tử gốc để chèn giao diện!", "error");
+			return null;
+		}
+
+		// lấy nonce từ tag có sẵn trong trang
+		function getNonce(){
+			let nonce = $('script[nonce]').attr('nonce');
+
+			if (!nonce)
+				nonce = $('meta[http-equiv="Content-Security-Policy"]').attr('content')?.match(/nonce-([\w\d]+)/)?.[1] || '';
+
+			return nonce || '';
+		}
+
+		// Áp dụng nonce
+		function applyNonce() {
+			var nonce = getNonce();
+			if (!nonce) return console.warn('Không tìm thấy nonce');
+
+			// Style inline
+			$('style:not([nonce])').attr('nonce', nonce);
+
+			// Iframe
+			$('iframe:not([nonce])').attr('nonce', nonce);
+
+			// Script do tool tạo
+			$('script:not([nonce]):not([src])').attr('nonce', nonce);
+		}
+		applyNonce();
+
+		$(root_div).append(`
+			<div class="tp-container tp-main">
+				<h2>TOOL HỖ TRỢ V4 - Phiên bản ${VERSION}</h2>
+				<p>Đây là một số công cụ hỗ trợ công việc.</p>
+			</div>
+
+			<style nonce="${getNonce()}">
+				.tp-container{
+					padding: 0;
+					margin: 0;
+					border: none;
+					box-sizing: border-box;
+				}
+
+				.tp-container.tp-main{
+					position: fixed;
+					top; 5%
+					left: 5%;
+				}
+		`);
 	}
 
  /**
@@ -108,8 +176,10 @@
 		INIT_CONFIG();
 
 		// Khởi tạo giao diện
-		INIT_UI();
+		var init_ui = INIT_UI();
 
 	}
+
+	INIT();
 
 })();
