@@ -7,8 +7,8 @@
 // @author       Phan Nhật Tân
 // @match        *://*/*
 // @grant        none
-// @updateURL    https://cdn.jsdelivr.net/gh/pntan/TOOLv3@main/TOOL.js
-// @downloadURL  https://cdn.jsdelivr.net/gh/pntan/TOOLv3@main/TOOL.js
+// @updateURL    https://cdn.jsdelivr.net/gh/pntan/TOOLv3@0.0.1/TOOL.js
+// @downloadURL  https://cdn.jsdelivr.net/gh/pntan/TOOLv3@0.0.1/TOOL.js
 // ==/UserScript==
 
 (function() {
