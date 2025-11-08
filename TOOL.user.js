@@ -146,24 +146,7 @@
 		applyNonce();
 
 		$(root_div).append(`
-			<div class="tp-container tp-main">
-				<h2>TOOL HỖ TRỢ V4 - Phiên bản ${VERSION}</h2>
-				<p>Đây là một số công cụ hỗ trợ công việc.</p>
-			</div>
-
-			<style nonce="${getNonce()}">
-				.tp-container{
-					padding: 0;
-					margin: 0;
-					border: none;
-					box-sizing: border-box;
-				}
-
-				.tp-container.tp-main{
-					position: fixed;
-					top; 5%
-					left: 5%;
-				}
+			<div class="tp-container tp-main"><div class="header"><div class="time">00:00:00</div><div class="theme-switcher"><button class="btn-theme light-mode">☀️</button> <button class="btn-theme dark-mode">🌙</button></div></div></div><style>.tp-container{padding:0;margin:0;border:none;box-sizing:border-box}.tp-container *{padding:0;margin:0;border:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;font-weight:700;user-select:none}.tp-container.tp-main{position:fixed;top:0;left:0;background:rgba(223,223,223,.8);backdrop-filter:blur(10px);padding:2vh 2vw;width:auto;height:100vh;color:#fff;aspect-ratio:4/16}.tp-container.tp-main .header{display:flex;justify-content:space-around;align-items:center;width:100%;height:3vh;color:#000;overflow:hidden}.tp-container.tp-main .header .time{font-size:1.5vh;letter-spacing:1rcap}.tp-container.tp-main .header .theme-switcher{position:relative;width:auto;height:100%;aspect-ratio:1/1}.tp-container.tp-main .header .theme-switcher .btn-theme{position:absolute;height:100%;border-radius:50%;font-size:2vh;cursor:pointer;background:0 0;transition:.5s}.tp-container.tp-main .header .theme-switcher .btn-theme.active{top:0!important;left:0}.tp-container.tp-main .header .theme-switcher .btn-theme.light-mode{top:-100%;left:0}.tp-container.tp-main .header .theme-switcher .btn-theme.dark-mode{top:100%;left:0}</style>
 		`);
 	}
 
