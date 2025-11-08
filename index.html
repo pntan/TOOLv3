@@ -7,13 +7,13 @@
 		</div>
 	</div>
 	<div class="list-screen">
-		<div class="box-screen setting">
+		<div class="box-screen setting" data-screen="setting">
 			<p>⚙️</p>
 		</div>
-		<div class="box-screen main">
+		<div class="box-screen main" data-screen="main">
 			<p>🏡</p>
 		</div>
-		<div class="box-screen online">
+		<div class="box-screen online" data-screen="online">
 			<p>🖥️</p>
 		</div>
 	</div>
@@ -74,6 +74,44 @@
 		user-select: none;
 	}
 
+	/* Firefox (uncomment to work in Firefox, although other properties will not work!)  */
+	/** {
+		scrollbar-width: thin;
+		scrollbar-color: #EAEAEA #000000;
+	}*/
+
+	/* Chrome, Edge and Safari */
+	.tp-container *::-webkit-scrollbar {
+		height: 6px;
+		width: 6px;
+	}
+	.tp-container *::-webkit-scrollbar-track {
+		border-radius: 20px;
+		background-color: #000000;
+	}
+
+	.tp-container *::-webkit-scrollbar-track:hover {
+		background-color: #5A5E5F;
+	}
+
+	.tp-container *::-webkit-scrollbar-track:active {
+		background-color: #FF9E9E;
+	}
+
+	.tp-container *::-webkit-scrollbar-thumb {
+		border-radius: 20px;
+		background-color: #EAEAEA;
+	}
+
+	.tp-container *::-webkit-scrollbar-thumb:hover {
+		background-color: #A36F6F;
+	}
+
+	.tp-container *::-webkit-scrollbar-thumb:active {
+		background-color: #888BCE;
+	}
+
+
 	.tp-container.tp-main{
 		position: fixed;
 		top: 0;
@@ -85,7 +123,7 @@
 		height: 100%;
 		color: #fff;
 		aspect-ratio: 9/16;
-		z-index: 999999999;
+		z-index: 99999999999;
 	}
 
 	.tp-container.tp-main .header{
