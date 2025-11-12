@@ -19,7 +19,7 @@
 	'use strict';
 
 	const VERSION = '0.0.1';
-	const HTML_UI = `<div class="tp-container tp-main"><div class="header"><div class="time">00:00:00</div><div class="theme-switcher"><button class="btn-theme light-mode active"data-theme="light">☀️</button> <button class="btn-theme dark-mode"data-theme="dark">🌙</button></div></div><div class="list-screen"><div class="box-screen setting"data-screen="setting"><p>⚙️</p></div><div class="box-screen main"data-screen="main"><p>🏡</p></div><div class="box-screen online"data-screen="online"><p>🖥️</p></div></div><div class="content-screen"><div class="screen screen-setting"><p>Setting Screen</p></div><div class="screen screen-main active"><div class="list-function"><div class="box-function"><p>Function 1</p></div><div class="box-function"><p>Function 2</p></div><div class="box-function"><p>Function 3</p></div><div class="box-function"><p>Function 4</p></div><div class="box-function"><p>Function 5</p></div><div class="box-function"><p>Function 6</p></div><div class="box-function"><p>Function 7</p></div></div><div class="layout-function"><div class="box gia_duoi"><p>GIÁ ĐUÔI</p></div></div></div><div class="screen screen-online"><p>Online Screen</p></div></div><style>.tp-container{padding:0;margin:0;border:none;box-sizing:border-box}.tp-container *{padding:0;margin:0;border:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;font-weight:700;user-select:none}.tp-container ::-webkit-scrollbar{height:6px;width:6px}.tp-container ::-webkit-scrollbar-track{border-radius:20px;background-color:#000}.tp-container ::-webkit-scrollbar-track:hover{background-color:#5a5e5f}.tp-container ::-webkit-scrollbar-track:active{background-color:#ff9e9e}.tp-container ::-webkit-scrollbar-thumb{border-radius:20px;background-color:#eaeaea}.tp-container ::-webkit-scrollbar-thumb:hover{background-color:#a36f6f}.tp-container ::-webkit-scrollbar-thumb:active{background-color:#888bce}.tp-container.tp-main{position:fixed;top:0;left:0;background:rgba(223,223,223,.5);backdrop-filter:blur(10px);padding:2vh 2vw;width:auto;height:100%;color:#fff;aspect-ratio:9/16;z-index:99999999999}.tp-container.tp-main .header{display:flex;justify-content:space-between;align-items:center;width:100%;height:3vh;color:#000;overflow:hidden}.tp-container.tp-main .header .time{font-size:1.5vh;letter-spacing:1rcap}.tp-container.tp-main .header .theme-switcher{position:relative;width:auto;height:100%;aspect-ratio:1/1}.tp-container.tp-main .header .theme-switcher .btn-theme{position:absolute;height:100%;border-radius:50%;font-size:2vh;cursor:pointer;background:0 0;transition:.5s}.tp-container.tp-main .header .theme-switcher .btn-theme.active{top:0!important;left:0}.tp-container.tp-main .header .theme-switcher .btn-theme.light-mode{top:-100%;left:0}.tp-container.tp-main .header .theme-switcher .btn-theme.dark-mode{top:100%;left:0}.tp-container.tp-main .list-screen{margin-top:2vh;display:flex;flex-direction:row;justify-content:flex-start;align-items:center;width:100%;height:4vh;overflow-y:auto}.tp-container.tp-main .list-screen .box-screen{width:100%;height:4vh;background:rgba(0,0,0,.1);backdrop-filter:blur(5px);display:flex;justify-content:center;align-items:center;font-size:2vh;color:#000;cursor:pointer}.tp-container.tp-main .list-screen .box-screen.active{background:rgba(0,0,0,.3);backdrop-filter:blur(10px)}.tp-container.tp-main .list-screen .box-screen:hover p{transform:scale(1.3);transition:.3s}.tp-container.tp-main .list-screen .box-screen:first-child{border-top-left-radius:20px;border-bottom-left-radius:20px}.tp-container.tp-main .list-screen .box-screen:last-child{border-top-right-radius:20px;border-bottom-right-radius:20px}.tp-container.tp-main .content-screen{margin-top:2vh;width:100%;height:calc(100% - 15vh);background:rgba(0,0,0,.1);backdrop-filter:blur(5px);border-radius:20px;overflow:hidden;position:relative}.tp-container.tp-main .content-screen .screen{width:100%;height:100%;color:#000;pointer-events:none;transition:.5s;position:absolute;padding:2vh 2vw}.tp-container.tp-main .content-screen .screen.screen-setting{top:0;left:-100%}.tp-container.tp-main .content-screen .screen.screen-main{top:100%;left:0;position:relative;width:100%}.tp-container.tp-main .content-screen .screen.screen-main .list-function{width:100%;height:100%;overflow:hidden;overflow-y:scroll;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:flex-start;align-items:flex-start;align-content:flex-start;gap:2vw}.tp-container.tp-main .content-screen .screen.screen-main .list-function .box-function{width:auto;height:4vh;line-height:auto;background:#fff;display:flex;flex-direction:row;justify-content:center;align-items:center;border-radius:10px;padding:2vh 2vw;word-break:keep-all}.tp-container.tp-main .content-screen .screen.screen-main .layout-function{position:absolute;top:2vh;left:2vw;width:100%;height:0;transition:.5s;overflow:hidden}.tp-container.tp-main .content-screen .screen.screen-main .layout-function.active{height:100%}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box{width:0;height:0;opacity:0;transition:.5s}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box.show{width:100%;height:auto;opacity:1}.tp-container.tp-main .content-screen .screen.screen-online{top:0;left:100%}.tp-container.tp-main .content-screen .screen.active{top:0;left:0}</style></div>`;
+	const HTML_UI = `<div class="tp-container tp-main"><div class="header"><div class="time">00:00:00</div><div class="theme-switcher"><button class="btn-theme light-mode active"data-theme="light">☀️</button> <button class="btn-theme dark-mode"data-theme="dark">🌙</button></div></div><div class="list-screen"><div class="box-screen setting"data-screen="setting"><p>⚙️</p></div><div class="box-screen main"data-screen="main"><p>🏡</p></div><div class="box-screen online"data-screen="online"><p>🖥️</p></div></div><div class="content-screen"><div class="screen screen-setting"><p>Setting Screen</p></div><div class="screen screen-main active"><div class="list-function"><div class="box-function"><p>Function 1</p></div><div class="box-function"><p>Function 2</p></div><div class="box-function"><p>Function 3</p></div><div class="box-function"><p>Function 4</p></div><div class="box-function"><p>Function 5</p></div><div class="box-function"><p>Function 6</p></div><div class="box-function"><p>Function 7</p></div></div><div class="layout-function"><div class="box gia_duoi"><p>GIÁ ĐUÔI</p></div></div></div><div class="screen screen-online"><p>Online Screen</p></div></div><style>.tp-container{padding:0;margin:0;border:none;box-sizing:border-box}.tp-container *{padding:0;margin:0;border:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;font-weight:700;user-select:none}.tp-container ::-webkit-scrollbar{height:6px;width:6px}.tp-container ::-webkit-scrollbar-track{border-radius:20px;background-color:#000}.tp-container ::-webkit-scrollbar-track:hover{background-color:#5a5e5f}.tp-container ::-webkit-scrollbar-track:active{background-color:#ff9e9e}.tp-container ::-webkit-scrollbar-thumb{border-radius:20px;background-color:#eaeaea}.tp-container ::-webkit-scrollbar-thumb:hover{background-color:#a36f6f}.tp-container ::-webkit-scrollbar-thumb:active{background-color:#888bce}.tp-container.tp-main{top:0;position:fixed;background:rgba(223,223,223,.5);backdrop-filter:blur(10px);width:0;padding:0;height:109%;color:#fff;z-index:99999999999;transition:.5s}.tp-container.tp-main.active,.tp-container.tp-main:hover{width:60vw;height:100%;padding:2vh 2vw}.tp-container.tp-main .header{display:flex;justify-content:space-between;align-items:center;width:100%;height:3vh;color:#000;overflow:hidden}.tp-container.tp-main .header .time{font-size:1.5vh;letter-spacing:1rcap}.tp-container.tp-main .header .theme-switcher{position:relative;width:auto;height:100%;aspect-ratio:1/1}.tp-container.tp-main .header .theme-switcher .btn-theme{position:absolute;height:100%;border-radius:50%;font-size:2vh;cursor:pointer;background:0 0;transition:.5s}.tp-container.tp-main .header .theme-switcher .btn-theme.active{top:0!important;left:0}.tp-container.tp-main .header .theme-switcher .btn-theme.light-mode{top:-100%;left:0}.tp-container.tp-main .header .theme-switcher .btn-theme.dark-mode{top:100%;left:0}.tp-container.tp-main .list-screen{margin-top:2vh;display:flex;flex-direction:row;justify-content:flex-start;align-items:center;width:100%;height:4vh;overflow-y:auto}.tp-container.tp-main .list-screen .box-screen{width:100%;height:4vh;background:rgba(0,0,0,.1);backdrop-filter:blur(5px);display:flex;justify-content:center;align-items:center;font-size:2vh;color:#000;cursor:pointer}.tp-container.tp-main .list-screen .box-screen.active{background:rgba(0,0,0,.3);backdrop-filter:blur(10px)}.tp-container.tp-main .list-screen .box-screen:hover p{transform:scale(1.3);transition:.3s}.tp-container.tp-main .list-screen .box-screen:first-child{border-top-left-radius:20px;border-bottom-left-radius:20px}.tp-container.tp-main .list-screen .box-screen:last-child{border-top-right-radius:20px;border-bottom-right-radius:20px}.tp-container.tp-main .content-screen{margin-top:2vh;width:100%;height:calc(100% - 15vh);background:rgba(0,0,0,.1);backdrop-filter:blur(5px);border-radius:20px;overflow:hidden;position:relative}.tp-container.tp-main .content-screen .screen{width:100%;height:100%;color:#000;pointer-events:none;transition:.5s;position:absolute;padding:2vh 2vw}.tp-container.tp-main .content-screen .screen.screen-setting{top:0;left:-100%}.tp-container.tp-main .content-screen .screen.screen-main{top:100%;left:0;position:relative;width:100%}.tp-container.tp-main .content-screen .screen.screen-main .list-function{width:auto;height:100%;margin:0 auto;overflow:hidden;overflow-y:scroll;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:space-around;align-items:flex-start;align-content:flex-start;gap:2vw}.tp-container.tp-main .content-screen .screen.screen-main .list-function .box-function{width:auto;height:4vh;line-height:auto;background:#fff;display:flex;flex-direction:row;justify-content:center;align-items:center;border-radius:10px;padding:2vh 2vw;word-break:keep-all}.tp-container.tp-main .content-screen .screen.screen-main .layout-function{position:absolute;top:2vh;left:2vw;width:100%;height:0;transition:.5s;overflow:hidden}.tp-container.tp-main .content-screen .screen.screen-main .layout-function.active{height:100%}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box{width:0;height:0;opacity:0;transition:.5s}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box.show{width:100%;height:auto;opacity:1}.tp-container.tp-main .content-screen .screen.screen-online{top:0;left:100%}.tp-container.tp-main .content-screen .screen.active{top:0;left:0}</style></div>`;
 			
 	/**
 	* @func getUrlServer
@@ -243,7 +243,15 @@
  * @param config_value 'params1'
  */
 	var setConfig = (config_name, config_value) => {
-		localStorage.setItem(`TP_CONFIG_${config_name}`, JSON.stringify(config_value));
+		var config = getConfig(config_name);
+		if(config === null || config === undefined){
+			localStorage.setItem(`TP_CONFIG_${config_name}`, JSON.stringify(config_value));
+			return;
+		}else{
+			localStorage.removeItem(config_name);
+			setConfig(config_name, config_value);
+			return;
+		}
 	}
 
 	/**
@@ -380,7 +388,7 @@
 		}
 	}
 
-	delay(1000).then(() => {
+	delay(3000).then(() => {
 		INIT();
 	});
 
@@ -409,6 +417,46 @@
 
 			setConfig("screen_display", screen);
 		})
+
+		// Theo dõi chuột
+		$("body").on("mousemove", function(e){
+			var x = e.clientX;
+			var y = e.clientY;
+
+			const X_LIMIT = 20;
+
+			if(x <= X_LIMIT)
+				$(".tp-container.tp-main").css({
+					"left": "0",
+					"right": "",
+				})
+			else if(X_LIMIT >= $("body").width() - x){
+				$(".tp-container.tp-main").css({
+					"right": "0",
+					"left": "",
+				})
+			}
+
+			if(x <= X_LIMIT || X_LIMIT >= $("body").width() - x)
+				$(".tp-container.tp-main").addClass("active");
+			else{
+				$(".tp-container.tp-main").removeClass("active");
+			}
+		})
+
+		// Chạy đồng hồ
+		async function runTime(){
+			var now = new Date();
+			var hours = now.getHours() < 10 ? "0" + now.getHours() : now.getHours();
+			var minutes = now.getMinutes() < 10 ? "0" + now.getMinutes() : now.getMinutes();
+			var seconds = now.getSeconds() < 10 ? "0" + now.getSeconds() : now.getSeconds();
+
+			$(".tp-container.tp-main .header .time").text(`${hours}:${minutes}:${seconds}`);
+			await delay(1000);
+			runTime();
+		}
+
+		runTime();
 	}
 
 	// Hàm thử nghiệm
