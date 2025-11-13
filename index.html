@@ -1,3 +1,49 @@
+<div class="tp-container tp-toast">
+	<!-- <div class="toast info">ABCABCABCABCABCABCABCABC</div>
+	<div class="toast success">ABC</div>
+	<div class="toast error">ABC ABCABCABCABC ABCABCABC ABCABC</div>
+	<div class="toast warning">ABC</div> -->
+</div>
+<style>
+	.tp-container.tp-toast{
+		width: fit-content;
+		height: auto;
+		position: fixed;
+		margin-left: 50%;
+		top: 5%;
+		transform: translate(-50%);
+		z-index: 999999999;
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+		gap: 2vh
+	}
+
+	.tp-container.tp-toast .toast{
+		padding: 1vh 1vw;
+		background: white;
+		border-radius: 10px;
+		color: #fff;
+		text-shadow: 0px 0px 1px #121212, 0px 0px 1px #121212, 0px 0px 1px #121212, 0px 0px 1px #121212, 0px 0px 1px #121212;
+	}
+
+	.tp-container.tp-toast .toast.info{
+		background: rgba(80, 220, 245, 0.7);
+	}
+
+	.tp-container.tp-toast .toast.success{
+		background: rgba(111, 255, 155, 0.7);
+	}
+
+	.tp-container.tp-toast .toast.error{
+		background: rgba(245, 80, 80, 0.7);
+	}
+
+	.tp-container.tp-toast .toast.warning{
+		background: rgba(245, 229, 80, 0.7);
+	}
+
+</style>
 <div class="tp-container tp-main">
 	<div class="header">
 		<div class="time">00:00:00</div>
@@ -22,7 +68,7 @@
 			<p>Setting Screen</p>
 		</div>
 		<div class="screen screen-main active">
-			<div class="list-function">
+			<div class="list-function active">
 				<div class="box-function">
 					<p>Function 1</p>
 				</div>
@@ -46,7 +92,8 @@
 				</div>
 			</div>
 			<div class="layout-function">
-				<div class="box gia_duoi">
+				<div class="back">Trở Lại</div>
+				<div class="box gia_duoi show" id="gia_duoi_layout">
 					<p>GIÁ ĐUÔI</p>
 				</div>
 			</div>
@@ -121,7 +168,7 @@
 		padding: 0;
 		height: 109%;
 		color: #fff;
-		z-index: 99999999999;
+		z-index: 999999998;
 		transition: 0.5s;
 	}	
 
@@ -238,7 +285,6 @@
 		width: 100%;
 		height: 100%;
 		color: #000;
-		pointer-events: none;
 		transition: 0.5s;
 		position: absolute;
 		padding: 2vh 2vw;
@@ -257,11 +303,11 @@
 	}
 
 	.tp-container.tp-main .content-screen .screen.screen-main .list-function{
-		width: auto;
+		width: 0;
 		height: 100%;
 		margin: 0 auto;
-		overflow: hidden;
 		overflow-y: scroll;
+		overflow: hidden;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
@@ -269,6 +315,11 @@
 		align-items: flex-start;
 		align-content: flex-start;
 		gap: 2vw;
+		transition: 0.5s;
+	}
+
+	.tp-container.tp-main .content-screen .screen.screen-main .list-function.active{
+		width: 100%;
 	}
 
 	.tp-container.tp-main .content-screen .screen.screen-main .list-function .box-function{
@@ -297,6 +348,14 @@
 
 	.tp-container.tp-main .content-screen .screen.screen-main .layout-function.active{
 		height: 100%;
+	}
+
+	.tp-container.tp-main .content-screen .screen.screen-main .layout-function .back{
+		width: 100%;
+		height: 4vh;
+		line-height: 4vh;
+		font-weight: bolder;
+		cursor: pointer;
 	}
 
 	.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box{
