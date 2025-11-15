@@ -15,11 +15,41 @@
 
 .shopee-theme{
     --main-background: rgba(238, 77, 45, 0.521);
+    --text-color: rgb(255, 255, 255);
 }
 </style>
 <style>
-    .tp-success-bg{
-        background: var(--handle-success);
+    .tp-success-bg{ background: var(--handle-success); }
+
+    .tp-container input[type="text"]{
+        width: 100%;
+        height: 3vh;
+        text-indent: 3%;
+        border-radius: 20px;
+    }
+
+    .tp-container input[type="radio"]{ display: none; }
+
+    .tp-container button{
+        width: 100%;
+        padding: 0.5vh 0.5vw;
+    }
+
+    .tp-container .flex{
+        width: 100%;
+        display: flex;
+    }
+
+    .tp-container .flex-row{
+        flex-direction: row;
+    }
+
+    .tp-container .flex-row.gap-1{
+        gap: 1vw
+    }
+    
+    .tp-container .flex-column.gap-1{
+        gap: 1vh
     }
 </style>
 <div class="tp-container tp-toast"></div>
@@ -62,7 +92,7 @@
         background: var(--toast-warning-background);
     }
 </style>
-<div class="tp-container tp-main active">
+<div class="tp-container tp-main shopee-theme active">
     <div class="header">
         <div class="time">00:00:00</div>
 				<div class="help">Hướng Dẫn</div>
@@ -114,7 +144,15 @@
                 </div>
                 <div class="box flash_sale show" id="flash_sale_layout">
                     <div class="program_id">
-                        <input type="text" />
+                        <input type="text" placeholder="Đường dẫn / ID của chương trình cần sao chép"/>
+                        <input type="radio" name="platform" id="shopee" />
+                        <input type="radio" name="platform" id="tiktok" />
+
+                        <div class="highlight_choice"></div>
+                        <div class="flex flex-row gap-1">
+                            <label for="shopee"><button>SHOPEE</button></label>
+                            <label for="shopee"><button>TIKTOK</button></label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -191,7 +229,7 @@
         width: 0;
         padding: 0;
         height: 109%;
-        color: #fff;
+        color: var(--text-color);
         z-index: 999999998;
         transition: .5s
     }
@@ -326,9 +364,8 @@
 
     .tp-container.tp-main .content-screen .screen.screen-main {
         top: 100%;
-        left: 0;
-        position: relative;
-        width: 100%
+        width: 100%;
+        position: absolute;
     }
 
     .tp-container.tp-main .content-screen .screen.screen-main .list-function {
@@ -344,7 +381,7 @@
         align-items: flex-start;
         align-content: flex-start;
         gap: 2vw;
-        transition: .5s
+        transition: .5s;
     }
 
     .tp-container.tp-main .content-screen .screen.screen-main .list-function.active {
@@ -367,12 +404,8 @@
 
     .tp-container.tp-main .content-screen .screen.screen-main .layout-function {
         position: absolute;
-        top: 2vh;
-        left: 2vw;
-        width: 100%;
-        height: 0;
-        transition: .5s;
-        overflow: hidden
+        top: 1vh;
+        width: 93%;
     }
 
     .tp-container.tp-main .content-screen .screen.screen-main .layout-function.active {
@@ -384,7 +417,7 @@
         height: 4vh;
         line-height: 4vh;
         font-weight: bolder;
-        cursor: pointer
+        cursor: pointer;
     }
 
     .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box {
@@ -396,7 +429,7 @@
         backdrop-filter: blur(5px);
         border-radius: 10px;
         padding: 10px;
-        margin-bottom: 10px
+        margin-bottom: 10px;
         position: absolute;
     }
 

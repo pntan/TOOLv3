@@ -13,6 +13,7 @@
 // @downloadURL  https://openuserjs.org/install/pntan/CÔNG_CỤ_HỖ_TRỢ_V4.user.js
 // @require      https://code.jquery.com/jquery-3.7.1.min.js
 // @require      https://code.jquery.com/ui/1.13.2/jquery-ui.min.js
+// @require      https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4
 // ==/UserScript==
 (function() {
   'use strict';
