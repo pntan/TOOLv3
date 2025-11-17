@@ -8,7 +8,8 @@
 // @author       TânPhan
 // @copyright    2025, TanPhan (nhattanphan2014@gmail.com)
 // @match        *://*/*
-// @grant        none
+// @grant        GM_setValue
+// @grant        GM_getValue
 // @updateURL    https://openuserjs.org/meta/pntan/CÔNG_CỤ_HỖ_TRỢ_V4.meta.js
 // @downloadURL  https://openuserjs.org/install/pntan/CÔNG_CỤ_HỖ_TRỢ_V4.user.js
 // @require      https://code.jquery.com/jquery-3.7.1.min.js
@@ -22,7 +23,7 @@
   const X_LIMIT = 5;
 
   // --- ĐÃ CẬP NHẬT: Thêm nút action-btn vào gia_duoi_layout ---
-  const HTML_UI = `<style>:root{--handle-success:rgb(69, 216, 125);--toast-success-background:rgba(111, 255, 155, .7);--toast-info-background:rgba(80, 220, 245, .7);--toast-error-background:rgba(245, 80, 80, .7);--toast-warning-background:rgba(245, 229, 80, .7);--main-background:rgba(223, 223, 223, .5)}.shopee-theme{--main-background:rgba(238, 77, 45, 0.521)}</style><style>.tp-success-bg{background:var(--handle-success)}</style><div class="tp-container tp-toast"></div><style>.tp-container.tp-toast{width:fit-content;height:auto;position:fixed;margin-left:50%;top:5%;transform:translate(-50%);z-index:999999999;display:flex;flex-direction:column;flex-wrap:wrap;gap:2vh}.tp-container.tp-toast .toast{padding:1vh 1vw;background:#fff;border-radius:10px;color:#fff;text-shadow:0 0 1px #121212,0 0 1px #121212,0 0 1px #121212,0 0 1px #121212,0 0 1px #121212}.tp-container.tp-toast .toast.info{background:var(--toast-info-background)}.tp-container.tp-toast .toast.success{background:var(--toast-success-background)}.tp-container.tp-toast .toast.error{background:var(--toast-error-background)}.tp-container.tp-toast .toast.warning{background:var(--toast-warning-background)}</style><div class="tp-container tp-main active"><div class="header"><div class="time">00:00:00</div><div class="help">Hướng Dẫn</div><div class="theme-switcher"><button class="btn-theme light-mode active"data-theme="light">☀️</button> <button class="btn-theme dark-mode"data-theme="dark">🌙</button></div></div><div class="list-screen"><div class="box-screen setting"data-screen="setting"><p>⚙️</p></div><div class="box-screen main"data-screen="main"><p>🏡</p></div><div class="box-screen online"data-screen="online"><p>🖥️</p></div></div><div class="content-screen"><div class="screen screen-setting"><p>Setting Screen</p></div><div class="screen screen-main active"><div class="list-function"><div class="box-function"><p>Function 1</p></div><div class="box-function"><p>Function 2</p></div><div class="box-function"><p>Function 3</p></div><div class="box-function"><p>Function 4</p></div><div class="box-function"><p>Function 5</p></div><div class="box-function"><p>Function 6</p></div><div class="box-function"><p>Function 7</p></div></div><div class="layout-function active"><div class="back">Trở Lại</div><div class="box gia_duoi"id="gia_duoi_layout"><p>GIÁ ĐUÔI</p><button class="action-btn"data-action="gia_duoi">THỰC HIỆN SỬA GIÁ</button></div><div class="box flash_sale show"id="flash_sale_layout"><div class="program_id"><input></div></div></div></div><div class="screen screen-online"><p>Online Screen</p></div></div></div><style>.tp-container{padding:0;margin:0;border:none;box-sizing:border-box}.tp-container *{padding:0;margin:0;border:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;font-weight:700;user-select:none}.tp-container ::-webkit-scrollbar{height:6px;width:6px}.tp-container ::-webkit-scrollbar-track{border-radius:20px;background-color:#000}.tp-container ::-webkit-scrollbar-track:hover{background-color:#5a5e5f}.tp-container ::-webkit-scrollbar-track:active{background-color:#ff9e9e}.tp-container ::-webkit-scrollbar-thumb{border-radius:20px;background-color:#eaeaea}.tp-container ::-webkit-scrollbar-thumb:hover{background-color:#a36f6f}.tp-container ::-webkit-scrollbar-thumb:active{background-color:#888bce}.tp-container .action-btn{margin-top:10px;padding:5px 10px;background:#90ee90;border-radius:5px;cursor:pointer;color:#121212}.tp-container.tp-main{top:0;position:fixed;background:var(--main-background);backdrop-filter:blur(10px);width:0;padding:0;height:109%;color:#fff;z-index:999999998;transition:.5s}.tp-container.tp-main.active,.tp-container.tp-main:hover{width:60vw;height:100%;padding:2vh 2vw}.tp-container.tp-main .header{display:flex;justify-content:space-between;align-items:center;width:100%;height:3vh;color:#000;overflow:hidden}.tp-container.tp-main .header .time{font-size:1.5vh;letter-spacing:1rcap}.tp-container.tp-main .header .help{color:#a79dff;cursor:help}.tp-container.tp-main .header .theme-switcher{position:relative;width:auto;height:100%;aspect-ratio:1/1}.tp-container.tp-main .header .theme-switcher .btn-theme{position:absolute;height:100%;border-radius:50%;font-size:2vh;cursor:pointer;background:0 0;transition:.5s}.tp-container.tp-main .header .theme-switcher .btn-theme.active{top:0!important;left:0}.tp-container.tp-main .header .theme-switcher .btn-theme.light-mode{top:-100%;left:0}.tp-container.tp-main .header .theme-switcher .btn-theme.dark-mode{top:100%;left:0}.tp-container.tp-main .list-screen{margin-top:2vh;display:flex;flex-direction:row;justify-content:flex-start;align-items:center;width:100%;height:4vh;overflow-y:auto}.tp-container.tp-main .list-screen .box-screen{width:100%;height:4vh;background:rgba(0,0,0,.1);backdrop-filter:blur(5px);display:flex;justify-content:center;align-items:center;font-size:2vh;color:#000;cursor:pointer}.tp-container.tp-main .list-screen .box-screen.active{background:rgba(0,0,0,.3);backdrop-filter:blur(10px)}.tp-container.tp-main .list-screen .box-screen:hover p{transform:scale(1.3);transition:.3s}.tp-container.tp-main .list-screen .box-screen:first-child{border-top-left-radius:20px;border-bottom-left-radius:20px}.tp-container.tp-main .list-screen .box-screen:last-child{border-top-right-radius:20px;border-bottom-right-radius:20px}.tp-container.tp-main .content-screen{margin-top:2vh;width:100%;height:calc(100% - 15vh);background:rgba(0,0,0,.1);backdrop-filter:blur(5px);border-radius:20px;overflow:hidden;position:relative}.tp-container.tp-main .content-screen .screen{width:100%;height:100%;color:#000;transition:.5s;position:absolute;padding:2vh 2vw}.tp-container.tp-main .content-screen .screen.screen-setting{top:0;left:-100%}.tp-container.tp-main .content-screen .screen.screen-main{top:100%;left:0;position:relative;width:100%}.tp-container.tp-main .content-screen .screen.screen-main .list-function{width:0;height:100%;margin:0 auto;overflow-y:scroll;overflow:hidden;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:space-around;align-items:flex-start;align-content:flex-start;gap:2vw;transition:.5s}.tp-container.tp-main .content-screen .screen.screen-main .list-function.active{width:100%}.tp-container.tp-main .content-screen .screen.screen-main .list-function .box-function{width:auto;height:4vh;line-height:auto;background:#fff;display:flex;flex-direction:row;justify-content:center;align-items:center;border-radius:10px;padding:2vh 2vw;word-break:keep-all}.tp-container.tp-main .content-screen .screen.screen-main .layout-function{position:absolute;top:2vh;left:2vw;width:100%;height:0;transition:.5s;overflow:hidden}.tp-container.tp-main .content-screen .screen.screen-main .layout-function.active{height:100%}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .back{width:100%;height:4vh;line-height:4vh;font-weight:bolder;cursor:pointer}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box{width:0;height:0;opacity:0;transition:.5s;background:rgba(0,0,0,.1);backdrop-filter:blur(5px);border-radius:10px;padding:10px;margin-bottom:10px position: absolute}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box.show{width:100%;height:auto;opacity:1}.tp-container.tp-main .content-screen .screen.screen-online{top:0;left:100%}.tp-container.tp-main .content-screen .screen.active{top:0;left:0}</style>`;
+  const HTML_UI = `<style>:root{--handle-success:rgb(69, 216, 125);--toast-success-background:rgba(111, 255, 155, .7);--toast-info-background:rgba(80, 220, 245, .7);--toast-error-background:rgba(245, 80, 80, .7);--toast-warning-background:rgba(245, 229, 80, .7);--main-background:rgba(223, 223, 223, .5)}.shopee-theme{--main-background:rgba(238, 77, 45, 0.521);--text-color:rgb(255, 255, 255)}</style><style>.tp-success-bg{background:var(--handle-success)}.tp-container input[type=text]{width:100%;height:3vh;text-indent:3%;border-radius:20px}.tp-container input[type=radio]{display:none}.tp-container button{width:100%;padding:.5vh .5vw}.tp-container .flex{width:100%;display:flex}.tp-container .flex-row{flex-direction:row}.tp-container .flex-row.gap-1{gap:1vw}.tp-container .flex-column.gap-1{gap:1vh}</style><div class="tp-container tp-toast"></div><style>.tp-container.tp-toast{width:fit-content;height:auto;position:fixed;margin-left:50%;top:5%;transform:translate(-50%);z-index:999999999;display:flex;flex-direction:column;flex-wrap:wrap;gap:2vh}.tp-container.tp-toast .toast{padding:1vh 1vw;background:#fff;border-radius:10px;color:#fff;text-shadow:0 0 1px #121212,0 0 1px #121212,0 0 1px #121212,0 0 1px #121212,0 0 1px #121212}.tp-container.tp-toast .toast.info{background:var(--toast-info-background)}.tp-container.tp-toast .toast.success{background:var(--toast-success-background)}.tp-container.tp-toast .toast.error{background:var(--toast-error-background)}.tp-container.tp-toast .toast.warning{background:var(--toast-warning-background)}</style><div class="tp-container tp-main shopee-theme active"><div class="header"><div class="time">00:00:00</div><div class="help">Hướng Dẫn</div><div class="theme-switcher"><button class="btn-theme light-mode active"data-theme="light">☀️</button> <button class="btn-theme dark-mode"data-theme="dark">🌙</button></div></div><div class="list-screen"><div class="box-screen setting"data-screen="setting"><p>⚙️</p></div><div class="box-screen main"data-screen="main"><p>🏡</p></div><div class="box-screen online"data-screen="online"><p>🖥️</p></div></div><div class="content-screen"><div class="screen screen-setting"><p>Setting Screen</p></div><div class="screen screen-main"><div class="list-function active"><div class="box-function"><p>Function 1</p></div><div class="box-function"><p>Function 2</p></div><div class="box-function"><p>Function 3</p></div><div class="box-function"><p>Function 4</p></div><div class="box-function"><p>Function 5</p></div><div class="box-function"><p>Function 6</p></div><div class="box-function"><p>Function 7</p></div></div><div class="layout-function"><div class="back">Trở Lại</div><div class="box gia_duoi"id="gia_duoi_layout"><p>GIÁ ĐUÔI</p><button class="action-btn"data-action="gia_duoi">THỰC HIỆN SỬA GIÁ</button></div><div class="box flash_sale"id="flash_sale_layout"><div class="program_id"><input placeholder="Đường dẫn / ID của chương trình cần sao chép"> <input type="radio"name="platform"id="shopee"> <input type="radio"name="platform"id="tiktok"><div class="highlight_choice"></div><div class="flex flex-row gap-1"><label for="shopee"><button>SHOPEE</button></label> <label for="shopee"><button>TIKTOK</button></label></div></div></div></div></div><div class="screen screen-online"><p>Online Screen</p></div></div></div><style>.tp-container{padding:0;margin:0;border:none;box-sizing:border-box}.tp-container *{padding:0;margin:0;border:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;font-weight:700;user-select:none}.tp-container ::-webkit-scrollbar{height:6px;width:6px}.tp-container ::-webkit-scrollbar-track{border-radius:20px;background-color:#000}.tp-container ::-webkit-scrollbar-track:hover{background-color:#5a5e5f}.tp-container ::-webkit-scrollbar-track:active{background-color:#ff9e9e}.tp-container ::-webkit-scrollbar-thumb{border-radius:20px;background-color:#eaeaea}.tp-container ::-webkit-scrollbar-thumb:hover{background-color:#a36f6f}.tp-container ::-webkit-scrollbar-thumb:active{background-color:#888bce}.tp-container .action-btn{margin-top:10px;padding:5px 10px;background:#90ee90;border-radius:5px;cursor:pointer;color:#121212}.tp-container.tp-main{top:0;position:fixed;background:var(--main-background);backdrop-filter:blur(10px);width:0;padding:0;height:109%;color:var(--text-color);z-index:999999998;transition:.5s}.tp-container.tp-main.active,.tp-container.tp-main:hover{width:60vw;height:100%;padding:2vh 2vw}.tp-container.tp-main .header{display:flex;justify-content:space-between;align-items:center;width:100%;height:3vh;color:#000;overflow:hidden}.tp-container.tp-main .header .time{font-size:1.5vh;letter-spacing:1rcap}.tp-container.tp-main .header .help{color:#a79dff;cursor:help}.tp-container.tp-main .header .theme-switcher{position:relative;width:auto;height:100%;aspect-ratio:1/1}.tp-container.tp-main .header .theme-switcher .btn-theme{position:absolute;height:100%;border-radius:50%;font-size:2vh;cursor:pointer;background:0 0;transition:.5s}.tp-container.tp-main .header .theme-switcher .btn-theme.active{top:0!important;left:0}.tp-container.tp-main .header .theme-switcher .btn-theme.light-mode{top:-100%;left:0}.tp-container.tp-main .header .theme-switcher .btn-theme.dark-mode{top:100%;left:0}.tp-container.tp-main .list-screen{margin-top:2vh;display:flex;flex-direction:row;justify-content:flex-start;align-items:center;width:100%;height:4vh;overflow-y:auto}.tp-container.tp-main .list-screen .box-screen{width:100%;height:4vh;background:rgba(0,0,0,.1);backdrop-filter:blur(5px);display:flex;justify-content:center;align-items:center;font-size:2vh;color:#000;cursor:pointer}.tp-container.tp-main .list-screen .box-screen.active{background:rgba(0,0,0,.3);backdrop-filter:blur(10px)}.tp-container.tp-main .list-screen .box-screen:hover p{transform:scale(1.3);transition:.3s}.tp-container.tp-main .list-screen .box-screen:first-child{border-top-left-radius:20px;border-bottom-left-radius:20px}.tp-container.tp-main .list-screen .box-screen:last-child{border-top-right-radius:20px;border-bottom-right-radius:20px}.tp-container.tp-main .content-screen{margin-top:2vh;width:100%;height:calc(100% - 15vh);background:rgba(0,0,0,.1);backdrop-filter:blur(5px);border-radius:20px;overflow:hidden;position:relative}.tp-container.tp-main .content-screen .screen{width:100%;height:100%;color:#000;transition:.5s;position:absolute;padding:2vh 2vw}.tp-container.tp-main .content-screen .screen.screen-setting{top:0;left:-100%}.tp-container.tp-main .content-screen .screen.screen-main{top:100%;width:100%;position:absolute}.tp-container.tp-main .content-screen .screen.screen-main .list-function{width:0;height:100%;margin:0 auto;overflow-y:scroll;overflow:hidden;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:space-around;align-items:flex-start;align-content:flex-start;gap:2vw;transition:.5s}.tp-container.tp-main .content-screen .screen.screen-main .list-function.active{width:100%}.tp-container.tp-main .content-screen .screen.screen-main .list-function .box-function{width:auto;height:4vh;line-height:auto;background:#fff;display:flex;flex-direction:row;justify-content:center;align-items:center;border-radius:10px;padding:2vh 2vw;word-break:keep-all}.tp-container.tp-main .content-screen .screen.screen-main .layout-function{position:absolute;top:1vh;width:93%;height:0;overflow:hidden}.tp-container.tp-main .content-screen .screen.screen-main .layout-function.active{height:100%}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .back{width:100%;height:4vh;line-height:4vh;font-weight:bolder;cursor:pointer}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box{width:0;height:0;opacity:0;transition:.5s;background:rgba(0,0,0,.1);backdrop-filter:blur(5px);border-radius:10px;padding:10px;margin-bottom:10px;position:absolute}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box.show{width:100%;height:auto;opacity:1}.tp-container.tp-main .content-screen .screen.screen-online{top:0;left:100%}.tp-container.tp-main .content-screen .screen.active{top:0;left:0}</style>`;
 
   // Khởi tạo biến toàn cục
   var INFO_PAGE = null;
@@ -30,6 +31,44 @@
   // var funcTest = () => {
   //     boxAlert("Hàm thử nghiệm ĐÃ CHẠY", "success");
   // }
+
+  var lay_ma_sanpham = () => {
+    boxAlert("Lấy Mã Sản Phẩm");
+    var page = getPageDomain();
+    page == "shopee" ? shopee() : page == "tiktok" ? tiktok() : page == "lazada" ? lazada() : "";
+    
+    async function shopee(){
+      var mode = $(".product-list-section.product-and-pagination-wrap-v2").hasClass("grid-mode") ? "grid" : "list";
+
+      var productID = [];
+
+
+      if(mode == "grid"){
+        var box = $(".product-grid-view .product-item");
+        var indexBox = 0;
+
+        function nextBox(){
+          if(indexBox >= box.length){
+            boxToast("Đã sao chép tất cả mã của sản phẩm đã chọn", "success");
+            return;
+          }
+
+          var checkBox = box.eq(indexBox).find(".product-checkbox input");
+          if(checkBox.prop("checked")){
+            productID.push(checkBox.attr("name"));
+          }
+
+          indexBox++;
+          nextBox();
+        }
+
+        nextBox();
+      }
+
+      navigator.clipboard.writeText(productID.join("\n"));
+    }
+  
+  }
 
   /**
    * @func flash_sale
@@ -45,12 +84,10 @@
    */
   var gia_duoi = () => {
     boxAlert("SỬA GIÁ THEO GIÁ ĐUÔI", "info");
-    if (INFO_PAGE.url.host.split(".").includes("shopee"))
-      shopee();
-    else if(INFO_PAGE.url.host.split(".").includes("tiktok"))
-      tiktok();
-    else if(INFO_PAGE.url.host.split(".").includes("lazada"))
-      lazada();
+
+    var page = getPageDomain();
+
+    page == "shopee" ? shopee() : page == "tiktok" ? tiktok() : page == "lazada" ? lazada() : "";
 
     function lamGia(gia){
       var giaDuoi = tachGia(gia).giaDuoi;
@@ -373,7 +410,14 @@
       func_name: "flash_sale",
       layout_name: "flash_sale",
       platform: ["shopee"]
-    }
+    },
+    {
+      name: "Lấy Mã Sản Phẩm",
+      func: lay_ma_sanpham,
+      func_name: "lay_ma_sanpham",
+      layout_name: "",
+      platform: ["shopee"]
+    },
   ];
 
   /**
@@ -388,6 +432,10 @@
       boxAlert(`Không tìm thấy hàm thực thi cho: ${name}`, "error");
       return;
     }
+  }
+
+  function getPageDomain(){
+    return (INFO_PAGE.url.host.split(".")[INFO_PAGE.url.host.split(".").length - 2]);
   }
 
   function flatPrice(price) {
@@ -1348,6 +1396,58 @@
         $(".tp-container.tp-main").removeClass("active");
       }
     });
+
+    /**
+     * @func check_in
+     * @description Kiểm tra và lưu lại thời gian của lần đầu kích hoạt trong ngày.
+     * @param {function} callback - Hàm callback nhận kết quả: ({isNewDay: boolean, launchTime: string})
+     */
+    function check_in(callback) {
+        const LAST_CHECK_IN_KEY = 'TP_GLOBAL_LAST_CHECK_IN_TIME';
+        const LAST_CHECK_IN_DATE_KEY = 'TP_GLOBAL_LAST_CHECK_IN_DATE';
+        
+        const now = new Date();
+        const todayDate = now.toISOString().split('T')[0];
+        
+        const savedDate = GM_getValue(LAST_CHECK_IN_DATE_KEY, null);
+        const savedTime = GM_getValue(LAST_CHECK_IN_KEY, null);
+
+        let result = {};
+
+        // 1. KIỂM TRA NGÀY MỚI
+        if (savedDate !== todayDate) {
+            
+            // --- NGÀY MỚI ---
+            const newLaunchTime = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            
+            GM_setValue(LAST_CHECK_IN_DATE_KEY, todayDate);
+            GM_setValue(LAST_CHECK_IN_KEY, newLaunchTime);
+            
+            boxAlert(`NGÀY MỚI! Lần đầu kích hoạt được ghi lại: ${newLaunchTime}`, "success");
+            
+            result = { isNewDay: true, launchTime: newLaunchTime };
+
+        } else {
+            
+            // --- ĐÃ KÍCH HOẠT TRONG NGÀY ---
+            boxAlert(`Hôm nay đã được kích hoạt. Lần đầu: ${savedTime}`, "log");
+            
+            result = { isNewDay: false, launchTime: savedTime };
+        }
+        
+        // GỌI CALLBACK VỚI KẾT QUẢ CUỐI CÙNG
+        if (typeof callback === 'function') {
+            callback(result);
+        }
+    }
+
+    check_in((result) => {
+      console.log(result);
+      console.log($(".tp-container.tp-main .header"));
+      $(".tp-container.tp-main .header").prepend(`
+          <span class="check-in">(CHECK IN: ${result.launchTime})</span>
+        `)
+    })
 
     // Chạy đồng hồ (Giữ nguyên)
     async function runTime() {

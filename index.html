@@ -113,8 +113,8 @@
         <div class="screen screen-setting">
             <p>Setting Screen</p>
         </div>
-        <div class="screen screen-main active">
-            <div class="list-function">
+        <div class="screen screen-main">
+            <div class="list-function active">
                 <div class="box-function">
                     <p>Function 1</p>
                 </div>
@@ -137,12 +137,12 @@
                     <p>Function 7</p>
                 </div>
             </div>
-            <div class="layout-function active">
+            <div class="layout-function">
                 <div class="back">Trở Lại</div>
                 <div class="box gia_duoi" id="gia_duoi_layout">
                     <p>GIÁ ĐUÔI</p><button class="action-btn" data-action="gia_duoi">THỰC HIỆN SỬA GIÁ</button>
                 </div>
-                <div class="box flash_sale show" id="flash_sale_layout">
+                <div class="box flash_sale" id="flash_sale_layout">
                     <div class="program_id">
                         <input type="text" placeholder="Đường dẫn / ID của chương trình cần sao chép"/>
                         <input type="radio" name="platform" id="shopee" />
@@ -406,6 +406,8 @@
         position: absolute;
         top: 1vh;
         width: 93%;
+        height: 0;
+        overflow: hidden;
     }
 
     .tp-container.tp-main .content-screen .screen.screen-main .layout-function.active {
