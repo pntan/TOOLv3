@@ -67,3 +67,6 @@ Các chức năng offline có thể sử dụng mọi lúc mà không cần máy
 * Với **SHOPEE** bạn cần vào trang làm chương trình khuyến mãi (*https://banhang.shopee.vn/portal/marketing/discount/xxx* với xxx là ID chương trình) và tích chọn những sản phẩm cần làm giá khuyến mãi
 * Chương trình sẽ tự lấy giá hiện tại (giá niêm yết trên sàn) và sửa thành giá khuyễn mãi.
 **Lưu ý: ** Giá niêm yết phải bao gồm cả giá đuôi (giá khuyến mãi)
+
+### Lấy mã phân loại
+* Lấy được mã phân loại cả 2 giao diện của **SHOPEE**

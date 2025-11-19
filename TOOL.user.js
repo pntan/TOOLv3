@@ -61,8 +61,26 @@
           indexBox++;
           nextBox();
         }
-
         nextBox();
+      }else if(mode == "list"){
+        var parent_box = $("table.eds-table__body tbody tr")
+        var indexParentBox = 0;
+        function nextParentBox(){
+          if(indexParentBox > parent_box.length){
+            boxToast("Đã sao chép tất cả mã của sản phẩm đã chọn", "success");
+            return;
+          }
+          var id = parent_box.eq(indexParentBox).find(".product-variation-item .item-id").text();
+
+          id = id.replace("ID Sản phẩm:", "");
+
+          productID.push(id);
+
+          indexParentBox++;
+          nextParentBox();          
+        }
+
+        nextParentBox();
       }
 
       navigator.clipboard.writeText(productID.join("\n"));
