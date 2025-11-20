@@ -2,6 +2,7 @@
 :root{
     /* GLOBAL CLASS */
     --handle-success: rgb(69, 216, 125);
+    --gap-value: 1vh
 
     /* TOAST */
     --toast-success-background: rgba(111, 255, 155, .7);
@@ -35,21 +36,55 @@
         padding: 0.5vh 0.5vw;
     }
 
+    .tp-container button.excuse-button{
+        width: 100%;
+        height: 3vh;
+        line-height: auto;
+        background: var(--main-background);
+        color: var(--text-color);
+        border-radius: 15px;
+    }
+
     .tp-container .flex{
         width: 100%;
         display: flex;
+        gap: var(--gap-value)
     }
 
     .tp-container .flex-row{
         flex-direction: row;
     }
 
-    .tp-container .flex-row.gap-1{
+    .tp-container .flex-column{
+        flex-direction: column;
+    }
+
+    .tp-container .flex-row{
         gap: 1vw
     }
     
-    .tp-container .flex-column.gap-1{
+    .tp-container .flex-column{
         gap: 1vh
+    }
+    
+    .tp-container textarea{
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        min-height: 5vh;
+        max-height: 35vh;
+        border-radius: 10px;
+        padding: 1vh 1vw;
+        margin: 1vw 0;
+        background: whitesmoke;
+    }
+
+    .tp-container input{
+        border-radius: 30px;
+        width: 100%;
+        height: 3vh;
+        text-indent: 3%;
+        background: whitesmoke
     }
 </style>
 <div class="tp-container tp-toast"></div>
@@ -92,7 +127,7 @@
         background: var(--toast-warning-background);
     }
 </style>
-<div class="tp-container tp-main shopee-theme active">
+<div class="tp-container tp-main">
     <div class="header">
         <div class="time">00:00:00</div>
 				<div class="help">Hướng Dẫn</div>
@@ -113,7 +148,7 @@
         <div class="screen screen-setting">
             <p>Setting Screen</p>
         </div>
-        <div class="screen screen-main">
+        <div class="screen screen-main active">
             <div class="list-function active">
                 <div class="box-function">
                     <p>Function 1</p>
@@ -139,21 +174,30 @@
             </div>
             <div class="layout-function">
                 <div class="back">Trở Lại</div>
-                <div class="box gia_duoi" id="gia_duoi_layout">
-                    <p>GIÁ ĐUÔI</p><button class="action-btn" data-action="gia_duoi">THỰC HIỆN SỬA GIÁ</button>
-                </div>
                 <div class="box flash_sale" id="flash_sale_layout">
                     <div class="program_id">
-                        <input type="text" placeholder="Đường dẫn / ID của chương trình cần sao chép"/>
-                        <input type="radio" name="platform" id="shopee" />
-                        <input type="radio" name="platform" id="tiktok" />
+                        <input type="text" class="product_url" placeholder="Đường dẫn / ID của chương trình cần sao chép" alt="Đường dẫn / ID của chương trình cần sao chép"/>
 
-                        <div class="highlight_choice"></div>
-                        <div class="flex flex-row gap-1">
-                            <label for="shopee"><button>SHOPEE</button></label>
-                            <label for="shopee"><button>TIKTOK</button></label>
+                        <div class="platform flex flex-row" style="--gap-value: 2vw">
+                            <label class="shopee" for="shopee">SHOPEE</label>
+                            <label class="tiktok" for="tiktok">TIKTOK</label>
+
+                            <div class="highlight_choice"></div>
+
                         </div>
                     </div>
+
+                    <div class="input_prompt">
+                        <div class="prompt_value shopee_prompt flex flex-column" style="--gap-value: 2vh;">
+                            <input type="number" class="value-count" placeholder="Số lượng khung cần chạy" />
+                            <textarea class="value-flashsale" placeholder="Tên sản phẩm và số lượng cần chạy"></textarea>
+                        </div>
+                        <div class="prompt_value tiktok_prompt">
+                            <textarea placeholder="Thời gian cần chạy" class="value-time"></textarea>
+                        </div>
+                    </div>
+
+                    <button class="excuse-button action-btn" data-action="flash_sale">Kích Hoạt</button>
                 </div>
             </div>
         </div>
@@ -256,10 +300,10 @@
         letter-spacing: 1rcap
     }
 
-            .tp-container.tp-main .header .help{
-                color: rgb(167, 157, 255);
-                cursor: help;
-            }
+    .tp-container.tp-main .header .help{
+        color: rgb(167, 157, 255);
+        cursor: help;
+    }
 
     .tp-container.tp-main .header .theme-switcher {
         position: relative;
@@ -439,6 +483,72 @@
         width: 100%;
         height: auto;
         opacity: 1
+    }
+
+    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform{
+        width: 100%;
+        height: 4vh;
+        display: flex;
+        align-items: center;
+        margin: 1vh 0;
+        position: relative;
+    }
+
+    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .highlight_choice{
+        width: 50%;
+        height: 4vh;
+        background: var(--main-background);
+        position: absolute;
+        z-index: -1;
+        transition: 0.5s;
+        transform: translate(-150%);
+    }
+
+    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .shopee.active{
+        color: var(--text-color);
+    }
+
+    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .shopee.active ~ .highlight_choice{
+        transform: translate(0);
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+    }
+
+    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .tiktok.active{
+        color: var(--text-color);
+    }
+
+    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .tiktok.active ~ .highlight_choice{
+        transform: translate(100%);
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+    }
+
+    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform label{
+        width: 100%;
+        text-align: center;
+        font-size: 1.2em;
+        padding: 0.5vh 0;
+    }
+    
+    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform label:nth-last-child(2){
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+    }
+
+    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform label:nth-last-child(1){
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+    }
+
+    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .input_prompt .prompt_value{
+        opacity: 0;
+        display: none;
+    }
+
+    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .input_prompt .prompt_value.active{
+        opacity: 1;
+        display: block;
     }
 
     .tp-container.tp-main .content-screen .screen.screen-online {
