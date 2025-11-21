@@ -92,46 +92,93 @@
      * @func flash_sale
      * @description 'Làm chương trình khuyến mãi'
      */
-    var flash_sale = () => {
+    var flash_sale = (run = false) => {
       boxAlert("FLASH SALE");
-      var platform = "none", id = "none", data = "none", length = "none";
-      platform = $(".tp-container.tp-main .layout-function #flash_sale_layout .platform label.active").text().toLowerCase() || "none";
-      id = $(".tp-container.tp-main .layout-function #flash_sale_layout .current_id span").text() || "none";
-      data = platform == "shopee" ? $(".tp-container.tp-main .layout-function #flash_sale_layout .input_prompt .shopee_prompt textarea").val() || "none" : platform == "tiktok" ? $(".tp-container.tp-main .layout-function #flash_sale_layout .input_prompt .tiktok_prompt textarea").val() || "none" : "none";
-      length = platform == "shopee" ? $(".tp-container.tp-main .layout-function #flash_sale_layout .input_prompt .shopee_prompt input").val() || "none" : platform == "tiktok" ? data.split("\n").length || "none" : "none";
-      
-      // if(platform == "none" || id == "none" || data == "none" || length == "none"){
-      //   boxToast("Có giá trị không hợp lệ", "error");
-      //   return;
-      // }
 
-      data = data.split("\n");
+      if(!run){
+        var platform = "none", id = "none", data = "none", length = "none";
+        platform = $(".tp-container.tp-main .layout-function #flash_sale_layout .platform label.active").text().toLowerCase() || "none";
+        id = $(".tp-container.tp-main .layout-function #flash_sale_layout .current_id span").text() || "none";
+        data = platform == "shopee" ? $(".tp-container.tp-main .layout-function #flash_sale_layout .input_prompt .shopee_prompt textarea").val() || "none" : platform == "tiktok" ? $(".tp-container.tp-main .layout-function #flash_sale_layout .input_prompt .tiktok_prompt textarea").val() || "none" : "none";
+        length = platform == "shopee" ? $(".tp-container.tp-main .layout-function #flash_sale_layout .input_prompt .shopee_prompt input").val() || "none" : platform == "tiktok" ? data.split("\n").length || "none" : "none";
+        
+        // if(platform == "none" || id == "none" || data == "none" || length == "none"){
+        //   boxToast("Có giá trị không hợp lệ", "error");
+        //   return;
+        // }
 
-      console.log(platform);
-      console.log(id);
-      console.log(data);
-      console.log(length);
+        data = data.split("\n");
 
-      var obj_program = {};
+        console.log(platform);
+        console.log(id);
+        console.log(data);
+        console.log(length);
 
-      if(platform == "shopee"){
-        obj_program = {
-          id: id,
-          data: data,
-          length: length,
-          index: 0,
+        var obj_program = {};
+
+        if(platform == "shopee"){
+          obj_program = {
+            platform: platform,
+            id: id,
+            data: data,
+            length: length,
+            index: 0,
+          }
+        }else if(platform == "tiktok"){
+          obj_program = {
+            platform: platform,
+            id: id,
+            data: data,
+            length: length,
+            index: 0,
+          }
         }
-      }else if(platform == "tiktok"){
-        obj_program = {
-          id: id,
-          data: data,
-          length: length,
-          index: 0,
+
+        setConfig("continue_function", "flashsale");
+        setConfig("status_running", "false");
+        setConfig("data_flashsale", JSON.stringify(obj_program));
+
+        var url = platform == "shopee" ? `https://banhang.shopee.vn/portal/marketing/shop-flash-sale/create?from=${id}` : platform == "tiktok" ? `https://seller-vn.tiktok.com/promotion/marketing-tools/flash-sale/create?duplicateId=${id}&back=1` : "";
+
+        window.open(`${url}`, "_blank");
+      }else{
+        if(getConfig("status_running") == "false"){
+          // setConfig("status_running", "true");
+          flash_sale.shopee = () => {
+            var data_flashsale = JSON.parse(getConfig("data_flashsale"));
+
+            if (data_flashsale.id != location.href.toString().split("=")[1]){
+              boxToast("Đây không phải chương trình flash sale bạn đã cungcấp");
+              return;
+            }
+
+            // flash_sale.clearing();
+          }
+
+          flash_sale.tiktok = () => {
+            console.log("TIKTOK");
+
+            flash_sale.clearing();
+          }
+
+          flash_sale.lazada = () => {
+            console.log("LAZADA");
+            flash_sale.clearing();
+          }
+
+          flash_sale.clearing = () => {
+            var config = ["continue_function", "status_running", "data_flashsale"];
+            $.each(config, (i, v) => {
+              localStorage.removeItem(`TP_CONFIG_${config[i]}`);
+            });
+          }
+          
+          var page = getPageDomain();
+
+          page == "shopee" ? flash_sale.shopee() : page == "tiktok" ? flash_sale.tiktok() : page == "lazada" ? flash_sale.lazada() : "";
+
         }
       }
-
-      console.log(obj_program);
-      return;
     }
 
     /**
@@ -1149,8 +1196,7 @@
      *  giaDuoi: giaDuoi.toString(),
      *  gia: result.toString()
      * };
-    */
-   
+    */   
     function gopGia(giaDau, giaDuoi) {
       // Chuẩn hóa đầu vào
       if (giaDau == null || giaDuoi == null) return null;
@@ -1506,7 +1552,7 @@
         var screen = $(this).data("screen");
 
         $(".tp-container.tp-main .list-screen .box-screen").removeClass("active");
-        $(this).addClass("active")
+        $(this).addClass("active");
 
         $(".tp-container.tp-main .content-screen .screen").removeClass("active");
         $(`.tp-container.tp-main .content-screen .screen.screen-${screen}`).addClass("active");
@@ -1696,6 +1742,22 @@
           $(".tp-container.tp-main #flash_sale_layout .input_prompt .prompt_value.tiktok_prompt").removeClass("active");
         }
       })
+
+      // Tìm cấu hình hàm đang chạy hàng loạt
+      function check_current_function(){
+        var config = getConfig("continue_function");
+
+        if(config == null)
+          return;
+
+        switch (config){
+          case "flashsale":
+            flash_sale(true);
+            break;
+        }
+      }
+
+      check_current_function();
     }
 
     // Bắt đầu
