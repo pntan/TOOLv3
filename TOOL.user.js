@@ -15,12 +15,13 @@
   // @require      https://code.jquery.com/jquery-3.7.1.min.js
   // @require      https://code.jquery.com/ui/1.13.2/jquery-ui.min.js
   // @require      https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4
+  // @require      https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js
   // ==/UserScript==
   (function() {
     'use strict';
 
     const VERSION = '0.0.1';
-    const X_LIMIT = 5;
+    const X_LIMIT = 1;
 
     // --- ĐÃ CẬP NHẬT: Thêm nút action-btn vào gia_duoi_layout ---
     const HTML_UI = `<style>:root{--handle-success:rgb(69, 216, 125);--gap-value:1vh --toast-success-background: rgba(111, 255, 155, .7);--toast-info-background:rgba(80, 220, 245, .7);--toast-error-background:rgba(245, 80, 80, .7);--toast-warning-background:rgba(245, 229, 80, .7);--main-background:rgba(223, 223, 223, .5)}.shopee-theme{--main-background:rgba(238, 77, 45, 0.521);--text-color:rgb(255, 255, 255)}</style><style>.tp-success-bg{background:var(--handle-success)}.tp-container input[type=text]{width:100%;height:3vh;text-indent:3%;border-radius:20px}.tp-container input[type=radio]{display:none}.tp-container button{width:100%;padding:.5vh .5vw}.tp-container button.excuse-button{width:100%;height:3vh;line-height:auto;background:var(--main-background);color:var(--text-color);border-radius:15px}.tp-container .flex{width:100%;display:flex;gap:var(--gap-value)}.tp-container .flex-row{flex-direction:row}.tp-container .flex-column{flex-direction:column}.tp-container .flex-row{gap:1vw}.tp-container .flex-column{gap:1vh}.tp-container textarea{width:100%;max-width:100%;height:auto;min-height:5vh;max-height:35vh;border-radius:10px;padding:1vh 1vw;margin:1vw 0;background:#f5f5f5}.tp-container input{border-radius:30px;width:100%;height:3vh;text-indent:3%;background:#f5f5f5}</style><div class="tp-container tp-toast"></div><style>.tp-container.tp-toast{width:fit-content;height:auto;position:fixed;margin-left:50%;top:5%;transform:translate(-50%);z-index:999999999;display:flex;flex-direction:column;flex-wrap:wrap;gap:2vh}.tp-container.tp-toast .toast{padding:1vh 1vw;background:#fff;border-radius:10px;color:#fff;text-shadow:0 0 1px #121212,0 0 1px #121212,0 0 1px #121212,0 0 1px #121212,0 0 1px #121212}.tp-container.tp-toast .toast.info{background:var(--toast-info-background)}.tp-container.tp-toast .toast.success{background:var(--toast-success-background)}.tp-container.tp-toast .toast.error{background:var(--toast-error-background)}.tp-container.tp-toast .toast.warning{background:var(--toast-warning-background)}</style><div class="tp-container tp-main"><div class="header"><div class="time">00:00:00</div><div class="help">Hướng Dẫn</div><div class="theme-switcher"><button class="btn-theme light-mode active"data-theme="light">☀️</button> <button class="btn-theme dark-mode"data-theme="dark">🌙</button></div></div><div class="list-screen"><div class="box-screen setting"data-screen="setting"><p>⚙️</p></div><div class="box-screen main"data-screen="main"><p>🏡</p></div><div class="box-screen online"data-screen="online"><p>🖥️</p></div></div><div class="content-screen"><div class="screen screen-setting"><p>Setting Screen</p></div><div class="screen screen-main active"><div class="list-function active"><div class="box-function"><p>Function 1</p></div><div class="box-function"><p>Function 2</p></div><div class="box-function"><p>Function 3</p></div><div class="box-function"><p>Function 4</p></div><div class="box-function"><p>Function 5</p></div><div class="box-function"><p>Function 6</p></div><div class="box-function"><p>Function 7</p></div></div><div class="layout-function"><div class="back">Trở Lại</div><div class="box flash_sale"id="flash_sale_layout"><div class="program_id"><input class="product_url"placeholder="Đường dẫn / ID của chương trình cần sao chép"alt="Đường dẫn / ID của chương trình cần sao chép"><div class="platform flex flex-row"style="--gap-value:2vw"><label class="shopee"for="shopee">SHOPEE</label> <label class="tiktok"for="tiktok">TIKTOK</label><div class="highlight_choice"></div></div></div><div class="input_prompt"><div class="prompt_value shopee_prompt flex flex-column"style="--gap-value:2vh"><input type="number"class="value-count"placeholder="Số lượng khung cần chạy"> <textarea class="value-flashsale"placeholder="Tên sản phẩm và số lượng cần chạy"></textarea></div><div class="prompt_value tiktok_prompt"><textarea placeholder="Thời gian cần chạy"class="value-time"></textarea></div></div><button class="excuse-button action-btn"data-action="flash_sale">Kích Hoạt</button></div></div></div><div class="screen screen-online"><p>Online Screen</p></div></div></div><style>.tp-container{padding:0;margin:0;border:none;box-sizing:border-box}.tp-container *{padding:0;margin:0;border:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;font-weight:700;user-select:none}.tp-container ::-webkit-scrollbar{height:6px;width:6px}.tp-container ::-webkit-scrollbar-track{border-radius:20px;background-color:#000}.tp-container ::-webkit-scrollbar-track:hover{background-color:#5a5e5f}.tp-container ::-webkit-scrollbar-track:active{background-color:#ff9e9e}.tp-container ::-webkit-scrollbar-thumb{border-radius:20px;background-color:#eaeaea}.tp-container ::-webkit-scrollbar-thumb:hover{background-color:#a36f6f}.tp-container ::-webkit-scrollbar-thumb:active{background-color:#888bce}.tp-container .action-btn{margin-top:10px;padding:5px 10px;background:#90ee90;border-radius:5px;cursor:pointer;color:#121212}.tp-container.tp-main{top:0;position:fixed;background:var(--main-background);backdrop-filter:blur(10px);width:0;padding:0;height:109%;color:var(--text-color);z-index:999999998;transition:.5s}.tp-container.tp-main.active,.tp-container.tp-main:hover{width:60vw;height:100%;padding:2vh 2vw}.tp-container.tp-main .header{display:flex;justify-content:space-between;align-items:center;width:100%;height:3vh;color:#000;overflow:hidden}.tp-container.tp-main .header .time{font-size:1.5vh;letter-spacing:1rcap}.tp-container.tp-main .header .help{color:#a79dff;cursor:help}.tp-container.tp-main .header .theme-switcher{position:relative;width:auto;height:100%;aspect-ratio:1/1}.tp-container.tp-main .header .theme-switcher .btn-theme{position:absolute;height:100%;border-radius:50%;font-size:2vh;cursor:pointer;background:0 0;transition:.5s}.tp-container.tp-main .header .theme-switcher .btn-theme.active{top:0!important;left:0}.tp-container.tp-main .header .theme-switcher .btn-theme.light-mode{top:-100%;left:0}.tp-container.tp-main .header .theme-switcher .btn-theme.dark-mode{top:100%;left:0}.tp-container.tp-main .list-screen{margin-top:2vh;display:flex;flex-direction:row;justify-content:flex-start;align-items:center;width:100%;height:4vh;overflow-y:auto}.tp-container.tp-main .list-screen .box-screen{width:100%;height:4vh;background:rgba(0,0,0,.1);backdrop-filter:blur(5px);display:flex;justify-content:center;align-items:center;font-size:2vh;color:#000;cursor:pointer}.tp-container.tp-main .list-screen .box-screen.active{background:rgba(0,0,0,.3);backdrop-filter:blur(10px)}.tp-container.tp-main .list-screen .box-screen:hover p{transform:scale(1.3);transition:.3s}.tp-container.tp-main .list-screen .box-screen:first-child{border-top-left-radius:20px;border-bottom-left-radius:20px}.tp-container.tp-main .list-screen .box-screen:last-child{border-top-right-radius:20px;border-bottom-right-radius:20px}.tp-container.tp-main .content-screen{margin-top:2vh;width:100%;height:calc(100% - 15vh);background:rgba(0,0,0,.1);backdrop-filter:blur(5px);border-radius:20px;overflow:hidden;position:relative}.tp-container.tp-main .content-screen .screen{width:100%;height:100%;color:#000;transition:.5s;position:absolute;padding:2vh 2vw}.tp-container.tp-main .content-screen .screen.screen-setting{top:0;left:-100%}.tp-container.tp-main .content-screen .screen.screen-main{top:100%;width:100%;position:absolute}.tp-container.tp-main .content-screen .screen.screen-main .list-function{width:0;height:100%;margin:0 auto;overflow-y:scroll;overflow:hidden;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:space-around;align-items:flex-start;align-content:flex-start;gap:2vw;transition:.5s}.tp-container.tp-main .content-screen .screen.screen-main .list-function.active{width:100%}.tp-container.tp-main .content-screen .screen.screen-main .list-function .box-function{width:auto;height:4vh;line-height:auto;background:#fff;display:flex;flex-direction:row;justify-content:center;align-items:center;border-radius:10px;padding:2vh 2vw;word-break:keep-all}.tp-container.tp-main .content-screen .screen.screen-main .layout-function{position:absolute;top:1vh;width:93%;height:0;overflow:hidden}.tp-container.tp-main .content-screen .screen.screen-main .layout-function.active{height:100%}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .back{width:100%;height:4vh;line-height:4vh;font-weight:bolder;cursor:pointer}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box{width:0;height:0;opacity:0;transition:.5s;background:rgba(0,0,0,.1);backdrop-filter:blur(5px);border-radius:10px;padding:10px;margin-bottom:10px;position:absolute}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box.show{width:100%;height:auto;opacity:1}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform{width:100%;height:4vh;display:flex;align-items:center;margin:1vh 0;position:relative}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .highlight_choice{width:50%;height:4vh;background:var(--main-background);position:absolute;z-index:-1;transition:.5s;transform:translate(-150%)}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .shopee.active{color:var(--text-color)}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .shopee.active~.highlight_choice{transform:translate(0);border-top-left-radius:20px;border-bottom-left-radius:20px}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .tiktok.active{color:var(--text-color)}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .tiktok.active~.highlight_choice{transform:translate(100%);border-top-right-radius:20px;border-bottom-right-radius:20px}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform label{width:100%;text-align:center;font-size:1.2em;padding:.5vh 0}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform label:nth-last-child(2){border-top-left-radius:20px;border-bottom-left-radius:20px}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform label:nth-last-child(1){border-top-right-radius:20px;border-bottom-right-radius:20px}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .input_prompt .prompt_value{opacity:0;display:none}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .input_prompt .prompt_value.active{opacity:1;display:block}.tp-container.tp-main .content-screen .screen.screen-online{top:0;left:100%}.tp-container.tp-main .content-screen .screen.active{top:0;left:0}</style>`;
@@ -95,6 +96,8 @@
     var flash_sale = (run = false) => {
       boxAlert("FLASH SALE");
 
+      console.log(run);
+
       if(!run){
         var platform = "none", id = "none", data = "none", length = "none";
         platform = $(".tp-container.tp-main .layout-function #flash_sale_layout .platform label.active").text().toLowerCase() || "none";
@@ -108,11 +111,6 @@
         // }
 
         data = data.split("\n");
-
-        console.log(platform);
-        console.log(id);
-        console.log(data);
-        console.log(length);
 
         var obj_program = {};
 
@@ -147,10 +145,42 @@
           flash_sale.shopee = () => {
             var data_flashsale = JSON.parse(getConfig("data_flashsale"));
 
-            if (data_flashsale.id != location.href.toString().split("=")[1]){
-              boxToast("Đây không phải chương trình flash sale bạn đã cungcấp");
+            if (data_flashsale.id != location.href.toString().split("/")[location.href.toString().split("/").length - 1]){
+              boxToast("Đây không phải chương trình flash sale bạn đã cung cấp");
+              swal.fire({
+                icon: 'error',
+                title: 'Sai Chương Trình Flash Sale',
+                text: 'Đây không phải chương trình flash sale bạn đã cung cấp',
+                showCancelButton: true,
+                showDenyButton: true,
+                confirmButtonText: "Đổi Sang Chương Trình Hiện Tại",
+                denyButtonText: "Giữ chương trình trước đó",
+                cancelButtonText: "Hủy Thao Tác",
+              }).then((result) => {
+                if(result.isConfirmed){
+                  var config = JSON.parse(getConfig("data_flashsale"));
+                  console.log(config);
+                  config.id = location.href.toString().split("/")[location.href.toString().split("/").length - 1];
+                  console.log(config);
+
+                  setConfig("data_flashsale", config);
+                }else if(result.isDenied){
+                  var config = JSON.parse(getConfig("data_flashsale"));
+
+                  var id = config.id;
+                  var platform = config.platform;
+
+                  var url = platform == "shopee" ? `https://banhang.shopee.vn/portal/marketing/shop-flash-sale/create?from=${id}` : platform == "tiktok" ? `https://seller-vn.tiktok.com/promotion/marketing-tools/flash-sale/create?duplicateId=${id}&back=1` : "";
+
+                  windown.open(`${}`)
+                }else{
+                  flash_sale.clearing();
+                }
+              });
               return;
             }
+
+            
 
             // flash_sale.clearing();
           }
@@ -1726,7 +1756,7 @@
 
         $(".tp-container.tp-main #flash_sale_layout .program_id .current_id").remove();
         $(".tp-container.tp-main #flash_sale_layout .program_id").prepend(`
-          <span class="current_id">ID Sản Phẩm <span style="color: var(--text-color)">${id}</span>
+          <span class="current_id">ID Chương Trình <span style="color: var(--text-color)">${id}</span>
         `)
       })
 
