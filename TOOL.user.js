@@ -211,10 +211,14 @@
                     return;
                   }
 
-                  var name = box.eq(indexBox).find(".variation").text();
+                  var name = box.eq(indexBox).find(".variation .ellipsis-content").text();
                   var giaGoc = box.eq(indexBox).find(".original-price").text();
+                  var soLuongKM = box.eq(indexBox).find(".campaign-stock input");
+                  var tonKho = box.eq(indexBox).find(".current-stock").text();
 
-                  console.log(`${name} - ${giaGoc}`);
+                  if(list_name.includes(name) && tonKho > list_quantity[list_name.search(name)]){
+                    console.log(`${name} - ${giaGoc} - ${soLuongKM} - ${tonKho}`);
+                  }
 
                   indexBox++;
                   nextBox();
@@ -224,9 +228,7 @@
                 
               }
                 
-            }
-
-            
+            }           
 
             // flash_sale.clearing();
           }
