@@ -151,24 +151,26 @@
 
             // Kiểm tra ID chương trình flash sale, nếu không đúng
             if (data_flashsale.id != location.href.toString().split("/")[location.href.toString().split("/").length - 1].replace("create?from=", "")){
-              boxToast("Đây không phải chương trình flash sale bạn đã cung cấp");
+              boxToast("Đây không phải chương trình flash sale bạn đã cung cấp", "error");
               swal.fire({
                 icon: 'error',
                 title: 'Sai Chương Trình Flash Sale',
                 text: 'Đây không phải chương trình flash sale bạn đã cung cấp',
                 showCancelButton: true,
                 showDenyButton: true,
-                confirmButtonText: "Đổi Sang Chương Trình Hiện Tại",
-                denyButtonText: "Giữ chương trình trước đó",
+                confirmButtonText: "Bỏ Qua Lần Này",
+                denyButtonText: "Chuyển Hướng Tới Chương Trình",
                 cancelButtonText: "Hủy Thao Tác",
               }).then((result) => {
                 if(result.isConfirmed){
-                  var config = JSON.parse(getConfig("data_flashsale"));
-                  console.log(config);
-                  config.id = location.href.toString().split("/")[location.href.toString().split("/").length - 1];
-                  console.log(config);
+                  // var config = JSON.parse(getConfig("data_flashsale"));
+                  // console.log(config);
+                  // config.id = location.href.toString().split("/")[location.href.toString().split("/").length - 1];
+                  // console.log(config);
 
-                  setConfig("data_flashsale", config);
+                  // setConfig("data_flashsale", config);
+
+                  boxToast("Chương trình sẽ bỏ qua lần chạy này", "info")
                 }else if(result.isDenied){
                   var config = JSON.parse(getConfig("data_flashsale"));
 
@@ -200,7 +202,26 @@
                   list_quantity.push(detail[1].trim());
                 });
 
-                var box = $(".products-container-content .table-card");
+                var box = $(".products-container-content .table-card .inner-row");
+
+                var indexBox = 0;
+                function nextBox(){
+                  if(indexBox >= box.length){
+                    // Bật khuyến mãi
+                    return;
+                  }
+
+                  var name = box.eq(indexBox).find(".variation").text();
+                  var giaGoc = box.eq(indexBox).find(".original-price").text();
+
+                  console.log(`${name} - ${giaGoc}`);
+
+                  indexBox++;
+                  nextBox();
+                }
+
+                nextBox();
+                
               }
                 
             }
