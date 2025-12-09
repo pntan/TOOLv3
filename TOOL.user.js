@@ -269,18 +269,17 @@
                             waitForElement(right_day, ".eds-table__body-container .eds-table__body .eds-table__row", async function(e){
                               simulateReactEvent(right_day.find(".eds-table__body-container .eds-table__body .eds-table__row").eq(0).find("input"), "click");
                               await delay(200);
-
-                              boxAlert("SELECT_DAY");
                               console.log(select_day.find(".eds-modal__footer .footer-action .confirm-btn"));
                               simulateReactEvent(select_day.find(".eds-modal__footer .footer-action .confirm-btn"), "click");
-                              // await delay(200);
-                              // $.each($(".panel-actions .action-button"), async (i, v) => {
-                              //   if($(v).text().toLowerCase() == "bật"){
-                              //     console.log(v);
-                              //     simulateReactEvent($(v).find("button"), "click");
-                              //     return;
-                              //   }
-                              // });
+                              await delay(200);
+                              $.each($(".panel-actions .action-button"), async (i, v) => {
+                                console.log($(v).text().toLowerCase());
+                                if($(v).text().toLowerCase().replace("vui lòng lựa chọn khung giờ","").trim() == "bật"){
+                                  console.log(v);
+                                  simulateReactEvent($(v).find("button"), "click");
+                                  return;
+                                }
+                              });
                               // await delay(200);
                               // simulateReactEvent($(".shopee-fixed-bottom-card.bottom-card .confirm-btn buton"), "click");
                             });
