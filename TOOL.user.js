@@ -179,7 +179,7 @@
 
                   var url = platform == "shopee" ? `https://banhang.shopee.vn/portal/marketing/shop-flash-sale/create?from=${id}` : platform == "tiktok" ? `https://seller-vn.tiktok.com/promotion/marketing-tools/flash-sale/create?duplicateId=${id}&back=1` : "";
 
-                  windown.open(`${url}`);
+                  window.open(`${url}`, "_blank");
                 }else{
                   flash_sale.clearing();
                 }
@@ -202,29 +202,128 @@
                   list_quantity.push(detail[1].trim());
                 });
 
-                var box = $(".products-container-content .table-card .inner-row");
+                waitForElement($("body"), ".products-container-content .table-card .inner-row", async function(e){
+                  await delay(1000)
+                  var box = $(".products-container-content .table-card .inner-row");
 
-                var indexBox = 0;
-                function nextBox(){
-                  if(indexBox >= box.length){
-                    // Bật khuyến mãi
-                    return;
+                  var selected_day = false;
+
+                  var indexBox = 0;
+                  async function nextBox(){
+                    if(indexBox >= box.length){
+                      // Chọn ngày và bật khi chọn các sản phẩm hoàn tất
+                      simulateReactEvent($(".basic-info-wrapper .info-item").eq(0).find(".info-item-content button"), "click");
+
+                      await delay(2000);
+
+                      var select_day = $(".eds-modal__content.eds-modal__content--normal");
+                      select_day = select_day.eq(select_day.length - 1);
+
+                      var picker_day = select_day.find(".eds-modal__body .main")
+                      var left_day = picker_day.find(".left"), right_day = picker_day.find(".right");
+
+                      var left_header = left_day.find(".eds-picker-header");
+                      var prev_year = left_header.find("i").eq(0);
+                      var prev_month = left_header.find("i").eq(1);
+                      var next_year = left_header.find("i").eq(2);
+                      var next_month = left_header.find("i").eq(3);
+
+                      var picker_date_row = left_day.find(".eds-date-table__rows .eds-date-table__row");
+
+                      var indexRow = 0;
+                      async function nextRow(){
+                        if(indexRow >= picker_date_row.length || selected_day){
+                          return;
+                        }
+                        var picker_date_cell = picker_date_row.eq(indexRow).find(".eds-date-table__cell");
+
+                        var indexCell = 0;
+                        async function nextCell(){
+                          if(indexCell >= picker_date_cell.length || selected_day){
+                            indexRow++;
+                            nextRow();
+                            return;
+                          }
+
+                          var check_date = picker_date_cell.eq(indexCell).find(".date-text").text();
+                          var now_date = new Date().getDate();
+
+                          if(check_date < now_date){
+                            indexCell++;
+                            nextCell();
+                            return;
+                          }
+
+                          if(picker_date_cell.eq(indexCell).hasClass("month-end").length > 0){
+                            simulateReactEvent(next_month, "click");
+                            indexRow = 0;
+                            nextRow();
+                          }
+
+                          if(picker_date_cell.eq(indexCell).find(".timeslots.valid").length > 0 && !selected_day){
+                            simulateReactEvent(picker_date_cell.eq(indexCell), "click");
+                            selected_day = true;
+                          }
+
+                          if(selected_day){
+                            waitForElement(right_day, ".eds-table__body-container .eds-table__body .eds-table__row", async function(e){
+                              simulateReactEvent(right_day.find(".eds-table__body-container .eds-table__body .eds-table__row").eq(0).find("input"), "click");
+                              await delay(200);
+
+                              boxAlert("SELECT_DAY");
+                              console.log(select_day.find(".eds-modal__footer .footer-action .confirm-btn"));
+                              simulateReactEvent(select_day.find(".eds-modal__footer .footer-action .confirm-btn"), "click");
+                              // await delay(200);
+                              // $.each($(".panel-actions .action-button"), async (i, v) => {
+                              //   if($(v).text().toLowerCase() == "bật"){
+                              //     console.log(v);
+                              //     simulateReactEvent($(v).find("button"), "click");
+                              //     return;
+                              //   }
+                              // });
+                              // await delay(200);
+                              // simulateReactEvent($(".shopee-fixed-bottom-card.bottom-card .confirm-btn buton"), "click");
+                            });
+                          }
+
+                          indexCell++;
+                          nextCell();
+                        }
+
+                        nextCell();
+
+                        indexRow++;
+                        nextRow();
+                      }
+
+                      nextRow();
+                      return;
+                    }
+
+                    var checked = box.eq(indexBox).find(".item-selector input.eds-checkbox__input")
+                    var name = box.eq(indexBox).find(".variation .ellipsis-content").text();
+                    var giaGoc = box.eq(indexBox).find(".original-price").text();
+                    var soLuongKM = box.eq(indexBox).find(".campaign-stock .form-item input");
+                    var tonKho = box.eq(indexBox).find(".current-stock").text();
+
+                    if(list_name.includes(name) && tonKho > list_quantity[list_name.indexOf(name)]){
+                      checked.trigger("click");
+                      checked.val("true");
+                      await delay(100);
+                      simulateClearReactInput(soLuongKM);
+                      simulateReactInput(soLuongKM, list_quantity[list_name.indexOf(name)]);
+                    }
+
+                    await delay(10);
+
+                    indexBox++;
+                    nextBox();
                   }
 
-                  var name = box.eq(indexBox).find(".variation .ellipsis-content").text();
-                  var giaGoc = box.eq(indexBox).find(".original-price").text();
-                  var soLuongKM = box.eq(indexBox).find(".campaign-stock input");
-                  var tonKho = box.eq(indexBox).find(".current-stock").text();
-
-                  if(list_name.includes(name) && tonKho > list_quantity[list_name.search(name)]){
-                    console.log(`${name} - ${giaGoc} - ${soLuongKM} - ${tonKho}`);
-                  }
-
-                  indexBox++;
                   nextBox();
-                }
-
-                nextBox();
+                }, {
+                  once: true
+                })
                 
               }
                 
