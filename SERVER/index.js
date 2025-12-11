@@ -9,6 +9,7 @@ import {
   Server
 } from 'socket.io';
 import ngrok from 'ngrok';
+import "@octokit/rest";
 import cors from 'cors';
 import helmet from 'helmet';
 import multer from 'multer';
@@ -24,6 +25,7 @@ const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 3000;
 const NGROK_TOKEN = process.env.NGROK_AUTH_TOKEN;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 // 4. Khởi tạo Express App và HTTP Server
 const app = express();
@@ -110,7 +112,7 @@ app.post('/upload', upload.array('files'), (req, res) => {
 io.on('connection', (socket) => {
   logger.info(`[Socket.IO] Người dùng đã kết nối: ${socket.id}`);
 
-  socket.emit('message', {
+  socket.emit('wellcome', {
     type: 'system',
     text: `Chào mừng client ${socket.id}!`
   });
@@ -138,6 +140,8 @@ httpServer.listen(PORT, async () => {
       addr: PORT,
       authtoken: NGROK_TOKEN || null
     });
+
+    updateNgrokURL(url); // Cập nhật URL Ngrok trong Utils
     logger.info(`*****************************************************************`);
     logger.info(`* Ngrok Tunnel đã sẵn sàng!`);
     logger.info(`* LINK CÔNG KHAI: ${url}`);
