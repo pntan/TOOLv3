@@ -1,696 +1,795 @@
 <style>
-:root{
-    /* GLOBAL CLASS */
-    --handle-success: rgb(69, 216, 125);
-    --gap-value: 1vh
+    :root {
+        /* --- CORE CONFIGURATION --- */
+        --tp-font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        --tp-radius-xl: 24px;
+        --tp-radius-md: 16px;
+        --tp-radius-sm: 12px;
 
-    /* TOAST */
-    --toast-success-background: rgba(111, 255, 155, .7);
-    --toast-info-background: rgba(80, 220, 245, .7);
-    --toast-error-background: rgba(245, 80, 80, .7);
-    --toast-warning-background: rgba(245, 229, 80, .7);
+        /* Default Theme (Neutral/Blue) */
+        --tp-primary: #3b82f6;
+        --tp-primary-rgb: 59, 130, 246;
+        --tp-secondary: #64748b;
+        --tp-accent: #60a5fa;
 
-    /* MAIN */
-    --main-background: rgba(223, 223, 223, .5);
-}
+        /* Glassmorphism Surface */
+        --tp-glass-bg: rgba(255, 255, 255, 0.75);
+        --tp-glass-border: rgba(255, 255, 255, 0.6);
+        --tp-glass-highlight: rgba(255, 255, 255, 0.4);
+        --tp-glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        --tp-blur: blur(16px) saturate(180%);
 
-.shopee-theme{
-    --main-background: rgba(238, 77, 45, 0.521);
-    --text-color: rgb(255, 255, 255);
-}
-</style>
-<style>
-    .tp-success-bg{ background: var(--handle-success); }
+        /* Text Colors */
+        --tp-text-main: #1e293b;
+        --tp-text-sub: #475569;
+        --tp-text-inv: #ffffff;
 
-    .tp-container input[type="text"]{
-        width: 100%;
-        height: 3vh;
-        text-indent: 3%;
-        border-radius: 20px;
-    }
-
-    .tp-container input[type="radio"]{ display: none; }
-
-    .tp-container button{
-        width: 100%;
-        padding: 0.5vh 0.5vw;
+        /* Animations */
+        --tp-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
+        /* Spring effect */
+        --tp-ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .tp-container button.excuse-button{
-        width: 100%;
-        height: 3vh;
-        line-height: auto;
-        background: var(--main-background);
-        color: var(--text-color);
-        border-radius: 15px;
+    /* --- PLATFORM THEMES (DYNAMIC OVERRIDES) --- */
+    /* Khi class cha có .shopee-theme */
+    .shopee-theme {
+        --tp-primary: #ee4d2d;
+        /* Shopee Orange */
+        --tp-primary-rgb: 238, 77, 45;
+        --tp-accent: #ff7350;
+        --tp-glass-shadow: 0 8px 32px 0 rgba(238, 77, 45, 0.15);
     }
 
-    .tp-container .flex{
-        width: 100%;
-        display: flex;
-        gap: var(--gap-value)
+    /* Khi class cha có .lazada-theme */
+    .lazada-theme {
+        --tp-primary: #0f146d;
+        /* Lazada Blue */
+        --tp-primary-rgb: 15, 20, 109;
+        --tp-accent: #f5008f;
+        /* Lazada Pink Accent */
+        --tp-glass-shadow: 0 8px 32px 0 rgba(15, 20, 109, 0.2);
     }
 
-    .tp-container .flex-row{
-        flex-direction: row;
+    /* Khi class cha có .tiktok-theme */
+    .tiktok-theme {
+        --tp-primary: #000000;
+        /* TikTok Black */
+        --tp-primary-rgb: 0, 0, 0;
+        --tp-accent: #25F4EE;
+        /* TikTok Teal */
+        --tp-secondary: #FE2C55;
+        /* TikTok Red */
+        --tp-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
     }
 
-    .tp-container .flex-column{
-        flex-direction: column;
+    /* --- DARK MODE OVERRIDES --- */
+    .tp-container .btn-theme.dark-mode.active~.content-screen,
+    .dark-mode-active {
+        --tp-glass-bg: rgba(17, 25, 40, 0.85);
+        --tp-glass-border: rgba(255, 255, 255, 0.1);
+        --tp-text-main: #f1f5f9;
+        --tp-text-sub: #94a3b8;
+        --tp-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
     }
 
-    .tp-container .flex-row{
-        gap: 1vw
-    }
-    
-    .tp-container .flex-column{
-        gap: 1vh
-    }
-    
-    .tp-container textarea{
-        width: 100%;
-        max-width: 100%;
-        height: auto;
-        min-height: 5vh;
-        max-height: 35vh;
-        border-radius: 10px;
-        padding: 1vh 1vw;
-        margin: 1vw 0;
-        background: whitesmoke;
+    /* --- RESET & LAYOUT --- */
+    .tp-container {
+        font-family: var(--tp-font);
+        box-sizing: border-box;
+        color: var(--tp-text-main);
     }
 
-    .tp-container input{
-        border-radius: 30px;
-        width: 100%;
-        height: 3vh;
-        text-indent: 3%;
-        background: whitesmoke
+    .tp-container * {
+        box-sizing: border-box;
+        outline: none;
+        user-select: none;
+        -webkit-font-smoothing: antialiased;
     }
 
-    .tp-container .dynamic-upload-container{
-        border: 2px dashed #ccc;
-        padding: 2rem;
-        border-radius: 8px;
-        margin-bottom: 2rem;
-        text-align: center;
-    }
-
-    .tp-container .dynamic-upload-container input[type="file"]{
-        display: none;
-    }
-
-    .tp-container .dynamic-upload-container .upload-btn{
-        background-color: #007bff;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        margin: 0 10px;
-        transition: background-color 0.2s;
-    }
-
-    .tp-container .dynamic-upload-container .upload-btn:hover{
-        background-color: #0056b3;
-    }
-
-    .tp-container .dynamic-upload-container .file-list{
-        margin-top: 1.5rem;
-        text-align: left;
-        height: auto;
-        max-height: 30vh; /* Giới hạn chiều cao của danh sách */
-        overflow: hidden;
-        overflow-y: scroll;
-    }
-
-    .tp-container .dynamic-upload-container .file-list .file-item{
-        display: flex; /* Dùng flexbox để căn chỉnh ảnh và text */
-        align-items: center;
-        padding: 10px;
-        border-bottom: 1px solid #eee;
-    }
-
-    .tp-container .dynamic-upload-container .file-list .file-item:last-child{
-        border-bottom: none;
-    }    
-
-    .tp-container .dynamic-upload-container .file-list .file-item .file-thumbnail {
-        width: 60px;
-        height: 60px;
-        border-radius: 5px;
-        object-fit: cover; /* Đảm bảo ảnh vừa vặn trong khung */
-        margin-right: 15px;
-        background-color: #f0f0f0; /* Màu nền cho placeholder */
-    }
-
-    .tp-container .dynamic-upload-container .file-list .file-item .file-info {
-        display: flex;
-        flex-direction: column; /* Hiển thị tên và kích thước trên 2 dòng */
-    }
-
-    .tp-container .dynamic-upload-container .file-list .file-item .file-name {
-        font-weight: bold;
-        font-size: 14px;
-    }
-
-    .tp-container .dynamic-upload-container .file-list .file-item .file-size {
-        font-size: 12px;
-        color: #666;
-    }
-    
-    .tp-container .dynamic-upload-container .drop-zone {
-        border: 2px dashed #ccc;
-        border-radius: 8px;
-        padding: 20px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.2s ease-in-out;
-        background-color: #f8f8f8;
-        color: #666;
-        font-size: 14px;
-        margin-bottom: 10px;
-    }
-
-    .tp-container .dynamic-upload-container .drop-zone:hover {
-        background-color: #f0f0f0;
-        border-color: #aaa;
-    }
-
-    .tp-container .dynamic-upload-container .drop-zone.highlight {
-        background-color: #e6f7ff;
-        border-color: #1890ff;
-    }
-    
-    /* CSS cho công tắc chuyển đổi chế độ */
-    .tp-container .dynamic-upload-container .upload-mode-switcher {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        margin-bottom: 10px;
-        padding: 8px;
-        border-radius: 5px;
-        background-color: #e9e9e9;
-    }
-    .tp-container .dynamic-upload-container .upload-mode-switcher input[type="checkbox"] {
-        margin: 0;
-        cursor: pointer;
-        transform: scale(1.2); /* Phóng to công tắc */
-    }
-    .tp-container .dynamic-upload-container .mode-text {
-        color: #333;
-        font-size: 14px;
-    }
-
-    /* Đảm bảo input type="file" gốc bị ẩn */
-    .tp-container .dynamic-upload-container #fileInput {
-        display: none !important;
-    }
-</style>
-<div class="tp-container tp-toast"></div>
-<style>
-    .tp-container.tp-toast {
-        width: fit-content;
-        height: auto;
+    /* --- MAIN SIDEBAR (FLOATING GLASS ISLAND) --- */
+    .tp-container.tp-main {
         position: fixed;
-        margin-left: 50%;
-        top: 5%;
-        transform: translate(-50%);
+        top: 2.5vh;
+        bottom: 2.5vh;
+        left: 0;
+        /* Responsive Width: Tối thiểu 360px, Ưu tiên 35vw, Tối đa 500px */
+        width: clamp(360px, 35vw, 550px);
+
+        background: var(--tp-glass-bg);
+        backdrop-filter: var(--tp-blur);
+        -webkit-backdrop-filter: var(--tp-blur);
+        border: 1px solid var(--tp-glass-border);
+        box-shadow: var(--tp-glass-shadow);
+        border-radius: 0 var(--tp-radius-xl) var(--tp-radius-xl) 0;
+
         z-index: 999999999;
         display: flex;
         flex-direction: column;
-        flex-wrap: wrap;
-        gap: 2vh
+        padding: 24px;
+
+        /* Animation Entrance */
+        transform: translateX(-120%);
+        transition: transform 0.6s var(--tp-ease), opacity 0.4s ease;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .tp-container.tp-main.active,
+    .tp-container.tp-main:hover {
+        transform: translateX(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* --- HEADER AREA --- */
+    .tp-container .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-shrink: 0;
+    }
+
+    .tp-container .header .time {
+        font-size: 1.1rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--tp-primary), var(--tp-accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 2px 4px rgba(var(--tp-primary-rgb), 0.2));
+    }
+
+    .tp-container .theme-switcher {
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 30px;
+        padding: 3px;
+        display: flex;
+        position: relative;
+        width: 64px;
+        height: 32px;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .tp-container .btn-theme {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 14px;
+        position: absolute;
+        top: 3px;
+        transition: 0.4s var(--tp-ease);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.5;
+    }
+
+    .tp-container .btn-theme.active {
+        background: #fff;
+        opacity: 1;
+        transform: scale(1.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .tp-container .btn-theme.light-mode {
+        left: 4px;
+    }
+
+    .tp-container .btn-theme.dark-mode {
+        right: 4px;
+    }
+
+    /* Correct active positions */
+    .tp-container .btn-theme.light-mode.active {
+        left: 4px;
+    }
+
+    .tp-container .btn-theme.dark-mode.active {
+        right: 4px;
+    }
+
+    /* --- NAVIGATION TABS --- */
+    .tp-container .list-screen {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 20px;
+        padding: 4px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: var(--tp-radius-md);
+    }
+
+    .tp-container .box-screen {
+        flex: 1;
+        text-align: center;
+        padding: 8px 0;
+        border-radius: var(--tp-radius-sm);
+        cursor: pointer;
+        transition: all 0.3s var(--tp-ease);
+        font-size: 1.2rem;
+        color: var(--tp-text-sub);
+    }
+
+    .tp-container .box-screen:hover {
+        background: rgba(255, 255, 255, 0.5);
+        transform: translateY(-2px);
+    }
+
+    .tp-container .box-screen.active {
+        background: #fff;
+        color: var(--tp-primary);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transform: translateY(0) scale(1.05);
+    }
+
+    /* --- CONTENT SCREENS --- */
+    .tp-container .content-screen {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: var(--tp-radius-md);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .tp-container .screen {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        padding: 15px;
+        overflow-y: auto;
+        transition: transform 0.5s var(--tp-ease-smooth), opacity 0.4s;
+        opacity: 0;
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Smooth Slide Animation */
+    .tp-container .screen.active {
+        transform: translateX(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .tp-container .screen:not(.active) {
+        transform: translateX(50px);
+    }
+
+    /* --- FUNCTION GRID --- */
+    .tp-container .list-function {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 12px;
+        width: 100%;
+        align-content: start;
+    }
+
+    .tp-container .list-function:not(.active) {
+        display: none;
+    }
+
+    .tp-container .box-function {
+        background: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: var(--tp-radius-sm);
+        padding: 15px 10px;
+        text-align: center;
+        cursor: pointer;
+        min-height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        transition: all 0.3s var(--tp-ease);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .tp-container .box-function:hover {
+        background: #fff;
+        transform: translateY(-5px);
+        border-color: var(--tp-primary);
+        color: var(--tp-primary);
+        box-shadow: 0 10px 20px rgba(var(--tp-primary-rgb), 0.15);
+    }
+
+    /* --- DETAIL LAYOUT (SLIDE-IN) --- */
+    .tp-container .layout-function {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(10px);
+        z-index: 20;
+        transform: translateX(100%);
+        transition: 0.4s var(--tp-ease-smooth);
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .tp-container .layout-function.active {
+        transform: translateX(0);
+    }
+
+    .tp-container .back {
+        align-self: flex-start;
+        margin-bottom: 20px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        background: rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+        font-weight: 600;
+        color: var(--tp-text-sub);
+        transition: 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .tp-container .back:before {
+        content: '❮';
+        font-size: 0.8em;
+    }
+
+    .tp-container .back:hover {
+        background: var(--tp-primary);
+        color: #fff;
+        padding-right: 20px;
+    }
+
+    .tp-container .box {
+        display: none;
+        animation: slideUp 0.4s var(--tp-ease);
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    .tp-container .box.show {
+        display: block;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* --- INPUTS & FORMS --- */
+    .tp-container input,
+    .tp-container textarea {
+        width: 100%;
+        padding: 12px 16px;
+        margin-bottom: 12px;
+        border: 2px solid transparent;
+        border-radius: var(--tp-radius-sm);
+        background: rgba(255, 255, 255, 0.7);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
+        font-size: 14px;
+        transition: 0.3s;
+        color: var(--tp-text-main);
+    }
+
+    .tp-container input:focus,
+    .tp-container textarea:focus {
+        background: #fff;
+        border-color: var(--tp-primary);
+        box-shadow: 0 0 0 4px rgba(var(--tp-primary-rgb), 0.1);
+    }
+
+    /* Platform Toggle Styled */
+    .tp-container .platform {
+        background: rgba(0, 0, 0, 0.04);
+        border-radius: var(--tp-radius-md);
+        padding: 4px;
+        position: relative;
+        display: flex;
+        margin-bottom: 20px !important;
+    }
+
+    .tp-container .platform label {
+        flex: 1;
+        text-align: center;
+        padding: 10px;
+        z-index: 2;
+        cursor: pointer;
+        transition: 0.3s;
+        color: var(--tp-text-sub);
+        font-weight: 700;
+    }
+
+    .tp-container .platform label.active {
+        color: #fff;
+    }
+
+    .tp-container .highlight_choice {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        bottom: 4px;
+        width: calc(50% - 4px);
+        background: var(--tp-primary);
+        border-radius: var(--tp-radius-sm);
+        transition: transform 0.4s var(--tp-ease);
+        box-shadow: 0 2px 10px rgba(var(--tp-primary-rgb), 0.3);
+    }
+
+    /* Override logic transform */
+    .tp-container .platform .shopee.active~.highlight_choice {
+        transform: translateX(0);
+    }
+
+    .tp-container .platform .tiktok.active~.highlight_choice {
+        transform: translateX(100%);
+        margin-left: 0;
+    }
+
+    /* Modern Action Button */
+    .tp-container button.action-btn {
+        width: 100%;
+        padding: 14px;
+        margin-top: 15px;
+        border: none;
+        background: linear-gradient(135deg, var(--tp-primary), var(--tp-accent));
+        color: #fff;
+        font-weight: 700;
+        font-size: 15px;
+        letter-spacing: 0.5px;
+        border-radius: var(--tp-radius-md);
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(var(--tp-primary-rgb), 0.3);
+        transition: all 0.3s var(--tp-ease);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .tp-container button.action-btn:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 10px 25px rgba(var(--tp-primary-rgb), 0.4);
+    }
+
+    .tp-container button.action-btn:active {
+        transform: scale(0.98);
+    }
+
+    /* Hiệu ứng Shine khi hover */
+    .tp-container button.action-btn:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: 0.5s;
+    }
+
+    .tp-container button.action-btn:hover:after {
+        left: 100%;
+    }
+
+    /* --- FILE UPLOAD AREA --- */
+    /* --- UPLOAD CONTAINER (Glassmorphism) --- */
+    .tp-container .dynamic-upload-container {
+        margin-top: 15px;
+    }
+
+    /* 1. SWITCHER (Segmented Control Style) */
+    .tp-container .upload-mode-switcher {
+        display: flex;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 12px;
+        padding: 4px;
+        position: relative;
+        margin-bottom: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .tp-container .upload-mode-switcher label {
+        flex: 1;
+        text-align: center;
+        padding: 8px 10px;
+        font-size: 13px;
+        cursor: pointer;
+        z-index: 2;
+        transition: color 0.3s var(--tp-ease);
+        color: var(--tp-text-sub);
+        font-weight: 600;
+        border-radius: 8px;
+    }
+
+    /* Hiệu ứng nền trượt cho Switcher */
+    .tp-container .upload-mode-switcher:before {
+        content: '';
+        position: absolute;
+        top: 4px;
+        bottom: 4px;
+        left: 4px;
+        width: calc(50% - 4px);
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s var(--tp-ease);
+        z-index: 1;
+    }
+
+    /* Khi checkbox checked -> Trượt nền sang phải */
+    .tp-container .upload-mode-switcher:has(#modeSwitch:checked):before {
+        transform: translateX(100%);
+    }
+
+    /* Active Text Color */
+    .tp-container .upload-mode-switcher label.active-mode {
+        color: var(--tp-primary);
+    }
+
+    /* 2. DROP ZONE (Dashed Glass) */
+    .tp-container .drop-zone {
+        border: 2px dashed rgba(148, 163, 184, 0.4);
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: var(--tp-radius-md);
+        padding: 40px 20px;
+        text-align: center;
+        transition: all 0.3s var(--tp-ease);
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .tp-container .drop-zone:hover,
+    .tp-container .drop-zone.highlight {
+        border-color: var(--tp-primary);
+        background: rgba(var(--tp-primary-rgb), 0.08);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(var(--tp-primary-rgb), 0.15);
+    }
+
+    .tp-container .drop-zone i {
+        font-size: 40px;
+        color: var(--tp-secondary);
+        transition: 0.3s;
+        margin-bottom: 5px;
+    }
+
+    .tp-container .drop-zone:hover i {
+        color: var(--tp-primary);
+        transform: scale(1.1);
+    }
+
+    .tp-container .drop-zone p {
+        margin: 0;
+        font-size: 14px;
+        color: var(--tp-text-main);
+        font-weight: 600;
+    }
+
+    /* 3. FILE LIST (Scrollable Glass List) */
+    .tp-container .file-list {
+        margin-top: 15px;
+        max-height: 250px;
+        overflow-y: auto;
+        padding-right: 5px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .tp-container .file-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: var(--tp-radius-sm);
+        transition: 0.2s var(--tp-ease);
+        animation: fadeInItem 0.3s ease forwards;
+    }
+
+    @keyframes fadeInItem {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .tp-container .file-item:hover {
+        background: #fff;
+        border-color: var(--tp-primary);
+        transform: translateX(4px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .tp-container .file-thumbnail {
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+        margin-right: 12px;
+        background-color: #f1f5f9;
+        background-size: cover;
+        background-position: center;
+        flex-shrink: 0;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .tp-container .file-info {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .tp-container .file-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--tp-text-main);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .tp-container .file-size {
+        font-size: 11px;
+        color: var(--tp-text-sub);
+        margin-top: 2px;
+    }
+
+    /* --- TOAST NOTIFICATIONS --- */
+    .tp-container.tp-toast {
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+        max-width: 90vw;
+        z-index: 9999999999;
     }
 
     .tp-container.tp-toast .toast {
-        padding: 1vh 1vw;
-        background: #fff;
-        border-radius: 10px;
-        color: #fff;
-        text-shadow: 0 0 1px #121212, 0 0 1px #121212, 0 0 1px #121212, 0 0 1px #121212, 0 0 1px #121212
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+        padding: 12px 24px;
+        border-radius: 50px;
+        margin-bottom: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        color: var(--tp-text-main);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transform: translateY(-20px) scale(0.9);
+        opacity: 0;
+        transition: 0.4s var(--tp-ease);
     }
 
-    .tp-container.tp-toast .toast.info {
-        background: var(--toast-info-background);
+    .tp-container.tp-toast .toast.show {
+        transform: translateY(0) scale(1);
+        opacity: 1;
     }
 
-    .tp-container.tp-toast .toast.success {
-        background: var(--toast-success-background);
+    .tp-container.tp-toast .toast:before {
+        content: '';
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: block;
     }
 
-    .tp-container.tp-toast .toast.error {
-        background: var(--toast-error-background);
+    .tp-container.tp-toast .toast.success:before {
+        background: #10b981;
+        box-shadow: 0 0 10px #10b981;
     }
 
-    .tp-container.tp-toast .toast.warning {
-        background: var(--toast-warning-background);
+    .tp-container.tp-toast .toast.error:before {
+        background: #ef4444;
+        box-shadow: 0 0 10px #ef4444;
+    }
+
+    .tp-container.tp-toast .toast.warning:before {
+        background: #f59e0b;
+        box-shadow: 0 0 10px #f59e0b;
+    }
+
+    .tp-container.tp-toast .toast.info:before {
+        background: var(--tp-primary);
+        box-shadow: 0 0 10px var(--tp-primary);
     }
 </style>
+
+<div class="tp-container tp-toast"></div>
+
 <div class="tp-container tp-main">
     <div class="header">
         <div class="time">00:00:00</div>
-				<div class="help">Hướng Dẫn</div>
-        <div class="theme-switcher"><button class="btn-theme light-mode active" data-theme="light">☀️</button> <button class="btn-theme dark-mode" data-theme="dark">🌙</button></div>
+        <div class="help">Hướng Dẫn</div>
+        <div class="theme-switcher">
+            <button class="btn-theme light-mode active" data-theme="light">☀️</button>
+            <button class="btn-theme dark-mode" data-theme="dark">🌙</button>
+        </div>
     </div>
+
     <div class="list-screen">
-        <div class="box-screen setting" data-screen="setting">
-            <p>⚙️</p>
-        </div>
-        <div class="box-screen main" data-screen="main">
-            <p>🏡</p>
-        </div>
-        <div class="box-screen online" data-screen="online">
-            <p>🖥️</p>
-        </div>
+        <div class="box-screen setting" data-screen="setting">⚙️</div>
+        <div class="box-screen main" data-screen="main">🏠</div>
+        <div class="box-screen online" data-screen="online">📡</div>
     </div>
+
     <div class="content-screen">
         <div class="screen screen-setting">
-            <p>Setting Screen</p>
+            <div class="box custom-name show">
+                <input type="text" class="input-custom-name" placeholder="Nhập tên gọi..." />
+            </div>
         </div>
+
         <div class="screen screen-main active">
             <div class="list-function active">
-                <div class="box-function">
-                    <p>Function 1</p>
-                </div>
-                <div class="box-function">
-                    <p>Function 2</p>
-                </div>
-                <div class="box-function">
-                    <p>Function 3</p>
-                </div>
-                <div class="box-function">
-                    <p>Function 4</p>
-                </div>
-                <div class="box-function">
-                    <p>Function 5</p>
-                </div>
-                <div class="box-function">
-                    <p>Function 6</p>
-                </div>
-                <div class="box-function">
-                    <p>Function 7</p>
-                </div>
             </div>
-            <div class="layout-function">
-                <div class="back">Trở Lại</div>
-                <div class="box flash_sale" id="flash_sale_layout">
-                    <div class="program_id">
-                        <input type="text" class="product_url" placeholder="Đường dẫn / ID của chương trình cần sao chép" alt="Đường dẫn / ID của chương trình cần sao chép"/>
 
-                        <div class="platform flex flex-row" style="--gap-value: 2vw">
+            <div class="layout-function">
+                <div class="back">Quay lại Menu</div>
+
+                <div class="box flash_sale" id="flash_sale_layout">
+                    <h3 style="margin-bottom: 20px; text-align: center; color: var(--tp-primary)">Thiết Lập Flash Sale</h3>
+                    <div class="program_id" style="margin-bottom: 15px;">
+                        <label style="font-size: 0.9em; color: var(--tp-text-sub); display: block; margin-bottom: 5px;">Link Chương Trình</label>
+                        <input type="text" class="product_url" placeholder="Paste link hoặc ID vào đây..." />
+
+                        <div class="platform flex flex-row">
                             <label class="shopee" for="shopee">SHOPEE</label>
                             <label class="tiktok" for="tiktok">TIKTOK</label>
-
                             <div class="highlight_choice"></div>
-
                         </div>
                     </div>
 
                     <div class="input_prompt">
-                        <div class="prompt_value shopee_prompt flex flex-column" style="--gap-value: 2vh;">
-                            <input type="number" class="value-count" placeholder="Số lượng khung cần chạy" />
-                            <textarea class="value-flashsale" placeholder="Tên sản phẩm và số lượng cần chạy"></textarea>
+                        <div class="prompt_value shopee_prompt flex flex-column">
+                            <input type="number" class="value-count" placeholder="Số lượng khung (VD: 5)" />
+                            <textarea class="value-flashsale" placeholder="Nhập tên sản phẩm & số lượng..."></textarea>
                         </div>
                         <div class="prompt_value tiktok_prompt">
-                            <textarea placeholder="Thời gian cần chạy" class="value-time"></textarea>
+                            <textarea placeholder="Nhập thời gian chạy..." class="value-time"></textarea>
                         </div>
                     </div>
 
-                    <button class="excuse-button action-btn" data-action="flash_sale">Kích Hoạt</button>
+                    <button class="excuse-button action-btn" data-action="flash_sale">Kích Hoạt Flash Sale 🚀</button>
                 </div>
 
                 <div class="box doi_hinh_phan_loai show" id="doi_hinh_phan_loai_layout">
+                    <h3 style="margin-bottom: 20px; text-align: center; color: var(--tp-primary)">Đổi Hình Phân Loại</h3>
                     <div class="product_info">
-                        <textarea type="text" class="product_url" placeholder="ID sản phẩm cần đổi hình phân loại" alt="ID sản phẩm cần đổi hình phân loại"></textarea>/>
+                        <label style="font-size: 0.9em; color: var(--tp-text-sub); display: block; margin-bottom: 5px;">Danh sách ID Sản Phẩm</label>
+                        <textarea type="text" class="product_url" placeholder="Mỗi dòng 1 ID sản phẩm..."></textarea>
                     </div>
 
                     <div class="input_prompt">
                         <div class="dynamic-upload-container"></div>
                     </div>
 
-                    <button class="excuse-button action-btn" data-action="doi_hinh_phan_loai">Kích Hoạt</button>
+                    <button class="excuse-button action-btn" data-action="doi_hinh_phan_loai">Bắt Đầu Xử Lý ⚡</button>
                 </div>
             </div>
         </div>
+
         <div class="screen screen-online">
-            <p>Online Screen</p>
+            <h3 style="margin-bottom: 15px; color: var(--tp-accent)">Kết Nối Server</h3>
+            <p style="color: var(--tp-text-sub)">Trạng thái Socket.IO...</p>
         </div>
     </div>
 </div>
-
-<style>
-    .tp-container {
-        padding: 0;
-        margin: 0;
-        border: none;
-        box-sizing: border-box
-    }
-
-    .tp-container * {
-        padding: 0;
-        margin: 0;
-        border: 0;
-        box-sizing: border-box;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-weight: 700;
-        user-select: none
-    }
-
-    .tp-container ::-webkit-scrollbar {
-        height: 6px;
-        width: 6px
-    }
-
-    .tp-container ::-webkit-scrollbar-track {
-        border-radius: 20px;
-        background-color: #000
-    }
-
-    .tp-container ::-webkit-scrollbar-track:hover {
-        background-color: #5a5e5f
-    }
-
-    .tp-container ::-webkit-scrollbar-track:active {
-        background-color: #ff9e9e
-    }
-
-    .tp-container ::-webkit-scrollbar-thumb {
-        border-radius: 20px;
-        background-color: #eaeaea
-    }
-
-    .tp-container ::-webkit-scrollbar-thumb:hover {
-        background-color: #a36f6f
-    }
-
-    .tp-container ::-webkit-scrollbar-thumb:active {
-        background-color: #888bce
-    }
-
-    .tp-container .action-btn {
-        margin-top: 10px;
-        padding: 5px 10px;
-        background: lightgreen;
-        border-radius: 5px;
-        cursor: pointer;
-        color: #121212
-    }
-
-    .tp-container.tp-main {
-        top: 0;
-        position: fixed;
-        background: var(--main-background);
-        backdrop-filter: blur(10px);
-        width: 0;
-        padding: 0;
-        height: 109%;
-        color: var(--text-color);
-        z-index: 999999998;
-        transition: .5s
-    }
-
-    .tp-container.tp-main.active,
-    .tp-container.tp-main:hover {
-        width: 60vw;
-        height: 100%;
-        padding: 2vh 2vw
-    }
-
-    .tp-container.tp-main .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        height: 3vh;
-        color: #000;
-        overflow: hidden
-    }
-
-    .tp-container.tp-main .header .time {
-        font-size: 1.5vh;
-        letter-spacing: 1rcap
-    }
-
-    .tp-container.tp-main .header .help{
-        color: rgb(167, 157, 255);
-        cursor: help;
-    }
-
-    .tp-container.tp-main .header .theme-switcher {
-        position: relative;
-        width: auto;
-        height: 100%;
-        aspect-ratio: 1/1
-    }
-
-    .tp-container.tp-main .header .theme-switcher .btn-theme {
-        position: absolute;
-        height: 100%;
-        border-radius: 50%;
-        font-size: 2vh;
-        cursor: pointer;
-        background: 0 0;
-        transition: .5s
-    }
-
-    .tp-container.tp-main .header .theme-switcher .btn-theme.active {
-        top: 0 !important;
-        left: 0
-    }
-
-    .tp-container.tp-main .header .theme-switcher .btn-theme.light-mode {
-        top: -100%;
-        left: 0
-    }
-
-    .tp-container.tp-main .header .theme-switcher .btn-theme.dark-mode {
-        top: 100%;
-        left: 0
-    }
-
-    .tp-container.tp-main .list-screen {
-        margin-top: 2vh;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-        width: 100%;
-        height: 4vh;
-        overflow-y: auto
-    }
-
-    .tp-container.tp-main .list-screen .box-screen {
-        width: 100%;
-        height: 4vh;
-        background: rgba(0, 0, 0, .1);
-        backdrop-filter: blur(5px);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 2vh;
-        color: #000;
-        cursor: pointer
-    }
-
-    .tp-container.tp-main .list-screen .box-screen.active {
-        background: rgba(0, 0, 0, .3);
-        backdrop-filter: blur(10px)
-    }
-
-    .tp-container.tp-main .list-screen .box-screen:hover p {
-        transform: scale(1.3);
-        transition: .3s
-    }
-
-    .tp-container.tp-main .list-screen .box-screen:first-child {
-        border-top-left-radius: 20px;
-        border-bottom-left-radius: 20px
-    }
-
-    .tp-container.tp-main .list-screen .box-screen:last-child {
-        border-top-right-radius: 20px;
-        border-bottom-right-radius: 20px
-    }
-
-    .tp-container.tp-main .content-screen {
-        margin-top: 2vh;
-        width: 100%;
-        height: calc(100% - 15vh);
-        background: rgba(0, 0, 0, .1);
-        backdrop-filter: blur(5px);
-        border-radius: 20px;
-        overflow: hidden;
-        position: relative
-    }
-
-    .tp-container.tp-main .content-screen .screen {
-        width: 100%;
-        height: 100%;
-        color: #000;
-        transition: .5s;
-        position: absolute;
-        padding: 2vh 2vw
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-setting {
-        top: 0;
-        left: -100%
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-main {
-        top: 100%;
-        width: 100%;
-        position: absolute;
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-main .list-function {
-        width: 0;
-        height: 100%;
-        margin: 0 auto;
-        overflow-y: scroll;
-        overflow: hidden;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        align-items: flex-start;
-        align-content: flex-start;
-        gap: 5vw;
-        transition: .5s;
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-main .list-function.active {
-        width: 100%
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-main .list-function .box-function {
-        width: auto;
-        height: 4vh;
-        line-height: auto;
-        background: #fff;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        border-radius: 10px;
-        padding: 2vh 2vw;
-        word-break: keep-all
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-main .layout-function {
-        position: absolute;
-        top: 1vh;
-        width: 93%;
-        height: 0;
-        overflow: hidden;
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-main .layout-function.active {
-        height: 100%
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .back {
-        width: 100%;
-        height: 4vh;
-        line-height: 4vh;
-        font-weight: bolder;
-        cursor: pointer;
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box {
-        width: 0;
-        height: 0;
-        opacity: 0;
-        transition: .5s;
-        background: rgba(0, 0, 0, .1);
-        backdrop-filter: blur(5px);
-        border-radius: 10px;
-        padding: 10px;
-        margin-bottom: 10px;
-        position: absolute;
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box.show {
-        width: 100%;
-        height: auto;
-        opacity: 1
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform{
-        width: 100%;
-        height: 4vh;
-        display: flex;
-        align-items: center;
-        margin: 1vh 0;
-        position: relative;
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .highlight_choice{
-        width: 50%;
-        height: 4vh;
-        background: var(--main-background);
-        position: absolute;
-        z-index: -1;
-        transition: 0.5s;
-        transform: translate(-150%);
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .shopee.active{
-        color: var(--text-color);
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .shopee.active ~ .highlight_choice{
-        transform: translate(0);
-        border-top-left-radius: 20px;
-        border-bottom-left-radius: 20px;
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .tiktok.active{
-        color: var(--text-color);
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .tiktok.active ~ .highlight_choice{
-        transform: translate(100%);
-        border-top-right-radius: 20px;
-        border-bottom-right-radius: 20px;
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform label{
-        width: 100%;
-        text-align: center;
-        font-size: 1.2em;
-        padding: 0.5vh 0;
-    }
-    
-    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform label:nth-last-child(2){
-        border-top-left-radius: 20px;
-        border-bottom-left-radius: 20px;
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform label:nth-last-child(1){
-        border-top-right-radius: 20px;
-        border-bottom-right-radius: 20px;
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .input_prompt .prompt_value{
-        opacity: 0;
-        display: none;
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .input_prompt .prompt_value.active{
-        opacity: 1;
-        display: block;
-    }
-
-    .tp-container.tp-main .content-screen .screen.screen-online {
-        top: 0;
-        left: 100%
-    }
-
-    .tp-container.tp-main .content-screen .screen.active {
-        top: 0;
-        left: 0
-    }
-</style>

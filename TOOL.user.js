@@ -16,6 +16,8 @@
   // @require      https://code.jquery.com/ui/1.13.2/jquery-ui.min.js
   // @require      https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4
   // @require      https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js
+  // @require      https://cdn.socket.io/4.8.1/socket.io.min.js
+
   // ==/UserScript==
   (function() {
     'use strict';
@@ -23,10 +25,11 @@
     const VERSION = '0.0.1';
     const X_LIMIT = 3;
 
+    var socket = null;
     const API_GOOGLE = "AIzaSyCAOYF7rlgN3icGwvsEvq85loGuG2P3yW8";
 
     // --- ĐÃ CẬP NHẬT: Thêm nút action-btn vào gia_duoi_layout ---
-    const HTML_UI = `<style>:root{--handle-success:rgb(69, 216, 125);--gap-value:1vh --toast-success-background: rgba(111, 255, 155, .7);--toast-info-background:rgba(80, 220, 245, .7);--toast-error-background:rgba(245, 80, 80, .7);--toast-warning-background:rgba(245, 229, 80, .7);--main-background:rgba(223, 223, 223, .5)}.shopee-theme{--main-background:rgba(238, 77, 45, 0.521);--text-color:rgb(255, 255, 255)}</style><style>.tp-success-bg{background:var(--handle-success)}.tp-container input[type=text]{width:100%;height:3vh;text-indent:3%;border-radius:20px}.tp-container input[type=radio]{display:none}.tp-container button{width:100%;padding:.5vh .5vw}.tp-container button.excuse-button{width:100%;height:3vh;line-height:auto;background:var(--main-background);color:var(--text-color);border-radius:15px}.tp-container .flex{width:100%;display:flex;gap:var(--gap-value)}.tp-container .flex-row{flex-direction:row}.tp-container .flex-column{flex-direction:column}.tp-container .flex-row{gap:1vw}.tp-container .flex-column{gap:1vh}.tp-container textarea{width:100%;max-width:100%;height:auto;min-height:5vh;max-height:35vh;border-radius:10px;padding:1vh 1vw;margin:1vw 0;background:#f5f5f5}.tp-container input{border-radius:30px;width:100%;height:3vh;text-indent:3%;background:#f5f5f5}.tp-container .dynamic-upload-container{border:2px dashed #ccc;padding:2rem;border-radius:8px;margin-bottom:2rem;text-align:center}.tp-container .dynamic-upload-container input[type=file]{display:none}.tp-container .dynamic-upload-container .upload-btn{background-color:#007bff;color:#fff;padding:10px 15px;border:none;border-radius:5px;cursor:pointer;font-size:16px;margin:0 10px;transition:background-color .2s}.tp-container .dynamic-upload-container .upload-btn:hover{background-color:#0056b3}.tp-container .dynamic-upload-container .file-list{margin-top:1.5rem;text-align:left;height:auto;max-height:30vh;overflow:hidden;overflow-y:scroll}.tp-container .dynamic-upload-container .file-list .file-item{display:flex;align-items:center;padding:10px;border-bottom:1px solid #eee}.tp-container .dynamic-upload-container .file-list .file-item:last-child{border-bottom:none}.tp-container .dynamic-upload-container .file-list .file-item .file-thumbnail{width:60px;height:60px;border-radius:5px;object-fit:cover;margin-right:15px;background-color:#f0f0f0}.tp-container .dynamic-upload-container .file-list .file-item .file-info{display:flex;flex-direction:column}.tp-container .dynamic-upload-container .file-list .file-item .file-name{font-weight:700;font-size:14px}.tp-container .dynamic-upload-container .file-list .file-item .file-size{font-size:12px;color:#666}.tp-container .dynamic-upload-container .drop-zone{border:2px dashed #ccc;border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:all .2s ease-in-out;background-color:#f8f8f8;color:#666;font-size:14px;margin-bottom:10px}.tp-container .dynamic-upload-container .drop-zone:hover{background-color:#f0f0f0;border-color:#aaa}.tp-container .dynamic-upload-container .drop-zone.highlight{background-color:#e6f7ff;border-color:#1890ff}.tp-container .dynamic-upload-container .upload-mode-switcher{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;padding:8px;border-radius:5px;background-color:#e9e9e9}.tp-container .dynamic-upload-container .upload-mode-switcher input[type=checkbox]{margin:0;cursor:pointer;transform:scale(1.2)}.tp-container .dynamic-upload-container .mode-text{color:#333;font-size:14px}.tp-container .dynamic-upload-container #fileInput{display:none!important}</style><div class="tp-container tp-toast"></div><style>.tp-container.tp-toast{width:fit-content;height:auto;position:fixed;margin-left:50%;top:5%;transform:translate(-50%);z-index:999999999;display:flex;flex-direction:column;flex-wrap:wrap;gap:2vh}.tp-container.tp-toast .toast{padding:1vh 1vw;background:#fff;border-radius:10px;color:#fff;text-shadow:0 0 1px #121212,0 0 1px #121212,0 0 1px #121212,0 0 1px #121212,0 0 1px #121212}.tp-container.tp-toast .toast.info{background:var(--toast-info-background)}.tp-container.tp-toast .toast.success{background:var(--toast-success-background)}.tp-container.tp-toast .toast.error{background:var(--toast-error-background)}.tp-container.tp-toast .toast.warning{background:var(--toast-warning-background)}</style><div class="tp-container tp-main"><div class="header"><div class="time">00:00:00</div><div class="help">Hướng Dẫn</div><div class="theme-switcher"><button class="btn-theme light-mode active"data-theme="light">☀️</button> <button class="btn-theme dark-mode"data-theme="dark">🌙</button></div></div><div class="list-screen"><div class="box-screen setting"data-screen="setting"><p>⚙️</p></div><div class="box-screen main"data-screen="main"><p>🏡</p></div><div class="box-screen online"data-screen="online"><p>🖥️</p></div></div><div class="content-screen"><div class="screen screen-setting"><p>Setting Screen</p></div><div class="screen screen-main active"><div class="list-function active"><div class="box-function"><p>Function 1</p></div><div class="box-function"><p>Function 2</p></div><div class="box-function"><p>Function 3</p></div><div class="box-function"><p>Function 4</p></div><div class="box-function"><p>Function 5</p></div><div class="box-function"><p>Function 6</p></div><div class="box-function"><p>Function 7</p></div></div><div class="layout-function"><div class="back">Trở Lại</div><div class="box flash_sale"id="flash_sale_layout"><div class="program_id"><input class="product_url"placeholder="Đường dẫn / ID của chương trình cần sao chép"alt="Đường dẫn / ID của chương trình cần sao chép"><div class="platform flex flex-row"style="--gap-value:2vw"><label class="shopee"for="shopee">SHOPEE</label> <label class="tiktok"for="tiktok">TIKTOK</label><div class="highlight_choice"></div></div></div><div class="input_prompt"><div class="prompt_value shopee_prompt flex flex-column"style="--gap-value:2vh"><input type="number"class="value-count"placeholder="Số lượng khung cần chạy"> <textarea class="value-flashsale"placeholder="Tên sản phẩm và số lượng cần chạy"></textarea></div><div class="prompt_value tiktok_prompt"><textarea placeholder="Thời gian cần chạy"class="value-time"></textarea></div></div><button class="excuse-button action-btn"data-action="flash_sale">Kích Hoạt</button></div><div class="box doi_hinh_phan_loai show"id="doi_hinh_phan_loai_layout"><div class="product_info"><textarea type="text"class="product_url"placeholder="ID sản phẩm cần đổi hình phân loại"alt="ID sản phẩm cần đổi hình phân loại"></textarea>/></div><div class="input_prompt"><div class="dynamic-upload-container"></div></div><button class="excuse-button action-btn"data-action="doi_hinh_phan_loai">Kích Hoạt</button></div></div></div><div class="screen screen-online"><p>Online Screen</p></div></div></div><style>.tp-container{padding:0;margin:0;border:none;box-sizing:border-box}.tp-container *{padding:0;margin:0;border:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;font-weight:700;user-select:none}.tp-container ::-webkit-scrollbar{height:6px;width:6px}.tp-container ::-webkit-scrollbar-track{border-radius:20px;background-color:#000}.tp-container ::-webkit-scrollbar-track:hover{background-color:#5a5e5f}.tp-container ::-webkit-scrollbar-track:active{background-color:#ff9e9e}.tp-container ::-webkit-scrollbar-thumb{border-radius:20px;background-color:#eaeaea}.tp-container ::-webkit-scrollbar-thumb:hover{background-color:#a36f6f}.tp-container ::-webkit-scrollbar-thumb:active{background-color:#888bce}.tp-container .action-btn{margin-top:10px;padding:5px 10px;background:#90ee90;border-radius:5px;cursor:pointer;color:#121212}.tp-container.tp-main{top:0;position:fixed;background:var(--main-background);backdrop-filter:blur(10px);width:0;padding:0;height:109%;color:var(--text-color);z-index:999999998;transition:.5s}.tp-container.tp-main.active,.tp-container.tp-main:hover{width:60vw;height:100%;padding:2vh 2vw}.tp-container.tp-main .header{display:flex;justify-content:space-between;align-items:center;width:100%;height:3vh;color:#000;overflow:hidden}.tp-container.tp-main .header .time{font-size:1.5vh;letter-spacing:1rcap}.tp-container.tp-main .header .help{color:#a79dff;cursor:help}.tp-container.tp-main .header .theme-switcher{position:relative;width:auto;height:100%;aspect-ratio:1/1}.tp-container.tp-main .header .theme-switcher .btn-theme{position:absolute;height:100%;border-radius:50%;font-size:2vh;cursor:pointer;background:0 0;transition:.5s}.tp-container.tp-main .header .theme-switcher .btn-theme.active{top:0!important;left:0}.tp-container.tp-main .header .theme-switcher .btn-theme.light-mode{top:-100%;left:0}.tp-container.tp-main .header .theme-switcher .btn-theme.dark-mode{top:100%;left:0}.tp-container.tp-main .list-screen{margin-top:2vh;display:flex;flex-direction:row;justify-content:flex-start;align-items:center;width:100%;height:4vh;overflow-y:auto}.tp-container.tp-main .list-screen .box-screen{width:100%;height:4vh;background:rgba(0,0,0,.1);backdrop-filter:blur(5px);display:flex;justify-content:center;align-items:center;font-size:2vh;color:#000;cursor:pointer}.tp-container.tp-main .list-screen .box-screen.active{background:rgba(0,0,0,.3);backdrop-filter:blur(10px)}.tp-container.tp-main .list-screen .box-screen:hover p{transform:scale(1.3);transition:.3s}.tp-container.tp-main .list-screen .box-screen:first-child{border-top-left-radius:20px;border-bottom-left-radius:20px}.tp-container.tp-main .list-screen .box-screen:last-child{border-top-right-radius:20px;border-bottom-right-radius:20px}.tp-container.tp-main .content-screen{margin-top:2vh;width:100%;height:calc(100% - 15vh);background:rgba(0,0,0,.1);backdrop-filter:blur(5px);border-radius:20px;overflow:hidden;position:relative}.tp-container.tp-main .content-screen .screen{width:100%;height:100%;color:#000;transition:.5s;position:absolute;padding:2vh 2vw}.tp-container.tp-main .content-screen .screen.screen-setting{top:0;left:-100%}.tp-container.tp-main .content-screen .screen.screen-main{top:100%;width:100%;position:absolute}.tp-container.tp-main .content-screen .screen.screen-main .list-function{width:0;height:100%;margin:0 auto;overflow-y:scroll;overflow:hidden;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:space-around;align-items:flex-start;align-content:flex-start;gap:5vw;transition:.5s}.tp-container.tp-main .content-screen .screen.screen-main .list-function.active{width:100%}.tp-container.tp-main .content-screen .screen.screen-main .list-function .box-function{width:auto;height:4vh;line-height:auto;background:#fff;display:flex;flex-direction:row;justify-content:center;align-items:center;border-radius:10px;padding:2vh 2vw;word-break:keep-all}.tp-container.tp-main .content-screen .screen.screen-main .layout-function{position:absolute;top:1vh;width:93%;height:0;overflow:hidden}.tp-container.tp-main .content-screen .screen.screen-main .layout-function.active{height:100%}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .back{width:100%;height:4vh;line-height:4vh;font-weight:bolder;cursor:pointer}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box{width:0;height:0;opacity:0;transition:.5s;background:rgba(0,0,0,.1);backdrop-filter:blur(5px);border-radius:10px;padding:10px;margin-bottom:10px;position:absolute}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box.show{width:100%;height:auto;opacity:1}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform{width:100%;height:4vh;display:flex;align-items:center;margin:1vh 0;position:relative}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .highlight_choice{width:50%;height:4vh;background:var(--main-background);position:absolute;z-index:-1;transition:.5s;transform:translate(-150%)}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .shopee.active{color:var(--text-color)}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .shopee.active~.highlight_choice{transform:translate(0);border-top-left-radius:20px;border-bottom-left-radius:20px}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .tiktok.active{color:var(--text-color)}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform .tiktok.active~.highlight_choice{transform:translate(100%);border-top-right-radius:20px;border-bottom-right-radius:20px}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform label{width:100%;text-align:center;font-size:1.2em;padding:.5vh 0}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform label:nth-last-child(2){border-top-left-radius:20px;border-bottom-left-radius:20px}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .platform label:nth-last-child(1){border-top-right-radius:20px;border-bottom-right-radius:20px}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .input_prompt .prompt_value{opacity:0;display:none}.tp-container.tp-main .content-screen .screen.screen-main .layout-function .box#flash_sale_layout .input_prompt .prompt_value.active{opacity:1;display:block}.tp-container.tp-main .content-screen .screen.screen-online{top:0;left:100%}.tp-container.tp-main .content-screen .screen.active{top:0;left:0}</style>`;
+    const HTML_UI = `<style>:root{--tp-font:'Segoe UI',system-ui,-apple-system,sans-serif;--tp-radius-xl:24px;--tp-radius-md:16px;--tp-radius-sm:12px;--tp-primary:#3b82f6;--tp-primary-rgb:59,130,246;--tp-secondary:#64748b;--tp-accent:#60a5fa;--tp-glass-bg:rgba(255, 255, 255, 0.75);--tp-glass-border:rgba(255, 255, 255, 0.6);--tp-glass-highlight:rgba(255, 255, 255, 0.4);--tp-glass-shadow:0 8px 32px 0 rgba(31, 38, 135, 0.15);--tp-blur:blur(16px) saturate(180%);--tp-text-main:#1e293b;--tp-text-sub:#475569;--tp-text-inv:#ffffff;--tp-ease:cubic-bezier(0.34, 1.56, 0.64, 1);--tp-ease-smooth:cubic-bezier(0.4, 0, 0.2, 1)}.shopee-theme{--tp-primary:#ee4d2d;--tp-primary-rgb:238,77,45;--tp-accent:#ff7350;--tp-glass-shadow:0 8px 32px 0 rgba(238, 77, 45, 0.15)}.lazada-theme{--tp-primary:#0f146d;--tp-primary-rgb:15,20,109;--tp-accent:#f5008f;--tp-glass-shadow:0 8px 32px 0 rgba(15, 20, 109, 0.2)}.tiktok-theme{--tp-primary:#000000;--tp-primary-rgb:0,0,0;--tp-accent:#25F4EE;--tp-secondary:#FE2C55;--tp-glass-shadow:0 8px 32px 0 rgba(0, 0, 0, 0.2)}.dark-mode-active,.tp-container .btn-theme.dark-mode.active~.content-screen{--tp-glass-bg:rgba(17, 25, 40, 0.85);--tp-glass-border:rgba(255, 255, 255, 0.1);--tp-text-main:#f1f5f9;--tp-text-sub:#94a3b8;--tp-glass-shadow:0 8px 32px 0 rgba(0, 0, 0, 0.5)}.tp-container{font-family:var(--tp-font);box-sizing:border-box;color:var(--tp-text-main)}.tp-container *{box-sizing:border-box;outline:0;user-select:none;-webkit-font-smoothing:antialiased}.tp-container.tp-main{position:fixed;top:2.5vh;bottom:2.5vh;left:0;width:clamp(360px,35vw,550px);background:var(--tp-glass-bg);backdrop-filter:var(--tp-blur);-webkit-backdrop-filter:var(--tp-blur);border:1px solid var(--tp-glass-border);box-shadow:var(--tp-glass-shadow);border-radius:0 var(--tp-radius-xl) var(--tp-radius-xl) 0;z-index:999999999;display:flex;flex-direction:column;padding:24px;transform:translateX(-120%);transition:transform .6s var(--tp-ease),opacity .4s ease;opacity:0;pointer-events:none}.tp-container.tp-main.active,.tp-container.tp-main:hover{transform:translateX(0);opacity:1;pointer-events:auto}.tp-container .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-shrink:0}.tp-container .header .time{font-size:1.1rem;font-weight:800;background:linear-gradient(135deg,var(--tp-primary),var(--tp-accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 4px rgba(var(--tp-primary-rgb), .2))}.tp-container .theme-switcher{background:rgba(0,0,0,.05);border-radius:30px;padding:3px;display:flex;position:relative;width:64px;height:32px;box-shadow:inset 0 2px 4px rgba(0,0,0,.05)}.tp-container .btn-theme{width:26px;height:26px;border-radius:50%;border:none;background:0 0;cursor:pointer;font-size:14px;position:absolute;top:3px;transition:.4s var(--tp-ease);display:flex;align-items:center;justify-content:center;opacity:.5}.tp-container .btn-theme.active{background:#fff;opacity:1;transform:scale(1.1);box-shadow:0 2px 8px rgba(0,0,0,.15)}.tp-container .btn-theme.light-mode{left:4px}.tp-container .btn-theme.dark-mode{right:4px}.tp-container .btn-theme.light-mode.active{left:4px}.tp-container .btn-theme.dark-mode.active{right:4px}.tp-container .list-screen{display:flex;gap:8px;margin-bottom:20px;padding:4px;background:rgba(255,255,255,.3);border-radius:var(--tp-radius-md)}.tp-container .box-screen{flex:1;text-align:center;padding:8px 0;border-radius:var(--tp-radius-sm);cursor:pointer;transition:all .3s var(--tp-ease);font-size:1.2rem;color:var(--tp-text-sub)}.tp-container .box-screen:hover{background:rgba(255,255,255,.5);transform:translateY(-2px)}.tp-container .box-screen.active{background:#fff;color:var(--tp-primary);box-shadow:0 4px 12px rgba(0,0,0,.05);transform:translateY(0) scale(1.05)}.tp-container .content-screen{flex:1;position:relative;overflow:hidden;background:rgba(255,255,255,.4);border-radius:var(--tp-radius-md);border:1px solid rgba(255,255,255,.3)}.tp-container .screen{position:absolute;width:100%;height:100%;padding:15px;overflow-y:auto;transition:transform .5s var(--tp-ease-smooth),opacity .4s;opacity:0;pointer-events:none;display:flex;flex-direction:column}.tp-container .screen.active{transform:translateX(0);opacity:1;pointer-events:auto}.tp-container .screen:not(.active){transform:translateX(50px)}.tp-container .list-function{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;width:100%;align-content:start}.tp-container .list-function:not(.active){display:none}.tp-container .box-function{background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.5);border-radius:var(--tp-radius-sm);padding:15px 10px;text-align:center;cursor:pointer;min-height:90px;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:all .3s var(--tp-ease);box-shadow:0 4px 6px rgba(0,0,0,.02)}.tp-container .box-function:hover{background:#fff;transform:translateY(-5px);border-color:var(--tp-primary);color:var(--tp-primary);box-shadow:0 10px 20px rgba(var(--tp-primary-rgb),.15)}.tp-container .layout-function{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,.85);backdrop-filter:blur(10px);z-index:20;transform:translateX(100%);transition:.4s var(--tp-ease-smooth);display:flex;flex-direction:column;padding:20px}.tp-container .layout-function.active{transform:translateX(0)}.tp-container .back{align-self:flex-start;margin-bottom:20px;padding:8px 16px;border-radius:20px;background:rgba(0,0,0,.05);cursor:pointer;font-weight:600;color:var(--tp-text-sub);transition:.2s;display:flex;align-items:center;gap:6px}.tp-container .back:before{content:'❮';font-size:.8em}.tp-container .back:hover{background:var(--tp-primary);color:#fff;padding-right:20px}.tp-container .box{display:none;animation:slideUp .4s var(--tp-ease);height:100%;overflow-y:auto}.tp-container .box.show{display:block}@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.tp-container input,.tp-container textarea{width:100%;padding:12px 16px;margin-bottom:12px;border:2px solid transparent;border-radius:var(--tp-radius-sm);background:rgba(255,255,255,.7);box-shadow:inset 0 2px 4px rgba(0,0,0,.03);font-size:14px;transition:.3s;color:var(--tp-text-main)}.tp-container input:focus,.tp-container textarea:focus{background:#fff;border-color:var(--tp-primary);box-shadow:0 0 0 4px rgba(var(--tp-primary-rgb),.1)}.tp-container .platform{background:rgba(0,0,0,.04);border-radius:var(--tp-radius-md);padding:4px;position:relative;display:flex;margin-bottom:20px!important}.tp-container .platform label{flex:1;text-align:center;padding:10px;z-index:2;cursor:pointer;transition:.3s;color:var(--tp-text-sub);font-weight:700}.tp-container .platform label.active{color:#fff}.tp-container .highlight_choice{position:absolute;top:4px;left:4px;bottom:4px;width:calc(50% - 4px);background:var(--tp-primary);border-radius:var(--tp-radius-sm);transition:transform .4s var(--tp-ease);box-shadow:0 2px 10px rgba(var(--tp-primary-rgb),.3)}.tp-container .platform .shopee.active~.highlight_choice{transform:translateX(0)}.tp-container .platform .tiktok.active~.highlight_choice{transform:translateX(100%);margin-left:0}.tp-container button.action-btn{width:100%;padding:14px;margin-top:15px;border:none;background:linear-gradient(135deg,var(--tp-primary),var(--tp-accent));color:#fff;font-weight:700;font-size:15px;letter-spacing:.5px;border-radius:var(--tp-radius-md);cursor:pointer;box-shadow:0 6px 20px rgba(var(--tp-primary-rgb),.3);transition:all .3s var(--tp-ease);position:relative;overflow:hidden}.tp-container button.action-btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 10px 25px rgba(var(--tp-primary-rgb),.4)}.tp-container button.action-btn:active{transform:scale(.98)}.tp-container button.action-btn:after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);transition:.5s}.tp-container button.action-btn:hover:after{left:100%}.tp-container .dynamic-upload-container{margin-top:15px}.tp-container .upload-mode-switcher{display:flex;background:rgba(0,0,0,.05);border-radius:12px;padding:4px;position:relative;margin-bottom:15px;border:1px solid rgba(255,255,255,.2)}.tp-container .upload-mode-switcher label{flex:1;text-align:center;padding:8px 10px;font-size:13px;cursor:pointer;z-index:2;transition:color .3s var(--tp-ease);color:var(--tp-text-sub);font-weight:600;border-radius:8px}.tp-container .upload-mode-switcher:before{content:'';position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:transform .3s var(--tp-ease);z-index:1}.tp-container .upload-mode-switcher:has(#modeSwitch:checked):before{transform:translateX(100%)}.tp-container .upload-mode-switcher label.active-mode{color:var(--tp-primary)}.tp-container .drop-zone{border:2px dashed rgba(148,163,184,.4);background:rgba(255,255,255,.3);border-radius:var(--tp-radius-md);padding:40px 20px;text-align:center;transition:all .3s var(--tp-ease);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px;position:relative;overflow:hidden}.tp-container .drop-zone.highlight,.tp-container .drop-zone:hover{border-color:var(--tp-primary);background:rgba(var(--tp-primary-rgb),.08);transform:translateY(-2px);box-shadow:0 8px 20px rgba(var(--tp-primary-rgb),.15)}.tp-container .drop-zone i{font-size:40px;color:var(--tp-secondary);transition:.3s;margin-bottom:5px}.tp-container .drop-zone:hover i{color:var(--tp-primary);transform:scale(1.1)}.tp-container .drop-zone p{margin:0;font-size:14px;color:var(--tp-text-main);font-weight:600}.tp-container .file-list{margin-top:15px;max-height:250px;overflow-y:auto;padding-right:5px;display:flex;flex-direction:column;gap:8px}.tp-container .file-item{display:flex;align-items:center;padding:10px;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.4);border-radius:var(--tp-radius-sm);transition:.2s var(--tp-ease);animation:fadeInItem .3s ease forwards}@keyframes fadeInItem{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}.tp-container .file-item:hover{background:#fff;border-color:var(--tp-primary);transform:translateX(4px);box-shadow:0 4px 12px rgba(0,0,0,.05)}.tp-container .file-thumbnail{width:44px;height:44px;border-radius:8px;margin-right:12px;background-color:#f1f5f9;background-size:cover;background-position:center;flex-shrink:0;border:1px solid rgba(0,0,0,.05)}.tp-container .file-info{display:flex;flex-direction:column;overflow:hidden}.tp-container .file-name{font-size:13px;font-weight:600;color:var(--tp-text-main);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tp-container .file-size{font-size:11px;color:var(--tp-text-sub);margin-top:2px}.tp-container.tp-toast{top:20px;left:50%;transform:translateX(-50%);width:auto;max-width:90vw;z-index:9999999999}.tp-container.tp-toast .toast{background:rgba(255,255,255,.95);backdrop-filter:blur(12px);padding:12px 24px;border-radius:50px;margin-bottom:10px;box-shadow:0 10px 30px rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.5);color:var(--tp-text-main);font-weight:600;display:flex;align-items:center;gap:10px;transform:translateY(-20px) scale(.9);opacity:0;transition:.4s var(--tp-ease)}.tp-container.tp-toast .toast.show{transform:translateY(0) scale(1);opacity:1}.tp-container.tp-toast .toast:before{content:'';width:10px;height:10px;border-radius:50%;display:block}.tp-container.tp-toast .toast.success:before{background:#10b981;box-shadow:0 0 10px #10b981}.tp-container.tp-toast .toast.error:before{background:#ef4444;box-shadow:0 0 10px #ef4444}.tp-container.tp-toast .toast.warning:before{background:#f59e0b;box-shadow:0 0 10px #f59e0b}.tp-container.tp-toast .toast.info:before{background:var(--tp-primary);box-shadow:0 0 10px var(--tp-primary)}</style><div class="tp-container tp-toast"></div><div class="tp-container tp-main"><div class="header"><div class="time">00:00:00</div><div class="help">Hướng Dẫn</div><div class="theme-switcher"><button class="btn-theme light-mode active"data-theme="light">☀️</button> <button class="btn-theme dark-mode"data-theme="dark">🌙</button></div></div><div class="list-screen"><div class="box-screen setting"data-screen="setting">⚙️</div><div class="box-screen main"data-screen="main">🏠</div><div class="box-screen online"data-screen="online">📡</div></div><div class="content-screen"><div class="screen screen-setting"><div class="box custom-name show"><p>Tên Gọi Của Bạn</p><input class="input-custom-name"placeholder="Nhập tên gọi..."></div></div><div class="screen screen-main active"><div class="list-function active"></div><div class="layout-function"><div class="back">Quay lại Menu</div><div class="box flash_sale"id="flash_sale_layout"><h3 style="margin-bottom:20px;text-align:center;color:var(--tp-primary)">Thiết Lập Flash Sale</h3><div class="program_id"style="margin-bottom:15px"><label style="font-size:.9em;color:var(--tp-text-sub);display:block;margin-bottom:5px">Link Chương Trình</label> <input class="product_url"placeholder="Paste link hoặc ID vào đây..."><div class="platform flex flex-row"><label class="shopee"for="shopee">SHOPEE</label> <label class="tiktok"for="tiktok">TIKTOK</label><div class="highlight_choice"></div></div></div><div class="input_prompt"><div class="prompt_value shopee_prompt flex flex-column"><input type="number"class="value-count"placeholder="Số lượng khung (VD: 5)"> <textarea class="value-flashsale"placeholder="Nhập tên sản phẩm & số lượng..."></textarea></div><div class="prompt_value tiktok_prompt"><textarea placeholder="Nhập thời gian chạy..."class="value-time"></textarea></div></div><button class="excuse-button action-btn"data-action="flash_sale">Kích Hoạt Flash Sale 🚀</button></div><div class="box doi_hinh_phan_loai show"id="doi_hinh_phan_loai_layout"><h3 style="margin-bottom:20px;text-align:center;color:var(--tp-primary)">Đổi Hình Phân Loại</h3><div class="product_info"><label style="font-size:.9em;color:var(--tp-text-sub);display:block;margin-bottom:5px">Danh sách ID Sản Phẩm</label> <textarea type="text"class="product_url"placeholder="Mỗi dòng 1 ID sản phẩm..."></textarea></div><div class="input_prompt"><div class="dynamic-upload-container"></div></div><button class="excuse-button action-btn"data-action="doi_hinh_phan_loai">Bắt Đầu Xử Lý ⚡</button></div></div></div><div class="screen screen-online"><h3 style="margin-bottom:15px;color:var(--tp-accent)">Kết Nối Server</h3><p style="color:var(--tp-text-sub)">Trạng thái Socket.IO...</p></div></div></div>`;
 
     // Khởi tạo biến toàn cục
     var INFO_PAGE = null;
@@ -42,7 +45,7 @@
 
       var id_sanpham = $(".tp-container.tp-main .layout-function #doi_hinh_phan_loai_layout .product_info .product_url").val().trim();
 
-      if(id_sanpham.length > 0){
+      if (id_sanpham.length > 0) {
         multi_process = true;
         //Xử lý đa ID
       }
@@ -59,25 +62,25 @@
       boxAlert("Lấy Mã Sản Phẩm");
       var page = getPageDomain();
       page == "shopee" ? shopee() : page == "tiktok" ? tiktok() : page == "lazada" ? lazada() : "";
-      
-      async function shopee(){
+
+      async function shopee() {
         var mode = $(".product-list-section.product-and-pagination-wrap-v2").hasClass("grid-mode") ? "grid" : "list";
 
         var productID = [];
 
 
-        if(mode == "grid"){
+        if (mode == "grid") {
           var box = $(".product-grid-view .product-item");
           var indexBox = 0;
 
-          function nextBox(){
-            if(indexBox >= box.length){
+          function nextBox() {
+            if (indexBox >= box.length) {
               boxToast("Đã sao chép tất cả mã của sản phẩm đã chọn", "success");
               return;
             }
 
             var checkBox = box.eq(indexBox).find(".product-checkbox input");
-            if(checkBox.prop("checked")){
+            if (checkBox.prop("checked")) {
               productID.push(checkBox.attr("name"));
             }
 
@@ -85,11 +88,12 @@
             nextBox();
           }
           nextBox();
-        }else if(mode == "list"){
+        } else if (mode == "list") {
           var parent_box = $("table.eds-table__body tbody tr")
           var indexParentBox = 0;
-          function nextParentBox(){
-            if(indexParentBox > parent_box.length){
+
+          function nextParentBox() {
+            if (indexParentBox > parent_box.length) {
               boxToast("Đã sao chép tất cả mã của sản phẩm đã chọn", "success");
               return;
             }
@@ -100,7 +104,7 @@
             productID.push(id);
 
             indexParentBox++;
-            nextParentBox();          
+            nextParentBox();
           }
 
           nextParentBox();
@@ -108,7 +112,7 @@
 
         navigator.clipboard.writeText(productID.join("\n"));
       }
-    
+
     }
 
     /**
@@ -120,13 +124,16 @@
 
       // Kiểm tra nếu là cấu hình hoặc chạy
 
-      if(!run){
-        var platform = "none", id = "none", data = "none", length = "none";
+      if (!run) {
+        var platform = "none",
+          id = "none",
+          data = "none",
+          length = "none";
         platform = $(".tp-container.tp-main .layout-function #flash_sale_layout .platform label.active").text().toLowerCase() || "none";
         id = $(".tp-container.tp-main .layout-function #flash_sale_layout .current_id span").text() || "none";
         data = platform == "shopee" ? $(".tp-container.tp-main .layout-function #flash_sale_layout .input_prompt .shopee_prompt textarea").val() || "none" : platform == "tiktok" ? $(".tp-container.tp-main .layout-function #flash_sale_layout .input_prompt .tiktok_prompt textarea").val() || "none" : "none";
         length = platform == "shopee" ? $(".tp-container.tp-main .layout-function #flash_sale_layout .input_prompt .shopee_prompt input").val() || "none" : platform == "tiktok" ? data.split("\n").length || "none" : "none";
-        
+
         // if(platform == "none" || id == "none" || data == "none" || length == "none"){
         //   boxToast("Có giá trị không hợp lệ", "error");
         //   return;
@@ -136,7 +143,7 @@
 
         var obj_program = {};
 
-        if(platform == "shopee"){
+        if (platform == "shopee") {
           obj_program = {
             platform: platform,
             id: id,
@@ -144,7 +151,7 @@
             length: length,
             index: 0,
           }
-        }else if(platform == "tiktok"){
+        } else if (platform == "tiktok") {
           obj_program = {
             platform: platform,
             id: id,
@@ -160,19 +167,19 @@
 
         var url = platform == "shopee" ? `https://banhang.shopee.vn/portal/marketing/shop-flash-sale/create?from=${id}` : platform == "tiktok" ? `https://seller-vn.tiktok.com/promotion/marketing-tools/flash-sale/create?duplicateId=${id}&back=1` : "";
 
-        if(location.href.toString().includes(url))
+        if (location.href.toString().includes(url))
           flash_sale(true);
         else
           window.open(`${url}`, "_blank");
-      }else{
+      } else {
         // Nếu như đang không chạy
-        if(getConfig("status_running") == "false"){
+        if (getConfig("status_running") == "false") {
           // setConfig("status_running", "true");
           flash_sale.shopee = () => {
             var data_flashsale = JSON.parse(getConfig("data_flashsale"));
 
             // Kiểm tra ID chương trình flash sale, nếu không đúng
-            if (data_flashsale.id != location.href.toString().split("/")[location.href.toString().split("/").length - 1].replace("create?from=", "")){
+            if (data_flashsale.id != location.href.toString().split("/")[location.href.toString().split("/").length - 1].replace("create?from=", "")) {
               boxToast("Đây không phải chương trình flash sale bạn đã cung cấp", "error");
               swal.fire({
                 icon: 'error',
@@ -184,7 +191,7 @@
                 denyButtonText: "Chuyển Hướng Tới Chương Trình",
                 cancelButtonText: "Hủy Thao Tác",
               }).then((result) => {
-                if(result.isConfirmed){
+                if (result.isConfirmed) {
                   // var config = JSON.parse(getConfig("data_flashsale"));
                   // console.log(config);
                   // config.id = location.href.toString().split("/")[location.href.toString().split("/").length - 1];
@@ -193,7 +200,7 @@
                   // setConfig("data_flashsale", config);
 
                   boxToast("Chương trình sẽ bỏ qua lần chạy này", "info")
-                }else if(result.isDenied){
+                } else if (result.isDenied) {
                   var config = JSON.parse(getConfig("data_flashsale"));
 
                   var id = config.id;
@@ -202,21 +209,22 @@
                   var url = platform == "shopee" ? `https://banhang.shopee.vn/portal/marketing/shop-flash-sale/create?from=${id}` : platform == "tiktok" ? `https://seller-vn.tiktok.com/promotion/marketing-tools/flash-sale/create?duplicateId=${id}&back=1` : "";
 
                   window.open(`${url}`, "_blank");
-                }else{
+                } else {
                   flash_sale.clearing();
                 }
               });
               return;
             }
             // Nếu ID chương trình đã đúng
-            else{
+            else {
               var data_flashsale = JSON.parse(getConfig("data_flashsale"));
-              if(data_flashsale.length > 0){
+              if (data_flashsale.length > 0) {
                 console.log(data_flashsale);
 
                 var data = data_flashsale.data;
 
-                var list_name = [], list_quantity = [];
+                var list_name = [],
+                  list_quantity = [];
                 $.each(data, (i, v) => {
                   var detail = v.split("\t");
 
@@ -224,15 +232,15 @@
                   list_quantity.push(detail[1].trim());
                 });
 
-                waitForElement($("body"), ".products-container-content .table-card .inner-row", async function(e){
+                waitForElement($("body"), ".products-container-content .table-card .inner-row", async function(e) {
                   await delay(1000)
                   var box = $(".products-container-content .table-card .inner-row");
 
                   var selected_day = false;
 
                   var indexBox = 0;
-                  async function nextBox(){
-                    if(indexBox >= box.length){
+                  async function nextBox() {
+                    if (indexBox >= box.length) {
                       // Chọn ngày và bật khi chọn các sản phẩm hoàn tất
                       simulateReactEvent($(".basic-info-wrapper .info-item").eq(0).find(".info-item-content button"), "click");
 
@@ -242,7 +250,8 @@
                       select_day = select_day.eq(select_day.length - 1);
 
                       var picker_day = select_day.find(".eds-modal__body .main")
-                      var left_day = picker_day.find(".left"), right_day = picker_day.find(".right");
+                      var left_day = picker_day.find(".left"),
+                        right_day = picker_day.find(".right");
 
                       var left_header = left_day.find(".eds-picker-header");
                       var prev_year = left_header.find("i").eq(0);
@@ -253,15 +262,15 @@
                       var picker_date_row = left_day.find(".eds-date-table__rows .eds-date-table__row");
 
                       var indexRow = 0;
-                      async function nextRow(){
-                        if(indexRow >= picker_date_row.length || selected_day){
+                      async function nextRow() {
+                        if (indexRow >= picker_date_row.length || selected_day) {
                           return;
                         }
                         var picker_date_cell = picker_date_row.eq(indexRow).find(".eds-date-table__cell");
 
                         var indexCell = 0;
-                        async function nextCell(){
-                          if(indexCell >= picker_date_cell.length || selected_day){
+                        async function nextCell() {
+                          if (indexCell >= picker_date_cell.length || selected_day) {
                             indexRow++;
                             nextRow();
                             return;
@@ -270,25 +279,25 @@
                           var check_date = picker_date_cell.eq(indexCell).find(".date-text").text();
                           var now_date = new Date().getDate();
 
-                          if(check_date < now_date){
+                          if (check_date < now_date) {
                             indexCell++;
                             nextCell();
                             return;
                           }
 
-                          if(picker_date_cell.eq(indexCell).hasClass("month-end").length > 0){
+                          if (picker_date_cell.eq(indexCell).hasClass("month-end").length > 0) {
                             simulateReactEvent(next_month, "click");
                             indexRow = 0;
                             nextRow();
                           }
 
-                          if(picker_date_cell.eq(indexCell).find(".timeslots.valid").length > 0 && !selected_day){
+                          if (picker_date_cell.eq(indexCell).find(".timeslots.valid").length > 0 && !selected_day) {
                             simulateReactEvent(picker_date_cell.eq(indexCell), "click");
                             selected_day = true;
                           }
 
-                          if(selected_day){
-                            waitForElement(right_day, ".eds-table__body-container .eds-table__body .eds-table__row", async function(e){
+                          if (selected_day) {
+                            waitForElement(right_day, ".eds-table__body-container .eds-table__body .eds-table__row", async function(e) {
                               simulateReactEvent(right_day.find(".eds-table__body-container .eds-table__body .eds-table__row").eq(0).find("input"), "click");
                               await delay(200);
                               console.log(select_day.find(".eds-modal__footer .footer-action .confirm-btn"));
@@ -296,7 +305,7 @@
                               await delay(200);
                               $.each($(".panel-actions .action-button"), async (i, v) => {
                                 console.log($(v).text().toLowerCase());
-                                if($(v).text().toLowerCase().replace("vui lòng lựa chọn khung giờ","").trim() == "bật"){
+                                if ($(v).text().toLowerCase().replace("vui lòng lựa chọn khung giờ", "").trim() == "bật") {
                                   console.log(v);
                                   simulateReactEvent($(v).find("button"), "click");
                                   return;
@@ -334,7 +343,7 @@
                     var soLuongKM = box.eq(indexBox).find(".campaign-stock .form-item input");
                     var tonKho = box.eq(indexBox).find(".current-stock").text();
 
-                    if(list_name.includes(name) && tonKho > list_quantity[list_name.indexOf(name)]){
+                    if (list_name.includes(name) && tonKho > list_quantity[list_name.indexOf(name)]) {
                       checked.trigger("click");
                       checked.val("true");
                       await delay(100);
@@ -351,13 +360,13 @@
                   nextBox();
                 }, {
                   once: true
-                }) 
-              }else{
+                })
+              } else {
                 boxToast("Đã hoàn tất tất cả sản phẩm cần chạy", "success");
                 flash_sale.clearing();
               }
-                
-            }           
+
+            }
 
             // flash_sale.clearing();
           }
@@ -379,7 +388,7 @@
               localStorage.removeItem(`TP_CONFIG_${config[i]}`);
             });
           }
-          
+
           var page = getPageDomain();
 
           page == "shopee" ? flash_sale.shopee() : page == "tiktok" ? flash_sale.tiktok() : page == "lazada" ? flash_sale.lazada() : "";
@@ -399,7 +408,7 @@
 
       page == "shopee" ? shopee() : page == "tiktok" ? tiktok() : page == "lazada" ? lazada() : "";
 
-      function lamGia(gia){
+      function lamGia(gia) {
         var giaDuoi = tachGia(gia).giaDuoi;
 
         if (parseInt(giaDuoi) == 0) {
@@ -430,7 +439,7 @@
             return;
           }
 
-          if(!box.eq(indexBox).find(".eds-checkbox.discount-item-selector input").prop("checked")){
+          if (!box.eq(indexBox).find(".eds-checkbox.discount-item-selector input").prop("checked")) {
             indexBox++;
             nextBox();
             return;
@@ -453,11 +462,11 @@
 
             var variant_switch = varianty.eq(indexVarianty).find(".item-content.item-enable-disable");
 
-            if(variant_switch.find(".eds-switch--disabled").length == 0){
-              if(variant_switch.find(".eds-switch--close").length > 0){
+            if (variant_switch.find(".eds-switch--disabled").length == 0) {
+              if (variant_switch.find(".eds-switch--close").length > 0) {
                 simulateReactEvent(variant_switch.find(".eds-switch--close"), "click");
               }
-            }else{
+            } else {
               indexVarianty++;
               nextVarianty();
               return;
@@ -542,7 +551,7 @@
               if (!activeStatus.attr("aria-checked"))
                 simulateReactEvent(activeStatus, "click");
 
-              
+
               var currentPrice = nextProductToProcess.find(".theme-arco-table-td").eq(2).find("span p");
               var promotionPrice = nextProductToProcess.find(".theme-arco-table-td").eq(3).find("input");
 
@@ -626,7 +635,7 @@
             }
           }
 
-          }
+        }
 
         processProductsByLastFlag();
       }
@@ -689,7 +698,7 @@
           buttonClick.click();
 
           await delay(500);
-          
+
           indexRow++;
           nextRow();
         }
@@ -751,7 +760,7 @@
       }
     }
 
-    function getPageDomain(){
+    function getPageDomain() {
       return (INFO_PAGE.url.host.split(".")[INFO_PAGE.url.host.split(".").length - 2]);
     }
 
@@ -1410,7 +1419,7 @@
      *  giaDuoi: giaDuoi.toString(),
      *  gia: result.toString()
      * };
-    */   
+     */
     function gopGia(giaDau, giaDuoi) {
       // Chuẩn hóa đầu vào
       if (giaDau == null || giaDuoi == null) return null;
@@ -1522,52 +1531,6 @@
       return kiemTraGia(flag);
     }
 
-    // =========================================================================
-    // HÀM LẤY THÔNG TIN & KIỂM TRA PHIÊN BẢN
-    // =========================================================================
-
-    /**
-     * @func getUrlServer
-     * @description 'Lấy dữ liệu từ file GITHUB'
-     */
-    async function getUrlServer(owner = "pntan", repo = "TOOLv3", path = "version", branch = "main") {
-      try {
-        var res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}&_=${Date.now()}`, {
-          headers: {
-            Authorization: `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`,
-          }
-        });
-
-        if (!res.ok) {
-          console.error("Lỗi HTTP khi lấy phiên bản:", res.status);
-          return null;
-        }
-
-        var json = await res.json();
-        var content = atob(json.content); // Giải mã base64
-        var url = content.trim();
-
-        return url;
-      } catch (e) {
-        console.error("Không thể lấy URL từ GitHub:", e.message);
-        return null;
-      }
-    }
-
-    function check_version() {
-      boxAlert(`Đang kiểm tra phiên bản...`, "log");
-      getUrlServer().then(latest_version => {
-        if (!latest_version) {
-          boxAlert("Không thể lấy phiên bản từ server!", "error");
-          return;
-        }
-        if (latest_version != VERSION)
-          boxAlert(`Phiên bản mới đã có: ${latest_version}. Vui lòng cập nhật!`, "warn");
-        else
-          boxAlert(`Phiên bản hiện tại: ${VERSION}`, "log");
-      });
-    }
-
     /**
      * @func boxToast
      * @description 'Hiển thị thông báo toast'
@@ -1617,6 +1580,85 @@
 
       console.log("Thông tin trang hiện tại:", info);
       return info;
+    }
+
+    async function connectServer() {
+      var ngrokURL = null;
+      async function getNgrokURL() {
+        // Đường dẫn "Raw" của file trên GitHub hoặc đường dẫn GitHub Pages
+        // Nếu dùng GitHub Pages: https://pntan.github.io/ngrok-url.json
+        // Nếu dùng Raw GitHub: https://raw.githubusercontent.com/pntan/pntan.github.io/main/ngrok-url.json
+
+        const url = 'https://pntan.github.io/ngrokServer'; // Khuyên dùng link này nếu đã bật GitHub Pages
+        // const url = 'https://raw.githubusercontent.com/pntan/pntan.github.io/main/ngrok-url.json'; // Link này update tức thì hơn (không bị cache của CDN GitHub Pages)
+
+        try {
+          const response = await fetch(url, {
+            cache: "no-store"
+          }); // no-store để tránh cache cũ
+          if (!response.ok) throw new Error('Network response was not ok');
+
+          const data = await response.json();
+          return data.url;
+        } catch (error) {
+          console.error('Lỗi khi fetch URL:', error);
+          return null;
+        }
+      }
+
+      async function connectSocket(url) {
+        return new Promise((resolve, reject) => {
+          socket = io(url, {
+            reconnectionAttempts: 5,
+            timeout: 5000,
+            transports: ["websocket", "polling"],
+            extraHeaders: {
+              "ngrok-skip-browser-warning": "69420" // Giá trị bất kỳ
+            },
+          });
+
+          console.log(socket);
+
+          socket.on('connect', () => {
+            boxAlert(`KẾT NỐI SOCKET THÀNH CÔNG!`, 'success');
+            boxToast('Kết nối Socket thành công!', 'success', 5000);
+            resolve(true);
+          });
+
+          socket.on('connect_error', (error) => {
+            boxAlert(`LỖI KẾT NỐI SOCKET: ${error.message}`, 'error');
+            boxToast(`Lỗi kết nối Socket: ${error.message}`, 'error', 7000);
+            reject(error);
+          });
+
+          socket.on('disconnect', (reason) => {
+            boxAlert(`SOCKET BỊ NGẮT KẾT NỐI: ${reason}`, 'warn');
+            boxToast(`Socket bị ngắt kết nối: ${reason}`, 'warn', 7000);
+          });
+
+          socket.on('reconnect_attempt', (attempt) => {
+            boxAlert(`ĐANG THỬ KẾT NỐI LẠI SOCKET (Lần ${attempt})...`, 'log');
+            boxToast(`Đang thử kết nối lại Socket (Lần ${attempt})...`, 'info', 5000);
+          });
+
+          socket.on('reconnect_failed', () => {
+            boxAlert(`KHÔNG THỂ KẾT NỐI LẠI SOCKET!`, 'error');
+            boxToast(`Không thể kết nối lại Socket!`, 'error', 7000);
+          });
+        });
+      }
+
+      boxAlert(`ĐANG KẾT NỐI SERVER...`, 'log');
+      ngrokURL = getConfig("server_url") || await getNgrokURL();
+
+      if (ngrokURL) {
+        boxAlert(`KẾT NỐI SERVER THÀNH CÔNG: ${ngrokURL}`, 'success');
+        setConfig('server_url', ngrokURL);
+        connectSocket(ngrokURL);
+      } else {
+        boxAlert(`KHÔNG THỂ KẾT NỐI SERVER!`, 'error');
+        localStorage.removeItem('TP_CONFIG_server_url');
+      }
     }
 
 
@@ -1695,9 +1737,21 @@
         $(".tp-container.tp-main").addClass(`${host}-theme`);
       }
 
+      var custom_name = () => {
+        var name = getConfig("custom_name");
+        if (name && name.length > 0) {
+          $(".tp-container.tp-main .screen.screen-setting input.input-custom-name").val(name);
+        }else{
+          var randomString = `User${Math.random().toString(36).substring(2, 8)}`;
+          setConfig("custom_name", randomString);
+          $(".tp-container.tp-main .screen.screen-setting input.input-custom-name").val(randomString);
+        }
+      }
+
       theme_mode();
       screen_display();
       theme_color();
+      custom_name();
       return true;
     }
 
@@ -1742,6 +1796,7 @@
       if (init_config && init_ui) {
         boxAlert("KHỞI TẠO TƯƠNG TÁC");
         INIT_FUNCTION();
+        connectServer();
       }
     }
 
@@ -1825,13 +1880,13 @@
 
         if (x <= X_LIMIT) {
           $(".tp-container.tp-main").css({
-              "left": "0",
-              "right": ""
+            "left": "0",
+            "right": ""
           }).addClass("active");
         } else if (X_LIMIT >= bodyWidth - x) {
           $(".tp-container.tp-main").css({
-              "right": "0",
-              "left": ""
+            "right": "0",
+            "left": ""
           }).addClass("active");
         } else {
           $(".tp-container.tp-main").removeClass("active");
@@ -1844,42 +1899,52 @@
        * @param {function} callback - Hàm callback nhận kết quả: ({isNewDay: boolean, launchTime: string})
        */
       function check_in(callback) {
-          const LAST_CHECK_IN_KEY = 'TP_GLOBAL_LAST_CHECK_IN_TIME';
-          const LAST_CHECK_IN_DATE_KEY = 'TP_GLOBAL_LAST_CHECK_IN_DATE';
-          
-          const now = new Date();
-          const todayDate = now.toISOString().split('T')[0];
-          
-          const savedDate = GM_getValue(LAST_CHECK_IN_DATE_KEY, null);
-          const savedTime = GM_getValue(LAST_CHECK_IN_KEY, null);
+        const LAST_CHECK_IN_KEY = 'TP_GLOBAL_LAST_CHECK_IN_TIME';
+        const LAST_CHECK_IN_DATE_KEY = 'TP_GLOBAL_LAST_CHECK_IN_DATE';
 
-          let result = {};
+        const now = new Date();
+        const todayDate = now.toISOString().split('T')[0];
 
-          // 1. KIỂM TRA NGÀY MỚI
-          if (savedDate !== todayDate) {
-              
-              // --- NGÀY MỚI ---
-              const newLaunchTime = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-              
-              GM_setValue(LAST_CHECK_IN_DATE_KEY, todayDate);
-              GM_setValue(LAST_CHECK_IN_KEY, newLaunchTime);
-              
-              boxAlert(`NGÀY MỚI! Lần đầu kích hoạt được ghi lại: ${newLaunchTime}`, "success");
-              
-              result = { isNewDay: true, launchTime: newLaunchTime };
+        const savedDate = GM_getValue(LAST_CHECK_IN_DATE_KEY, null);
+        const savedTime = GM_getValue(LAST_CHECK_IN_KEY, null);
 
-          } else {
-              
-              // --- ĐÃ KÍCH HOẠT TRONG NGÀY ---
-              boxAlert(`Hôm nay đã được kích hoạt. Lần đầu: ${savedTime}`, "log");
-              
-              result = { isNewDay: false, launchTime: savedTime };
-          }
-          
-          // GỌI CALLBACK VỚI KẾT QUẢ CUỐI CÙNG
-          if (typeof callback === 'function') {
-              callback(result);
-          }
+        let result = {};
+
+        // 1. KIỂM TRA NGÀY MỚI
+        if (savedDate !== todayDate) {
+
+          // --- NGÀY MỚI ---
+          const newLaunchTime = now.toLocaleTimeString('en-GB', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+          });
+
+          GM_setValue(LAST_CHECK_IN_DATE_KEY, todayDate);
+          GM_setValue(LAST_CHECK_IN_KEY, newLaunchTime);
+
+          boxAlert(`NGÀY MỚI! Lần đầu kích hoạt được ghi lại: ${newLaunchTime}`, "success");
+
+          result = {
+            isNewDay: true,
+            launchTime: newLaunchTime
+          };
+
+        } else {
+
+          // --- ĐÃ KÍCH HOẠT TRONG NGÀY ---
+          boxAlert(`Hôm nay đã được kích hoạt. Lần đầu: ${savedTime}`, "log");
+
+          result = {
+            isNewDay: false,
+            launchTime: savedTime
+          };
+        }
+
+        // GỌI CALLBACK VỚI KẾT QUẢ CUỐI CÙNG
+        if (typeof callback === 'function') {
+          callback(result);
+        }
       }
 
       check_in((result) => {
@@ -1903,38 +1968,37 @@
       runTime();
 
       // Chọn loại sàn làm flash sale
-      $(".tp-container.tp-main #flash_sale_layout .platform .shopee").on("click", function(){
+      $(".tp-container.tp-main #flash_sale_layout .platform .shopee").on("click", function() {
         $(this).parent().find(".active").removeClass("active");
         $(this).addClass("active").trigger("togglePlatform", "shopee");
       })
 
-      $(".tp-container.tp-main #flash_sale_layout .platform .tiktok").on("click", function(){
+      $(".tp-container.tp-main #flash_sale_layout .platform .tiktok").on("click", function() {
         console.log($(this).parent().find(".active"))
         $(this).parent().find(".active").removeClass("active");
         $(this).addClass("active").trigger("togglePlatform", "tiktok");
       })
 
-      $(".tp-container.tp-main #flash_sale_layout .program_id .product_url").on("input", function(){
+      $(".tp-container.tp-main #flash_sale_layout .program_id .product_url").on("input", function() {
         var url = $(this).val();
         url = url.replace("https://", "");
-        
+
         var host = url.split("/")[0];
 
-        if(host.split(".").includes("shopee")){
+        if (host.split(".").includes("shopee")) {
           $(".tp-container.tp-main #flash_sale_layout .platform .shopee").addClass("active");
           $(".tp-container.tp-main #flash_sale_layout .platform .tiktok").removeClass("active").trigger("togglePlatform", "shopee");
-        }
-        else if(host.split(".").includes("tiktok")){
+        } else if (host.split(".").includes("tiktok")) {
           $(".tp-container.tp-main #flash_sale_layout .platform .tiktok").addClass("active");
           $(".tp-container.tp-main #flash_sale_layout .platform .shopee").removeClass("active").trigger("togglePlatform", "tiktok");
-        }else{
-          $(".tp-container.tp-main #flash_sale_layout .platform .shopee").removeClass("active");        
+        } else {
+          $(".tp-container.tp-main #flash_sale_layout .platform .shopee").removeClass("active");
           $(".tp-container.tp-main #flash_sale_layout .platform .tiktok").removeClass("active").trigger("togglePlatform", "none");
         }
 
         var id = url.split("/")[url.split("/").length - 1];
-        
-        if(id.search("=") >= 0){
+
+        if (id.search("=") >= 0) {
           id = id.split("=")[1];
         }
 
@@ -1944,27 +2008,27 @@
         `)
       })
 
-      $(".tp-container.tp-main #flash_sale_layout .platform label").on("togglePlatform", function(e, v){
-        if(v == "shopee"){
+      $(".tp-container.tp-main #flash_sale_layout .platform label").on("togglePlatform", function(e, v) {
+        if (v == "shopee") {
           $(".tp-container.tp-main #flash_sale_layout .input_prompt .prompt_value.shopee_prompt").addClass("active");
           $(".tp-container.tp-main #flash_sale_layout .input_prompt .prompt_value.tiktok_prompt").removeClass("active");
-        }else if(v == "tiktok"){
+        } else if (v == "tiktok") {
           $(".tp-container.tp-main #flash_sale_layout .input_prompt .prompt_value.shopee_prompt").removeClass("active");
           $(".tp-container.tp-main #flash_sale_layout .input_prompt .prompt_value.tiktok_prompt").addClass("active");
-        }else{
+        } else {
           $(".tp-container.tp-main #flash_sale_layout .input_prompt .prompt_value.shopee_prompt").removeClass("active");
           $(".tp-container.tp-main #flash_sale_layout .input_prompt .prompt_value.tiktok_prompt").removeClass("active");
         }
       })
 
       // Tìm cấu hình hàm đang chạy hàng loạt
-      function check_current_function(){
+      function check_current_function() {
         var config = getConfig("continue_function");
 
-        if(config == null)
+        if (config == null)
           return;
 
-        switch (config){
+        switch (config) {
           case "flashsale":
             flash_sale(true);
             break;
@@ -1973,93 +2037,104 @@
 
       check_current_function();
 
-      // Phần cấu hình Tải tệp (ĐÃ THAY THẾ TOÀN BỘ)
+      // Phần cấu hình Tải tệp (ĐÃ CẬP NHẬT CSS & JS HIỆU ỨNG)
       function setupFileUploader() {
-        const uploaderContainer = document.querySelector('#doi_hinh_phan_loai_layout .dynamic-upload-container'); 
+        const uploaderContainer = document.querySelector('#doi_hinh_phan_loai_layout .dynamic-upload-container');
         if (!uploaderContainer) {
           console.error("Không tìm thấy container tải tệp");
           return;
         }
-        
+
         uploaderContainer.innerHTML = ''; // Xóa nội dung cũ
-        
-        // 1. Tạo input file ẩn (Không đặt thuộc tính mặc định)
+
+        // 1. Tạo input file ẩn
         const fileInput = document.createElement('input');
         fileInput.setAttribute('type', 'file');
         fileInput.setAttribute('id', 'fileInput');
         fileInput.setAttribute('multiple', '');
         uploaderContainer.appendChild(fileInput);
 
-        // 2. Tạo UI Công tắc chuyển đổi chế độ
+        // 2. Tạo UI Công tắc (HTML đã tối ưu cho CSS selector)
         const switcher = document.createElement('div');
         switcher.className = 'upload-mode-switcher';
+        // Lưu ý: Tôi thêm class "mode-label" để dễ query
         switcher.innerHTML = `
-            <label for="modeSwitch"><span class="mode-text" id="fileModeLabel" style="font-weight: bold;">Chế độ Tệp (Ảnh)</span></label>
-            <input type="checkbox" id="modeSwitch" style="opacity: 0">
-            <label for="modeSwitch"><span class="mode-text" id="folderModeLabel">Chế độ Thư mục</span></label>
-        `;
+              <label for="modeSwitch" id="labelFile" class="mode-label">Tệp (Ảnh)</label>
+              <input type="checkbox" id="modeSwitch" style="display: none"> 
+              <label for="modeSwitch" id="labelFolder" class="mode-label">Thư mục</label>
+          `;
         uploaderContainer.appendChild(switcher);
+
         const modeSwitch = document.getElementById('modeSwitch');
-        
-        // 3. Tạo Vùng Kéo Thả (Drop Zone)
+        const labelFile = document.getElementById('labelFile');
+        const labelFolder = document.getElementById('labelFolder');
+
+        // 3. Tạo Drop Zone
         const dropZone = document.createElement('div');
         dropZone.setAttribute('id', 'dropZone');
         dropZone.className = 'drop-zone';
-        uploaderContainer.appendChild(dropZone); 
+        uploaderContainer.appendChild(dropZone);
 
-        // 4. Phần hiển thị danh sách tệp
+        // 4. Danh sách tệp
         let displayElement = document.getElementById('file-display-list');
         if (!displayElement) {
           displayElement = document.createElement('div');
           displayElement.setAttribute('id', 'file-display-list');
-          displayElement.className = 'file-list'; 
+          displayElement.className = 'file-list';
           uploaderContainer.appendChild(displayElement);
         }
-        
-        // Hàm cấu hình Input và Drop Zone
+
+        // --- HÀM XỬ LÝ CHẾ ĐỘ ---
         function setMode(isFolderMode) {
-            fileInput.removeAttribute('webkitdirectory');
-            fileInput.removeAttribute('directory');
-            fileInput.removeAttribute('accept');
-            
-            if (isFolderMode) {
-                // Chế độ Thư mục: Cho phép chọn thư mục, không giới hạn loại tệp
-                fileInput.setAttribute('webkitdirectory', 'webkitdirectory');
-                fileInput.setAttribute('directory', 'directory');
-                dropZone.innerHTML = `
-                    <i class="fas fa-folder-open"></i>
-                    <p>Kéo Thư mục vào đây</p>
-                    <p style="font-size: 0.8em; margin-top: 5px; color: #999;">(hoặc click để chọn thư mục)</p>
-                `;
-                document.getElementById('fileModeLabel').style.fontWeight = 'normal';
-                document.getElementById('folderModeLabel').style.fontWeight = 'bold';
-            } else {
-                // Chế độ Tệp/Ảnh: Cho phép chọn tệp, giới hạn là ảnh
-                fileInput.setAttribute('accept', 'image/*');
-                dropZone.innerHTML = `
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <p>Kéo và Thả ảnh vào đây</p>
-                    <p style="font-size: 0.8em; margin-top: 5px; color: #999;">(hoặc click để chọn tệp)</p>
-                `;
-                document.getElementById('fileModeLabel').style.fontWeight = 'bold';
-                document.getElementById('folderModeLabel').style.fontWeight = 'normal';
-            }
-            
-            // Xóa danh sách tệp cũ khi chuyển mode
-            displayElement.innerHTML = '';
-            if (displayElement._objectUrls) {
-                displayElement._objectUrls.forEach(url => URL.revokeObjectURL(url));
-            }
-            displayElement._objectUrls = [];
+          // Reset input attributes
+          fileInput.removeAttribute('webkitdirectory');
+          fileInput.removeAttribute('directory');
+          fileInput.removeAttribute('accept');
+
+          // Cập nhật giao diện (Thêm/Xóa class thay vì style inline)
+          if (isFolderMode) {
+            // Chế độ Thư mục
+            fileInput.setAttribute('webkitdirectory', 'webkitdirectory');
+            fileInput.setAttribute('directory', 'directory');
+
+            // Icon & Text cho Dropzone (Dùng FontAwesome hoặc Emoji nếu không có FA)
+            dropZone.innerHTML = `
+                      <i class="fa-solid fa-folder-open" style="font-style: normal">📂</i>
+                      <p>Kéo thả <b>Thư mục</b> vào đây</p>
+                      <p style="font-size: 0.85em; opacity: 0.7; margin-top: 5px;">(hoặc click để chọn)</p>
+                  `;
+
+            labelFolder.classList.add('active-mode');
+            labelFile.classList.remove('active-mode');
+          } else {
+            // Chế độ Tệp
+            fileInput.setAttribute('accept', 'image/*');
+
+            dropZone.innerHTML = `
+                      <i class="fa-solid fa-cloud-arrow-up" style="font-style: normal">☁️</i>
+                      <p>Kéo thả <b>Ảnh</b> vào đây</p>
+                      <p style="font-size: 0.85em; opacity: 0.7; margin-top: 5px;">(hoặc click để chọn)</p>
+                  `;
+
+            labelFile.classList.add('active-mode');
+            labelFolder.classList.remove('active-mode');
+          }
+
+          // Xóa danh sách tệp cũ
+          displayElement.innerHTML = '';
+          if (displayElement._objectUrls) {
+            displayElement._objectUrls.forEach(url => URL.revokeObjectURL(url));
+          }
+          displayElement._objectUrls = [];
         }
 
-        // Thiết lập chế độ mặc định (Tệp/Ảnh)
-        setMode(false); 
-        
-        // Hàm xử lý tệp chung (ĐÃ CẬP NHẬT để hiển thị đường dẫn tệp trong thư mục)
+        // Khởi tạo mặc định
+        setMode(false);
+
+        // --- HÀM XỬ LÝ FILE ---
         function processFiles(files) {
           if (files.length > 0) {
-            // Xóa danh sách tệp cũ
+            // Clear cũ
             displayElement.innerHTML = '';
             if (displayElement._objectUrls) {
               displayElement._objectUrls.forEach(url => URL.revokeObjectURL(url));
@@ -2072,15 +2147,20 @@
 
               const thumbnail = document.createElement('div');
               thumbnail.className = 'file-thumbnail';
-              
-              // Quyết định tên hiển thị: Nếu ở chế độ thư mục, dùng webkitRelativePath
+
               const filenameToDisplay = modeSwitch.checked ? file.webkitRelativePath : file.name;
 
-              // Logic tạo thumbnail giữ nguyên
+              // Tạo thumbnail nếu là ảnh
               if (file.type.startsWith('image/')) {
                 const thumbnailUrl = URL.createObjectURL(file);
                 thumbnail.style.backgroundImage = `url('${thumbnailUrl}')`;
                 displayElement._objectUrls.push(thumbnailUrl);
+              } else {
+                // Icon mặc định cho file không phải ảnh
+                thumbnail.style.display = 'flex';
+                thumbnail.style.alignItems = 'center';
+                thumbnail.style.justifyContent = 'center';
+                thumbnail.innerHTML = '📄';
               }
 
               const fileInfo = document.createElement('div');
@@ -2092,7 +2172,12 @@
 
               const fileSize = document.createElement('span');
               fileSize.className = 'file-size';
-              fileSize.textContent = `${(file.size / 1024).toFixed(2)} KB`;
+              // Format size đẹp hơn
+              let sizeText = '';
+              if (file.size < 1024 * 1024) sizeText = `${(file.size / 1024).toFixed(1)} KB`;
+              else sizeText = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
+
+              fileSize.textContent = sizeText;
 
               fileInfo.appendChild(fileName);
               fileInfo.appendChild(fileSize);
@@ -2102,70 +2187,67 @@
 
               displayElement.appendChild(fileItem);
             });
-
-            console.log('Các tệp đã sẵn sàng để tải lên:', files);
           }
         }
 
-        // 5. Thiết lập sự kiện cho input ẩn
+        // 5. Sự kiện Input change
         fileInput.addEventListener('change', (e) => {
           processFiles(e.target.files);
         }, false);
-        
-        // 6. Thiết lập sự kiện cho Công tắc
+
+        // 6. Sự kiện Switcher change
         modeSwitch.addEventListener('change', (e) => {
-            setMode(e.target.checked);
+          setMode(e.target.checked);
         });
 
-        // 7. Thiết lập sự kiện cho Drop Zone (Click)
+        // 7. Sự kiện Click Dropzone
         dropZone.addEventListener('click', () => {
-            fileInput.click();
+          fileInput.click();
         }, false);
-        
-        // 8. Thiết lập sự kiện Kéo thả (Giữ nguyên logic highlight và drop)
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-            }, false);
+
+        // 8. Sự kiện Drag & Drop
+          ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+          dropZone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }, false);
         });
 
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropZone.addEventListener(eventName, () => {
-                dropZone.classList.add('highlight');
-            }, false);
+          ['dragenter', 'dragover'].forEach(eventName => {
+          dropZone.addEventListener(eventName, () => {
+            dropZone.classList.add('highlight');
+          }, false);
         });
 
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, () => {
-                dropZone.classList.remove('highlight');
-            }, false);
+          ['dragleave', 'drop'].forEach(eventName => {
+          dropZone.addEventListener(eventName, () => {
+            dropZone.classList.remove('highlight');
+          }, false);
         });
 
         dropZone.addEventListener('drop', (e) => {
-            const files = e.dataTransfer.files;
-            
-            // Kiểm tra xem người dùng thả thư mục hay tệp
-            const isDirectoryDrop = Array.from(files).some(file => file.webkitRelativePath);
-            
-            // Nếu người dùng thả thư mục nhưng đang ở chế độ Tệp/Ảnh, cảnh báo
-            if (!modeSwitch.checked && isDirectoryDrop) {
-                boxToast("Vui lòng chuyển sang 'Chế độ Thư mục' để kéo thả thư mục.", "warning");
-                dropZone.classList.remove('highlight');
-                return;
-            }
+          const files = e.dataTransfer.files;
+          const isDirectoryDrop = Array.from(files).some(file => file.webkitRelativePath);
 
-            processFiles(files);
+          if (!modeSwitch.checked && isDirectoryDrop) {
+            // Thay boxToast bằng alert hoặc hàm thông báo của bạn
+            if (typeof boxToast === 'function')
+              boxToast("Vui lòng chuyển sang 'Chế độ Thư mục' để kéo thả thư mục.", "warning");
+            else
+              alert("Vui lòng chuyển sang 'Chế độ Thư mục'!");
+
+            dropZone.classList.remove('highlight');
+            return;
+          }
+
+          processFiles(files);
         }, false);
       }
       setupFileUploader();
     }
 
     // Bắt đầu
-    check_version();
-    delay(3000).then(() => {
-      INIT();
-      boxToast("ĐÃ KHỞI TẠO CHƯƠNG TRÌNH", "success");
-      boxAlert("ĐÃ KHỞI TẠO CHƯƠNG TRÌNH");
-    });
+    INIT();
+    boxToast("ĐÃ KHỞI TẠO CHƯƠNG TRÌNH", "success");
+    boxAlert("ĐÃ KHỞI TẠO CHƯƠNG TRÌNH");
   })();
