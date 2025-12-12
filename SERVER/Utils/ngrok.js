@@ -12,7 +12,7 @@ async function updateNgrokURL(url) {
 
   const owner = 'pntan';
   const repo = 'pntan.github.io';
-  const path = 'ngrokServer'; // Đường dẫn file bạn muốn lưu trong repo
+  const path = 'ngrokServer.json'; // Đường dẫn file bạn muốn lưu trong repo
   
   try {
     // BƯỚC 1: Lấy SHA của file cũ (nếu file đã tồn tại)

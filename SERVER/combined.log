@@ -28,3 +28,442 @@
 2025-12-11 15:37:43 [info]: [Socket.IO] Người dùng đã ngắt kết nối: Nnddnf6_05pyCBy2AAAJ
 2025-12-11 15:38:16 [info]: [Socket.IO] Người dùng đã kết nối: Pmw1KbhPzd2lmxT9AAAL
 2025-12-11 15:38:19 [info]: [Socket.IO] Người dùng đã ngắt kết nối: Pmw1KbhPzd2lmxT9AAAL
+2025-12-12 09:13:59 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 09:14:00 [info]: *****************************************************************
+2025-12-12 09:14:00 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 09:14:00 [info]: * LINK CÔNG KHAI: https://d8af5bac5258.ngrok-free.app
+2025-12-12 09:14:00 [info]: *****************************************************************
+2025-12-12 09:15:57 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 09:15:58 [info]: *****************************************************************
+2025-12-12 09:15:58 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 09:15:58 [info]: * LINK CÔNG KHAI: https://4d23c29d66ac.ngrok-free.app
+2025-12-12 09:15:58 [info]: *****************************************************************
+2025-12-12 10:06:58 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 10:07:00 [error]: Lỗi khi kết nối Ngrok:
+2025-12-12 10:07:00 [warn]: Server vẫn chạy ở localhost, nhưng không thể truy cập từ bên ngoài.
+2025-12-12 10:07:16 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 10:07:16 [info]: *****************************************************************
+2025-12-12 10:07:16 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 10:07:16 [info]: * LINK CÔNG KHAI: https://06f38892df7e.ngrok-free.app
+2025-12-12 10:07:16 [info]: *****************************************************************
+2025-12-12 10:16:14 [info]: [Socket.IO] Người dùng đã kết nối: X8Bt1ZaaNYqdXV5LAAAB
+2025-12-12 10:17:42 [info]: [Socket.IO] Người dùng đã ngắt kết nối: X8Bt1ZaaNYqdXV5LAAAB
+2025-12-12 10:17:43 [info]: [Socket.IO] Người dùng đã kết nối: lz6vp03PJ7GA6hV9AAAD
+2025-12-12 10:18:25 [info]: [Socket.IO] Người dùng đã ngắt kết nối: lz6vp03PJ7GA6hV9AAAD
+2025-12-12 10:18:26 [info]: [Socket.IO] Người dùng đã kết nối: 6pRFmuYVYst48csVAAAF
+2025-12-12 10:26:22 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 10:26:23 [info]: *****************************************************************
+2025-12-12 10:26:23 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 10:26:23 [info]: * LINK CÔNG KHAI: https://6fec1a75de8e.ngrok-free.app
+2025-12-12 10:26:23 [info]: *****************************************************************
+2025-12-12 10:27:16 [info]: [Socket.IO] Người dùng đã kết nối: cuFW1xYbwrGLDIp_AAAB
+2025-12-12 10:28:58 [info]: [Socket.IO] Người dùng đã ngắt kết nối: cuFW1xYbwrGLDIp_AAAB
+2025-12-12 10:28:59 [info]: [Socket.IO] Người dùng đã kết nối: pboINjBiVlFU2K4oAAAD
+2025-12-12 10:30:58 [info]: [Socket.IO] Người dùng đã ngắt kết nối: pboINjBiVlFU2K4oAAAD
+2025-12-12 10:30:59 [info]: [Socket.IO] Người dùng đã kết nối: 6tY3PUwrk7g-vKM4AAAF
+2025-12-12 10:31:17 [info]: [Socket.IO] Người dùng đã ngắt kết nối: 6tY3PUwrk7g-vKM4AAAF
+2025-12-12 10:31:18 [info]: [Socket.IO] Người dùng đã kết nối: RoItufdvF_84Cbj5AAAH
+2025-12-12 10:32:24 [info]: [Socket.IO] Người dùng đã ngắt kết nối: RoItufdvF_84Cbj5AAAH
+2025-12-12 10:32:25 [info]: [Socket.IO] Người dùng đã kết nối: MyJI7vT5dH4QU4I8AAAJ
+2025-12-12 10:33:44 [info]: [Socket.IO] Người dùng đã ngắt kết nối: MyJI7vT5dH4QU4I8AAAJ
+2025-12-12 10:33:45 [info]: [Socket.IO] Người dùng đã kết nối: rHxRAxmRHkOEKYq7AAAL
+2025-12-12 10:34:00 [info]: [Socket.IO] Người dùng đã ngắt kết nối: rHxRAxmRHkOEKYq7AAAL
+2025-12-12 10:34:00 [info]: [Socket.IO] Người dùng đã kết nối: 9ZKPJZlXkchp3SNFAAAN
+2025-12-12 10:34:55 [info]: [Socket.IO] Người dùng đã ngắt kết nối: 9ZKPJZlXkchp3SNFAAAN
+2025-12-12 10:34:55 [info]: [Socket.IO] Người dùng đã kết nối: C6muazMCJkzc3-OBAAAP
+2025-12-12 10:35:24 [info]: [Socket.IO] Người dùng đã ngắt kết nối: C6muazMCJkzc3-OBAAAP
+2025-12-12 10:35:25 [info]: [Socket.IO] Người dùng đã kết nối: mXiZMDcwKV352sboAAAR
+2025-12-12 10:35:30 [info]: [Socket.IO] Nhận yêu cầu lưu giờ check-in từ mXiZMDcwKV352sboAAAR: {"name":"TanPhan","date":"2025-12-12","time":"08:08:13"}
+2025-12-12 10:37:57 [info]: [Socket.IO] Người dùng đã ngắt kết nối: mXiZMDcwKV352sboAAAR
+2025-12-12 11:02:02 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 11:02:04 [info]: *****************************************************************
+2025-12-12 11:02:04 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 11:02:04 [info]: * LINK CÔNG KHAI: https://52d6f2fa4824.ngrok-free.app
+2025-12-12 11:02:04 [info]: *****************************************************************
+2025-12-12 11:11:29 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 11:11:30 [error]: Lỗi khi kết nối Ngrok:
+2025-12-12 11:11:30 [warn]: Server vẫn chạy ở localhost, nhưng không thể truy cập từ bên ngoài.
+2025-12-12 11:11:39 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 11:11:39 [error]: Lỗi khi kết nối Ngrok:
+2025-12-12 11:11:39 [warn]: Server vẫn chạy ở localhost, nhưng không thể truy cập từ bên ngoài.
+2025-12-12 11:12:14 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 11:12:15 [info]: *****************************************************************
+2025-12-12 11:12:15 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 11:12:15 [info]: * LINK CÔNG KHAI: https://b9c26dc533a4.ngrok-free.app
+2025-12-12 11:12:15 [info]: *****************************************************************
+2025-12-12 11:12:55 [info]: [Socket.IO] Người dùng đã kết nối: Ryhip2c0k5U-NOVVAAAB
+2025-12-12 11:13:17 [info]: [Socket.IO] Người dùng đã ngắt kết nối: Ryhip2c0k5U-NOVVAAAB
+2025-12-12 11:13:17 [info]: [Socket.IO] Người dùng đã kết nối: Qih3vSFtKv57IiQ7AAAD
+2025-12-12 11:15:17 [info]: [Socket.IO] Người dùng đã ngắt kết nối: Qih3vSFtKv57IiQ7AAAD
+2025-12-12 11:15:18 [info]: [Socket.IO] Người dùng đã kết nối: -7FLGqkH4haJfAvhAAAF
+2025-12-12 11:15:19 [info]: [Socket.IO] Nhận yêu cầu lưu giờ check-in từ -7FLGqkH4haJfAvhAAAF: {"name":"TanPhan","date":"2025-12-12","time":"08:08:13"}
+2025-12-12 11:32:28 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 11:32:30 [info]: *****************************************************************
+2025-12-12 11:32:30 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 11:32:30 [info]: * LINK CÔNG KHAI: https://71d71818aa3d.ngrok-free.app
+2025-12-12 11:32:30 [info]: *****************************************************************
+2025-12-12 11:45:42 [info]: [Socket.IO] Người dùng đã kết nối: 8aeXqh8jxxr7vL1OAAAB
+2025-12-12 11:45:52 [info]: [Socket.IO] Nhận yêu cầu lưu giờ check-in từ 8aeXqh8jxxr7vL1OAAAB: {"name":"TanPhan","date":"2025-12-12","time":"08:08:13"}
+2025-12-12 11:47:44 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 11:47:45 [info]: *****************************************************************
+2025-12-12 11:47:45 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 11:47:45 [info]: * LINK CÔNG KHAI: https://0bc097554417.ngrok-free.app
+2025-12-12 11:47:45 [info]: *****************************************************************
+2025-12-12 11:49:15 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 11:49:16 [info]: *****************************************************************
+2025-12-12 11:49:16 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 11:49:16 [info]: * LINK CÔNG KHAI: https://179de7e858a1.ngrok-free.app
+2025-12-12 11:49:16 [info]: *****************************************************************
+2025-12-12 11:50:03 [info]: [Socket.IO] Người dùng đã kết nối: uJBYI4Jc7EPQN_ROAAAB
+2025-12-12 11:50:09 [info]: [Socket.IO] Nhận yêu cầu lưu giờ check-in từ uJBYI4Jc7EPQN_ROAAAB: {"name":"TanPhan","date":"2025-12-12","time":"08:08:13"}
+2025-12-12 11:51:30 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 11:51:31 [info]: *****************************************************************
+2025-12-12 11:51:31 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 11:51:31 [info]: * LINK CÔNG KHAI: https://77e42c4a849e.ngrok-free.app
+2025-12-12 11:51:31 [info]: *****************************************************************
+2025-12-12 11:52:49 [info]: [Socket.IO] Người dùng đã kết nối: NvwUaKNIOlWF9s_RAAAB
+2025-12-12 11:52:53 [info]: [Socket.IO] Nhận yêu cầu lưu giờ check-in từ NvwUaKNIOlWF9s_RAAAB: {"name":"TanPhan","date":"2025-12-12","time":"08:08:13"}
+2025-12-12 11:55:17 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 11:55:18 [info]: *****************************************************************
+2025-12-12 11:55:18 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 11:55:18 [info]: * LINK CÔNG KHAI: https://5e1cad421226.ngrok-free.app
+2025-12-12 11:55:18 [info]: *****************************************************************
+2025-12-12 11:56:00 [info]: [Socket.IO] Người dùng đã kết nối: 5Vw0AYyg6fTzjugZAAAB
+2025-12-12 11:56:45 [info]: [Socket.IO] Người dùng đã ngắt kết nối: 5Vw0AYyg6fTzjugZAAAB
+2025-12-12 11:56:46 [info]: [Socket.IO] Người dùng đã kết nối: fq37W2wlpLbJq79cAAAD
+2025-12-12 11:56:46 [info]: [Socket.IO] Nhận yêu cầu lưu giờ check-in từ fq37W2wlpLbJq79cAAAD: {"name":"TanPhan","date":"2025-12-12","time":"08:08:13"}
+2025-12-12 13:10:36 [info]: [Socket.IO] Người dùng đã ngắt kết nối: fq37W2wlpLbJq79cAAAD
+2025-12-12 13:10:55 [info]: [Socket.IO] Người dùng đã kết nối: MQbXlosMdrJmUOlEAAAF
+2025-12-12 13:21:25 [info]: [Socket.IO] Người dùng đã kết nối: rQvPqqPZOWA_SCuqAAAH
+2025-12-12 13:21:26 [info]: [Socket.IO] Người dùng đã kết nối: dJ-bAPBStUMSByisAAAJ
+2025-12-12 13:23:07 [info]: [Socket.IO] Người dùng đã kết nối: xKMJFU0z7lKhVEzvAAAL
+2025-12-12 13:23:59 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 13:24:01 [info]: *****************************************************************
+2025-12-12 13:24:01 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 13:24:01 [info]: * LINK CÔNG KHAI: https://a7348ebf9b57.ngrok-free.app
+2025-12-12 13:24:01 [info]: *****************************************************************
+2025-12-12 13:24:47 [info]: [Socket.IO] Người dùng đã kết nối: TDRK9q6J6ETtfeY_AAAB
+2025-12-12 13:24:52 [info]: [Socket.IO] Nhận yêu cầu lưu giờ check-in từ TDRK9q6J6ETtfeY_AAAB: {"name":"TanPhan","date":"2025-12-12","time":"08:08:13"}
+2025-12-12 13:24:54 [info]: [Socket.IO] Nhận yêu cầu lưu giờ check-in từ TDRK9q6J6ETtfeY_AAAB: {"name":"TanPhan","date":"2025-12-12","time":"08:08:13"}
+2025-12-12 13:25:40 [info]: [Socket.IO] Nhận yêu cầu lưu giờ check-in từ TDRK9q6J6ETtfeY_AAAB: {"name":"TanPhan","date":"2025-12-12","time":"08:08:13"}
+2025-12-12 13:30:01 [info]: [Socket.IO] Người dùng đã ngắt kết nối: TDRK9q6J6ETtfeY_AAAB
+2025-12-12 13:35:25 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 13:35:25 [info]: *****************************************************************
+2025-12-12 13:35:25 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 13:35:25 [info]: * LINK CÔNG KHAI: https://a8877bcc7156.ngrok-free.app
+2025-12-12 13:35:25 [info]: *****************************************************************
+2025-12-12 13:36:04 [info]: [Socket.IO] Người dùng đã kết nối: ZHyHbwOwRW-_iaSuAAAB
+2025-12-12 13:36:04 [info]: [Socket.IO] Người dùng đã ngắt kết nối: ZHyHbwOwRW-_iaSuAAAB
+2025-12-12 13:36:05 [info]: [Socket.IO] Người dùng đã kết nối: -eAaEI68SKLH3UEHAAAD
+2025-12-12 13:36:08 [info]: [Socket.IO] Nhận yêu cầu lưu giờ check-in từ -eAaEI68SKLH3UEHAAAD: {"name":"TanPhan","date":"2025-12-12","time":"08:08:13"}
+2025-12-12 13:37:28 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 13:37:29 [info]: *****************************************************************
+2025-12-12 13:37:29 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 13:37:29 [info]: * LINK CÔNG KHAI: https://56d5238d66d3.ngrok-free.app
+2025-12-12 13:37:29 [info]: *****************************************************************
+2025-12-12 13:38:09 [info]: [Socket.IO] Người dùng đã kết nối: BpFkoCUFBjJ_LBtkAAAB
+2025-12-12 13:38:13 [info]: [Socket.IO] Nhận yêu cầu lưu giờ check-in từ BpFkoCUFBjJ_LBtkAAAB: {"name":"TanPhan","date":"2025-12-12","time":"08:08:13"}
+2025-12-12 13:48:39 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 13:48:39 [info]: *****************************************************************
+2025-12-12 13:48:39 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 13:48:39 [info]: * LINK CÔNG KHAI: https://a3e08be192ee.ngrok-free.app
+2025-12-12 13:48:39 [info]: *****************************************************************
+2025-12-12 14:06:26 [info]: [Socket.IO] Người dùng đã kết nối: SRkHHbBMuC6fzHsxAAAB
+2025-12-12 14:06:46 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 14:06:48 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 14:11:18 [info]: [Socket.IO] Người dùng đã ngắt kết nối: SRkHHbBMuC6fzHsxAAAB
+2025-12-12 14:11:19 [info]: [Socket.IO] Người dùng đã kết nối: qUEPw2Xx_qq0CAa1AAAD
+2025-12-12 14:11:19 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 14:11:20 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 14:13:10 [info]: [Socket.IO] Người dùng đã kết nối: sQVTSnAyGCUI8sulAAAF
+2025-12-12 14:13:13 [info]: [Socket.IO] Người dùng đã ngắt kết nối: sQVTSnAyGCUI8sulAAAF
+2025-12-12 14:13:14 [info]: [Socket.IO] Người dùng đã kết nối: 98D-c2GoNow1BzDtAAAH
+2025-12-12 14:13:39 [info]: [Socket.IO] Người dùng đã ngắt kết nối: 98D-c2GoNow1BzDtAAAH
+2025-12-12 14:13:43 [info]: [Socket.IO] Người dùng đã kết nối: kclA32mH12rNkx3uAAAJ
+2025-12-12 14:16:32 [info]: [Socket.IO] Người dùng đã ngắt kết nối: qUEPw2Xx_qq0CAa1AAAD
+2025-12-12 14:16:33 [info]: [Socket.IO] Người dùng đã kết nối: W1W1OJ5ppGA6hNZUAAAL
+2025-12-12 14:16:33 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 14:16:34 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 14:17:33 [info]: [Socket.IO] Người dùng đã ngắt kết nối: W1W1OJ5ppGA6hNZUAAAL
+2025-12-12 14:17:34 [info]: [Socket.IO] Người dùng đã kết nối: DHf8zpkTIfF8-OuXAAAN
+2025-12-12 14:17:34 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 14:17:35 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 14:18:52 [info]: [Socket.IO] Người dùng đã ngắt kết nối: DHf8zpkTIfF8-OuXAAAN
+2025-12-12 14:18:52 [info]: [Socket.IO] Người dùng đã kết nối: QnoIwiwRCcrHJCgCAAAP
+2025-12-12 14:18:53 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 14:18:53 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 14:19:00 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 14:19:01 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 14:19:02 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 14:19:02 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 14:19:05 [info]: [Socket.IO] Người dùng đã ngắt kết nối: QnoIwiwRCcrHJCgCAAAP
+2025-12-12 14:19:06 [info]: [Socket.IO] Người dùng đã kết nối: 1OVEDhE-XQE55So3AAAR
+2025-12-12 14:19:06 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 14:19:06 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 14:20:20 [info]: [Socket.IO] Người dùng đã ngắt kết nối: 1OVEDhE-XQE55So3AAAR
+2025-12-12 14:20:21 [info]: [Socket.IO] Người dùng đã kết nối: DxbCAijdbfb_Irh5AAAT
+2025-12-12 14:20:21 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 14:20:21 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 14:21:54 [info]: [Socket.IO] Người dùng đã ngắt kết nối: DxbCAijdbfb_Irh5AAAT
+2025-12-12 14:21:54 [info]: [Socket.IO] Người dùng đã kết nối: jhkNXY01ZDimTzyiAAAV
+2025-12-12 14:21:54 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 14:21:55 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 14:22:12 [info]: [Socket.IO] Người dùng đã ngắt kết nối: jhkNXY01ZDimTzyiAAAV
+2025-12-12 14:22:13 [info]: [Socket.IO] Người dùng đã kết nối: gb5Yavo1R5EgiESFAAAX
+2025-12-12 14:22:13 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 14:22:13 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 14:22:34 [info]: [Socket.IO] Người dùng đã ngắt kết nối: gb5Yavo1R5EgiESFAAAX
+2025-12-12 14:22:35 [info]: [Socket.IO] Người dùng đã kết nối: CpyeCgqcCJ5b5i3yAAAZ
+2025-12-12 14:22:35 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 14:22:35 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 14:23:58 [info]: [Socket.IO] Người dùng đã ngắt kết nối: CpyeCgqcCJ5b5i3yAAAZ
+2025-12-12 14:23:59 [info]: [Socket.IO] Người dùng đã kết nối: Gg2HaoUBeeFpqxMbAAAb
+2025-12-12 14:23:59 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 14:24:00 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 14:24:02 [info]: [Socket.IO] Người dùng đã ngắt kết nối: Gg2HaoUBeeFpqxMbAAAb
+2025-12-12 14:24:03 [info]: [Socket.IO] Người dùng đã kết nối: DbnWUVyq2Y0EhV5AAAAd
+2025-12-12 14:24:06 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 14:24:07 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 14:24:10 [info]: [Socket.IO] Người dùng đã ngắt kết nối: DbnWUVyq2Y0EhV5AAAAd
+2025-12-12 14:24:11 [info]: [Socket.IO] Người dùng đã kết nối: Cu8CyXk3ZCfCpBEwAAAf
+2025-12-12 14:24:11 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 14:24:11 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 14:24:51 [info]: [Socket.IO] Người dùng đã ngắt kết nối: Cu8CyXk3ZCfCpBEwAAAf
+2025-12-12 14:24:51 [info]: [Socket.IO] Người dùng đã kết nối: g9EwHNW7ls9H1a-uAAAh
+2025-12-12 14:24:51 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 14:24:52 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 14:58:04 [info]: [Socket.IO] Người dùng đã kết nối: DL4OvvuabL5k3JrdAAAj
+2025-12-12 14:58:06 [info]: [Socket.IO] Người dùng đã kết nối: cS86gOkuK2mJ_uqLAAAl
+2025-12-12 14:59:48 [info]: [Socket.IO] Người dùng đã kết nối: q78fmuV0rff5ZqQsAAAn
+2025-12-12 14:59:49 [info]: [Socket.IO] Người dùng đã kết nối: Gh8D-tMCUOXzk6HtAAAp
+2025-12-12 15:00:00 [info]: [Socket.IO] Người dùng đã kết nối: Hf7QWG5LGpx672lyAAAr
+2025-12-12 15:00:16 [info]: [Socket.IO] Người dùng đã kết nối: sM0HJuEvTDXxAmMxAAAt
+2025-12-12 15:00:45 [info]: [Socket.IO] Người dùng đã kết nối: 9c2XdQBOgFMPsP0XAAAv
+2025-12-12 15:01:39 [info]: [Socket.IO] Người dùng đã ngắt kết nối: g9EwHNW7ls9H1a-uAAAh
+2025-12-12 15:01:45 [info]: [Socket.IO] Người dùng đã ngắt kết nối: DL4OvvuabL5k3JrdAAAj
+2025-12-12 15:01:46 [info]: [Socket.IO] Người dùng đã ngắt kết nối: kclA32mH12rNkx3uAAAJ
+2025-12-12 15:01:47 [info]: [Socket.IO] Người dùng đã ngắt kết nối: cS86gOkuK2mJ_uqLAAAl
+2025-12-12 15:01:49 [info]: [Socket.IO] Người dùng đã ngắt kết nối: q78fmuV0rff5ZqQsAAAn
+2025-12-12 15:01:50 [info]: [Socket.IO] Người dùng đã ngắt kết nối: Gh8D-tMCUOXzk6HtAAAp
+2025-12-12 15:01:51 [info]: [Socket.IO] Người dùng đã ngắt kết nối: sM0HJuEvTDXxAmMxAAAt
+2025-12-12 15:01:55 [info]: [Socket.IO] Người dùng đã ngắt kết nối: 9c2XdQBOgFMPsP0XAAAv
+2025-12-12 15:02:00 [info]: [Socket.IO] Người dùng đã ngắt kết nối: Hf7QWG5LGpx672lyAAAr
+2025-12-12 15:03:14 [info]: [Socket.IO] Người dùng đã kết nối: 2bBg_p2S0p_3wiejAAAx
+2025-12-12 15:03:14 [info]: [Socket.IO] Người dùng đã kết nối: G6GZ62BsUNWaT1EiAAAz
+2025-12-12 15:03:15 [info]: [Socket.IO] Người dùng đã kết nối: 8ev-I_zk-g6KKDWPAAA1
+2025-12-12 15:03:15 [info]: [Socket.IO] Người dùng đã kết nối: 9yqc9T3XCJgSau7eAAA3
+2025-12-12 15:03:16 [info]: [Socket.IO] Người dùng đã kết nối: BE_jexc6qcuNs_JxAAA5
+2025-12-12 15:03:19 [info]: [Socket.IO] Người dùng đã ngắt kết nối: BE_jexc6qcuNs_JxAAA5
+2025-12-12 15:03:20 [info]: [Socket.IO] Người dùng đã kết nối: JEAcNpsNltweq1bXAAA7
+2025-12-12 15:05:20 [info]: [Socket.IO] Người dùng đã ngắt kết nối: JEAcNpsNltweq1bXAAA7
+2025-12-12 15:05:22 [info]: [Socket.IO] Người dùng đã kết nối: vouPezKkhiXb7KCJAAA9
+2025-12-12 15:05:32 [info]: [Socket.IO] Người dùng đã ngắt kết nối: vouPezKkhiXb7KCJAAA9
+2025-12-12 15:06:32 [info]: [Socket.IO] Người dùng đã kết nối: DRPlcQxnytwsbdvoAAA_
+2025-12-12 15:06:45 [info]: [Socket.IO] Người dùng đã ngắt kết nối: DRPlcQxnytwsbdvoAAA_
+2025-12-12 15:06:46 [info]: [Socket.IO] Người dùng đã kết nối: e4lYLLuG_fQxzRFGAABB
+2025-12-12 15:06:47 [info]: [Socket.IO] Người dùng đã ngắt kết nối: e4lYLLuG_fQxzRFGAABB
+2025-12-12 15:06:48 [info]: [Socket.IO] Người dùng đã kết nối: Ql_-CeJk8SvNOf1pAABD
+2025-12-12 15:06:51 [info]: [Socket.IO] Người dùng đã ngắt kết nối: Ql_-CeJk8SvNOf1pAABD
+2025-12-12 15:06:56 [info]: [Socket.IO] Người dùng đã kết nối: NQ7c5heIlDt0M3UmAABF
+2025-12-12 15:06:57 [info]: [Socket.IO] Người dùng đã ngắt kết nối: NQ7c5heIlDt0M3UmAABF
+2025-12-12 15:06:58 [info]: [Socket.IO] Người dùng đã kết nối: K4YItOnk0EH5a_DgAABH
+2025-12-12 15:07:18 [info]: [Socket.IO] Người dùng đã kết nối: LsoNA1et5LftrQP-AABJ
+2025-12-12 15:07:20 [info]: [Socket.IO] Người dùng đã kết nối: mZFLebflH6cXVDZbAABL
+2025-12-12 15:07:20 [info]: [Socket.IO] Người dùng đã kết nối: yO0WPeFKYvRxdgHUAABN
+2025-12-12 15:07:56 [info]: [Socket.IO] Người dùng đã ngắt kết nối: K4YItOnk0EH5a_DgAABH
+2025-12-12 15:07:56 [info]: [Socket.IO] Người dùng đã kết nối: 9OVeb8VG9h9qwf6cAABP
+2025-12-12 15:08:04 [info]: [Socket.IO] Người dùng đã ngắt kết nối: 9OVeb8VG9h9qwf6cAABP
+2025-12-12 15:08:05 [info]: [Socket.IO] Người dùng đã kết nối: rgzsi0RIwDnrjqsaAABR
+2025-12-12 15:08:44 [info]: [Socket.IO] Người dùng đã ngắt kết nối: rgzsi0RIwDnrjqsaAABR
+2025-12-12 15:08:52 [info]: [Socket.IO] Người dùng đã kết nối: 5O3AxlNGSoHtzEuOAABT
+2025-12-12 15:09:20 [info]: [Socket.IO] Người dùng đã ngắt kết nối: mZFLebflH6cXVDZbAABL
+2025-12-12 15:09:20 [info]: [Socket.IO] Người dùng đã ngắt kết nối: yO0WPeFKYvRxdgHUAABN
+2025-12-12 15:09:20 [info]: [Socket.IO] Người dùng đã kết nối: Ta-l9ZR7wChPw3J_AABV
+2025-12-12 15:09:21 [info]: [Socket.IO] Người dùng đã kết nối: rOke01YeBdsMoROhAABX
+2025-12-12 15:09:29 [info]: [Socket.IO] Người dùng đã ngắt kết nối: rOke01YeBdsMoROhAABX
+2025-12-12 15:11:09 [info]: [Socket.IO] Người dùng đã ngắt kết nối: Ta-l9ZR7wChPw3J_AABV
+2025-12-12 15:11:10 [info]: [Socket.IO] Người dùng đã kết nối: _dEnwMlGwgckg_k7AABZ
+2025-12-12 15:11:14 [info]: [Socket.IO] Người dùng đã ngắt kết nối: _dEnwMlGwgckg_k7AABZ
+2025-12-12 15:11:16 [info]: [Socket.IO] Người dùng đã kết nối: 7B_UOBxuxrJT3XQHAABb
+2025-12-12 15:11:29 [info]: [Socket.IO] Người dùng đã ngắt kết nối: 7B_UOBxuxrJT3XQHAABb
+2025-12-12 15:11:29 [info]: [Socket.IO] Người dùng đã kết nối: lyXI0JECU2fV5i9wAABd
+2025-12-12 15:11:32 [info]: [Socket.IO] Người dùng đã ngắt kết nối: lyXI0JECU2fV5i9wAABd
+2025-12-12 15:11:32 [info]: [Socket.IO] Người dùng đã kết nối: x01ZF8AQQCx-TZfWAABf
+2025-12-12 15:12:01 [info]: [Socket.IO] Người dùng đã ngắt kết nối: x01ZF8AQQCx-TZfWAABf
+2025-12-12 15:12:01 [info]: [Socket.IO] Người dùng đã kết nối: dwb_BL1V-hIMB_C-AABh
+2025-12-12 15:12:04 [info]: [Socket.IO] Người dùng đã ngắt kết nối: dwb_BL1V-hIMB_C-AABh
+2025-12-12 15:12:04 [info]: [Socket.IO] Người dùng đã kết nối: ta9goM8yCzi27B-RAABj
+2025-12-12 15:12:05 [info]: [Socket.IO] Người dùng đã kết nối: RdkV_QC9upg1UxpJAABl
+2025-12-12 15:13:52 [info]: [Socket.IO] Người dùng đã ngắt kết nối: G6GZ62BsUNWaT1EiAAAz
+2025-12-12 15:13:52 [info]: [Socket.IO] Người dùng đã ngắt kết nối: 5O3AxlNGSoHtzEuOAABT
+2025-12-12 15:13:52 [info]: [Socket.IO] Người dùng đã ngắt kết nối: 9yqc9T3XCJgSau7eAAA3
+2025-12-12 15:13:53 [info]: [Socket.IO] Người dùng đã ngắt kết nối: 8ev-I_zk-g6KKDWPAAA1
+2025-12-12 15:13:53 [info]: [Socket.IO] Người dùng đã ngắt kết nối: 2bBg_p2S0p_3wiejAAAx
+2025-12-12 15:13:54 [info]: [Socket.IO] Người dùng đã ngắt kết nối: RdkV_QC9upg1UxpJAABl
+2025-12-12 15:13:54 [info]: [Socket.IO] Người dùng đã ngắt kết nối: ta9goM8yCzi27B-RAABj
+2025-12-12 15:37:13 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 15:37:13 [info]: *****************************************************************
+2025-12-12 15:37:13 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 15:37:13 [info]: * LINK CÔNG KHAI: https://87b0f5fdfcaf.ngrok-free.app
+2025-12-12 15:37:13 [info]: *****************************************************************
+2025-12-12 15:38:05 [info]: [Socket.IO] Người dùng đã kết nối: 3wcmj4ivaPWu-XXqAAAB
+2025-12-12 15:38:21 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 15:38:22 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 15:47:50 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 15:47:50 [info]: *****************************************************************
+2025-12-12 15:47:50 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 15:47:50 [info]: * LINK CÔNG KHAI: https://7d40a955537c.ngrok-free.app
+2025-12-12 15:47:50 [info]: *****************************************************************
+2025-12-12 15:49:32 [info]: [Socket.IO] Người dùng đã kết nối: XCLxz06djD4wqfNlAAAB
+2025-12-12 15:50:31 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 15:50:31
+2025-12-12 15:54:08 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 15:54:08 [info]: *****************************************************************
+2025-12-12 15:54:08 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 15:54:08 [info]: * LINK CÔNG KHAI: https://37afb132ac62.ngrok-free.app
+2025-12-12 15:54:08 [info]: *****************************************************************
+2025-12-12 15:54:57 [info]: [Socket.IO] Người dùng đã kết nối: i-OZjWFsoLFCgrMwAAAB
+2025-12-12 15:55:57 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 15:55:57
+2025-12-12 15:57:08 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 15:57:07
+2025-12-12 15:57:57 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 15:57:57
+2025-12-12 15:59:33 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 15:59:33
+2025-12-12 15:59:38 [info]: [Socket.IO] Người dùng đã ngắt kết nối: i-OZjWFsoLFCgrMwAAAB
+2025-12-12 15:59:39 [info]: [Socket.IO] Người dùng đã kết nối: tP2EtnTLAIZx8UnyAAAD
+2025-12-12 15:59:39 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 15:59:40 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 16:00:39 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 16:00:39
+2025-12-12 16:01:32 [info]: [Socket.IO] Người dùng đã ngắt kết nối: tP2EtnTLAIZx8UnyAAAD
+2025-12-12 16:01:32 [info]: [Socket.IO] Người dùng đã kết nối: KExeFF9O-_XVTYvCAAAF
+2025-12-12 16:01:32 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 16:01:33 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 16:01:37 [info]: [Socket.IO] Nhận yêu cầu Check-out chủ động từ TanPhan
+2025-12-12 16:01:38 [info]: ✅ [Manual] Đã cập nhật giờ về cho TanPhan tại dòng 1
+2025-12-12 16:02:09 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 16:02:09 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 16:02:09
+2025-12-12 16:02:11 [info]: [Socket.IO] Đã lưu check-in mới cho TanPhan
+2025-12-12 16:02:17 [info]: [Socket.IO] Nhận yêu cầu Check-out chủ động từ TanPhan
+2025-12-12 16:02:18 [info]: ✅ [Manual] Đã cập nhật giờ về cho TanPhan tại dòng 1
+2025-12-12 16:02:32 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 16:02:32
+2025-12-12 16:22:06 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 16:22:06
+2025-12-12 16:22:06 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 16:22:06
+2025-12-12 16:22:10 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 16:22:10
+2025-12-12 16:22:14 [info]: [Socket.IO] Người dùng đã kết nối: XX5EHXBF9W7t99NbAAAI
+2025-12-12 16:22:36 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 16:22:36
+2025-12-12 16:22:38 [info]: [Socket.IO] Người dùng đã ngắt kết nối: KExeFF9O-_XVTYvCAAAF
+2025-12-12 16:22:39 [info]: [Socket.IO] Người dùng đã kết nối: 49LFaciq62EfgL6nAAAK
+2025-12-12 16:22:39 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 16:22:40 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 16:24:39 [info]: [Socket.IO] Người dùng đã ngắt kết nối: XX5EHXBF9W7t99NbAAAI
+2025-12-12 16:25:21 [info]: [Socket.IO] Người dùng đã ngắt kết nối: 49LFaciq62EfgL6nAAAK
+2025-12-12 16:33:46 [info]: [Socket.IO] Người dùng đã kết nối: x3hqQasbogacWV06AAAM
+2025-12-12 16:33:47 [info]: [Socket.IO] Người dùng đã kết nối: ofK28Yozfs4F8pCMAAAO
+2025-12-12 16:34:37 [info]: [Socket.IO] Người dùng đã ngắt kết nối: x3hqQasbogacWV06AAAM
+2025-12-12 16:34:37 [info]: [Socket.IO] Người dùng đã kết nối: 4Yi8myzKvexLVVNlAAAQ
+2025-12-12 16:34:37 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 16:34:38 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 16:43:38 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 16:43:38
+2025-12-12 16:43:41 [info]: [Socket.IO] Người dùng đã ngắt kết nối: 4Yi8myzKvexLVVNlAAAQ
+2025-12-12 16:43:41 [info]: [Socket.IO] Người dùng đã kết nối: tLADdl37d3KT6M-GAAAS
+2025-12-12 16:43:41 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 16:43:42 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 16:45:05 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 16:45:05
+2025-12-12 16:45:54 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 16:45:54
+2025-12-12 16:52:59 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 16:52:59
+2025-12-12 16:53:02 [info]: [Socket.IO] Người dùng đã ngắt kết nối: tLADdl37d3KT6M-GAAAS
+2025-12-12 16:53:03 [info]: [Socket.IO] Người dùng đã kết nối: iXCgZM4NUZfakQFAAAAU
+2025-12-12 16:53:03 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 16:53:04 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 16:54:03 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 16:54:03
+2025-12-12 16:55:57 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 16:55:57
+2025-12-12 16:56:03 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 16:56:03
+2025-12-12 16:56:15 [info]: [Socket.IO] Người dùng đã ngắt kết nối: iXCgZM4NUZfakQFAAAAU
+2025-12-12 16:56:16 [info]: [Socket.IO] Người dùng đã kết nối: hvw3wRY2ZSHmPHU_AAAW
+2025-12-12 16:56:16 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 16:56:17 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 16:56:44 [info]: Đã nhận thành công 1 file: 1765533404030-CBZ066-CX788.png
+2025-12-12 16:56:53 [info]: Đã nhận thành công 1 file: 1765533412887-CBZ066-CX809.png
+2025-12-12 16:57:15 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 16:57:15
+2025-12-12 16:57:46 [info]: [Socket.IO] Người dùng đã ngắt kết nối: hvw3wRY2ZSHmPHU_AAAW
+2025-12-12 16:57:47 [info]: [Socket.IO] Người dùng đã kết nối: ta5o7a9b3GlIgM_lAAAY
+2025-12-12 16:57:47 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 16:57:48 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 16:58:34 [info]: [Socket.IO] Người dùng đã ngắt kết nối: ta5o7a9b3GlIgM_lAAAY
+2025-12-12 16:58:35 [info]: [Socket.IO] Người dùng đã kết nối: qjbaAulaqiHajj-zAAAa
+2025-12-12 16:58:35 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 16:58:36 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 16:59:45 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 16:59:45
+2025-12-12 16:59:49 [info]: [Socket.IO] Người dùng đã ngắt kết nối: qjbaAulaqiHajj-zAAAa
+2025-12-12 16:59:50 [info]: [Socket.IO] Người dùng đã kết nối: fCrV9WvKROq6-uwGAAAc
+2025-12-12 16:59:50 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 16:59:50 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 17:00:58 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 17:00:58
+2025-12-12 17:01:01 [info]: [Socket.IO] Người dùng đã ngắt kết nối: fCrV9WvKROq6-uwGAAAc
+2025-12-12 17:01:02 [info]: [Socket.IO] Người dùng đã kết nối: jFoUpwblCajGoYdNAAAe
+2025-12-12 17:01:02 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 17:01:03 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 17:02:17 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 17:02:17
+2025-12-12 17:02:21 [info]: [Socket.IO] Người dùng đã kết nối: QhiPYOg4OV11WINZAAAg
+2025-12-12 17:02:21 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 17:02:22 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 17:02:32 [info]: [Socket.IO] Người dùng đã ngắt kết nối: QhiPYOg4OV11WINZAAAg
+2025-12-12 17:03:02 [info]: [Socket.IO] Nhận tín hiệu IAM_ALIVE từ TanPhan - 2025-12-12 17:03:02
+2025-12-12 17:18:31 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 17:18:32 [info]: *****************************************************************
+2025-12-12 17:18:32 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 17:18:32 [info]: * LINK CÔNG KHAI: https://6023575e669b.ngrok-free.app
+2025-12-12 17:18:32 [info]: *****************************************************************
+2025-12-12 17:27:10 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 17:27:11 [info]: *****************************************************************
+2025-12-12 17:27:11 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 17:27:11 [info]: * LINK CÔNG KHAI: https://7d2d33f2d692.ngrok-free.app
+2025-12-12 17:27:11 [info]: *****************************************************************
+2025-12-12 17:27:48 [info]: [Socket.IO] Người dùng đã kết nối: iTHMXWzZqQrWMcbsAAAB
+2025-12-12 17:27:57 [info]: [Socket.IO] Chat request từ TanPhan: xin chào bạn có thể làm gì?
+2025-12-12 17:27:57 [info]: [Socket.IO] Đã trả lời chat cho TanPhan
+2025-12-12 17:29:17 [info]: [Ping] TanPhan - 17:29:17
+2025-12-12 17:29:20 [info]: [Socket.IO] Người dùng đã ngắt kết nối: iTHMXWzZqQrWMcbsAAAB
+2025-12-12 17:29:21 [info]: [Socket.IO] Người dùng đã kết nối: qeeCGvzuxUxX4xn1AAAD
+2025-12-12 17:29:21 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 17:29:22 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 17:29:30 [info]: [Socket.IO] Chat request từ TanPhan: xin chào bạn có thể làm những gì?
+2025-12-12 17:29:30 [info]: [Socket.IO] Đã trả lời chat cho TanPhan
+2025-12-12 17:31:05 [info]: [Ping] TanPhan - 17:31:05
+2025-12-12 17:31:09 [info]: [Socket.IO] Người dùng đã ngắt kết nối: qeeCGvzuxUxX4xn1AAAD
+2025-12-12 17:31:09 [info]: [Socket.IO] Người dùng đã kết nối: gqUJGiZUnMOVhO76AAAF
+2025-12-12 17:31:10 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 17:31:10 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 17:31:26 [info]: [Socket.IO] Chat request từ TanPhan: xin chào bạn có thể làm gì?
+2025-12-12 17:31:26 [info]: [Socket.IO] Đã trả lời chat cho TanPhan
+2025-12-12 17:33:11 [info]: [Auto Check-out] TanPhan offline quá lâu. Chốt giờ về: 17:31:05
+2025-12-12 17:33:12 [info]: ✅ [Auto] Đã chốt giờ về cho TanPhan
+2025-12-12 17:33:27 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 17:33:27 [info]: *****************************************************************
+2025-12-12 17:33:27 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 17:33:27 [info]: * LINK CÔNG KHAI: https://c0314d862b2e.ngrok-free.app
+2025-12-12 17:33:27 [info]: *****************************************************************
+2025-12-12 17:33:52 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 17:33:52 [info]: *****************************************************************
+2025-12-12 17:33:52 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 17:33:52 [info]: * LINK CÔNG KHAI: https://49af07f859fd.ngrok-free.app
+2025-12-12 17:33:52 [info]: *****************************************************************
+2025-12-12 17:34:46 [info]: [Socket.IO] Người dùng đã kết nối: mOWdNoARA4b4fpY2AAAB
+2025-12-12 17:34:55 [info]: [Socket.IO] Chat request từ TanPhan: xin chào bạn có thể làm gì?
+2025-12-12 17:34:55 [info]: [Socket.IO] Đã trả lời chat cho TanPhan
+2025-12-12 17:35:42 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 17:35:43 [info]: *****************************************************************
+2025-12-12 17:35:43 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 17:35:43 [info]: * LINK CÔNG KHAI: https://91937a1650a6.ngrok-free.app
+2025-12-12 17:35:43 [info]: *****************************************************************
+2025-12-12 17:36:16 [info]: [Socket.IO] Người dùng đã kết nối: 5Z0U02sIYWbYAAMQAAAB
+2025-12-12 17:36:27 [info]: [Socket.IO] Chat request từ TanPhan: xin chào bạn có thể làm gì?
+2025-12-12 17:36:28 [info]: [Socket.IO] Đã trả lời chat cho TanPhan
+2025-12-12 17:36:46 [info]: [Socket.IO] Người dùng đã kết nối: -NswQiy37oMSg18wAAAD
+2025-12-12 17:36:46 [info]: [Socket.IO] TanPhan yêu cầu check-in ngày 2025-12-12
+2025-12-12 17:36:47 [warn]: [Socket.IO] Bỏ qua: TanPhan đã check-in ngày 2025-12-12 trước đó.
+2025-12-12 17:37:25 [info]: --- Máy chủ Express đang chạy tại http://localhost:2105 ---
+2025-12-12 17:37:26 [info]: *****************************************************************
+2025-12-12 17:37:26 [info]: * Ngrok Tunnel đã sẵn sàng!
+2025-12-12 17:37:26 [info]: * LINK CÔNG KHAI: https://2ec1b5fa8da8.ngrok-free.app
+2025-12-12 17:37:26 [info]: *****************************************************************
+2025-12-12 17:38:16 [info]: [Socket.IO] Người dùng đã kết nối: 9Ikx1rzBCR3IMPiwAAAB
+2025-12-12 17:38:24 [info]: [Socket.IO] Chat request từ TanPhan: xin chào bạn có thể làm gì?
+2025-12-12 17:38:24 [info]: [Socket.IO] Đã trả lời chat cho TanPhan

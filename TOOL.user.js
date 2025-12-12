@@ -26,10 +26,10 @@
     const X_LIMIT = 3;
 
     var socket = null;
-    const API_GOOGLE = "AIzaSyCAOYF7rlgN3icGwvsEvq85loGuG2P3yW8";
+    var CURRENT_CHAT_MODE = 'ai'; // 'ai' hoặc 'global'
 
     // --- ĐÃ CẬP NHẬT: Thêm nút action-btn vào gia_duoi_layout ---
-    const HTML_UI = `<style>:root{--tp-font:'Segoe UI',system-ui,-apple-system,sans-serif;--tp-radius-xl:24px;--tp-radius-md:16px;--tp-radius-sm:12px;--tp-primary:#3b82f6;--tp-primary-rgb:59,130,246;--tp-secondary:#64748b;--tp-accent:#60a5fa;--tp-glass-bg:rgba(255, 255, 255, 0.75);--tp-glass-border:rgba(255, 255, 255, 0.6);--tp-glass-highlight:rgba(255, 255, 255, 0.4);--tp-glass-shadow:0 8px 32px 0 rgba(31, 38, 135, 0.15);--tp-blur:blur(16px) saturate(180%);--tp-text-main:#1e293b;--tp-text-sub:#475569;--tp-text-inv:#ffffff;--tp-ease:cubic-bezier(0.34, 1.56, 0.64, 1);--tp-ease-smooth:cubic-bezier(0.4, 0, 0.2, 1)}.shopee-theme{--tp-primary:#ee4d2d;--tp-primary-rgb:238,77,45;--tp-accent:#ff7350;--tp-glass-shadow:0 8px 32px 0 rgba(238, 77, 45, 0.15)}.lazada-theme{--tp-primary:#0f146d;--tp-primary-rgb:15,20,109;--tp-accent:#f5008f;--tp-glass-shadow:0 8px 32px 0 rgba(15, 20, 109, 0.2)}.tiktok-theme{--tp-primary:#000000;--tp-primary-rgb:0,0,0;--tp-accent:#25F4EE;--tp-secondary:#FE2C55;--tp-glass-shadow:0 8px 32px 0 rgba(0, 0, 0, 0.2)}.dark-mode-active,.tp-container .btn-theme.dark-mode.active~.content-screen{--tp-glass-bg:rgba(17, 25, 40, 0.85);--tp-glass-border:rgba(255, 255, 255, 0.1);--tp-text-main:#f1f5f9;--tp-text-sub:#94a3b8;--tp-glass-shadow:0 8px 32px 0 rgba(0, 0, 0, 0.5)}.tp-container{font-family:var(--tp-font);box-sizing:border-box;color:var(--tp-text-main)}.tp-container *{box-sizing:border-box;outline:0;user-select:none;-webkit-font-smoothing:antialiased}.tp-container.tp-main{position:fixed;top:2.5vh;bottom:2.5vh;left:0;width:clamp(360px,35vw,550px);background:var(--tp-glass-bg);backdrop-filter:var(--tp-blur);-webkit-backdrop-filter:var(--tp-blur);border:1px solid var(--tp-glass-border);box-shadow:var(--tp-glass-shadow);border-radius:0 var(--tp-radius-xl) var(--tp-radius-xl) 0;z-index:999999999;display:flex;flex-direction:column;padding:24px;transform:translateX(-120%);transition:transform .6s var(--tp-ease),opacity .4s ease;opacity:0;pointer-events:none}.tp-container.tp-main.active,.tp-container.tp-main:hover{transform:translateX(0);opacity:1;pointer-events:auto}.tp-container .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-shrink:0}.tp-container .header .time{font-size:1.1rem;font-weight:800;background:linear-gradient(135deg,var(--tp-primary),var(--tp-accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 4px rgba(var(--tp-primary-rgb), .2))}.tp-container .theme-switcher{background:rgba(0,0,0,.05);border-radius:30px;padding:3px;display:flex;position:relative;width:64px;height:32px;box-shadow:inset 0 2px 4px rgba(0,0,0,.05)}.tp-container .btn-theme{width:26px;height:26px;border-radius:50%;border:none;background:0 0;cursor:pointer;font-size:14px;position:absolute;top:3px;transition:.4s var(--tp-ease);display:flex;align-items:center;justify-content:center;opacity:.5}.tp-container .btn-theme.active{background:#fff;opacity:1;transform:scale(1.1);box-shadow:0 2px 8px rgba(0,0,0,.15)}.tp-container .btn-theme.light-mode{left:4px}.tp-container .btn-theme.dark-mode{right:4px}.tp-container .btn-theme.light-mode.active{left:4px}.tp-container .btn-theme.dark-mode.active{right:4px}.tp-container .list-screen{display:flex;gap:8px;margin-bottom:20px;padding:4px;background:rgba(255,255,255,.3);border-radius:var(--tp-radius-md)}.tp-container .box-screen{flex:1;text-align:center;padding:8px 0;border-radius:var(--tp-radius-sm);cursor:pointer;transition:all .3s var(--tp-ease);font-size:1.2rem;color:var(--tp-text-sub)}.tp-container .box-screen:hover{background:rgba(255,255,255,.5);transform:translateY(-2px)}.tp-container .box-screen.active{background:#fff;color:var(--tp-primary);box-shadow:0 4px 12px rgba(0,0,0,.05);transform:translateY(0) scale(1.05)}.tp-container .content-screen{flex:1;position:relative;overflow:hidden;background:rgba(255,255,255,.4);border-radius:var(--tp-radius-md);border:1px solid rgba(255,255,255,.3)}.tp-container .screen{position:absolute;width:100%;height:100%;padding:15px;overflow-y:auto;transition:transform .5s var(--tp-ease-smooth),opacity .4s;opacity:0;pointer-events:none;display:flex;flex-direction:column}.tp-container .screen.active{transform:translateX(0);opacity:1;pointer-events:auto}.tp-container .screen:not(.active){transform:translateX(50px)}.tp-container .list-function{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;width:100%;align-content:start}.tp-container .list-function:not(.active){display:none}.tp-container .box-function{background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.5);border-radius:var(--tp-radius-sm);padding:15px 10px;text-align:center;cursor:pointer;min-height:90px;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:all .3s var(--tp-ease);box-shadow:0 4px 6px rgba(0,0,0,.02)}.tp-container .box-function:hover{background:#fff;transform:translateY(-5px);border-color:var(--tp-primary);color:var(--tp-primary);box-shadow:0 10px 20px rgba(var(--tp-primary-rgb),.15)}.tp-container .layout-function{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,.85);backdrop-filter:blur(10px);z-index:20;transform:translateX(100%);transition:.4s var(--tp-ease-smooth);display:flex;flex-direction:column;padding:20px}.tp-container .layout-function.active{transform:translateX(0)}.tp-container .back{align-self:flex-start;margin-bottom:20px;padding:8px 16px;border-radius:20px;background:rgba(0,0,0,.05);cursor:pointer;font-weight:600;color:var(--tp-text-sub);transition:.2s;display:flex;align-items:center;gap:6px}.tp-container .back:before{content:'❮';font-size:.8em}.tp-container .back:hover{background:var(--tp-primary);color:#fff;padding-right:20px}.tp-container .box{display:none;animation:slideUp .4s var(--tp-ease);height:100%;overflow-y:auto}.tp-container .box.show{display:block}@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.tp-container input,.tp-container textarea{width:100%;padding:12px 16px;margin-bottom:12px;border:2px solid transparent;border-radius:var(--tp-radius-sm);background:rgba(255,255,255,.7);box-shadow:inset 0 2px 4px rgba(0,0,0,.03);font-size:14px;transition:.3s;color:var(--tp-text-main)}.tp-container input:focus,.tp-container textarea:focus{background:#fff;border-color:var(--tp-primary);box-shadow:0 0 0 4px rgba(var(--tp-primary-rgb),.1)}.tp-container .platform{background:rgba(0,0,0,.04);border-radius:var(--tp-radius-md);padding:4px;position:relative;display:flex;margin-bottom:20px!important}.tp-container .platform label{flex:1;text-align:center;padding:10px;z-index:2;cursor:pointer;transition:.3s;color:var(--tp-text-sub);font-weight:700}.tp-container .platform label.active{color:#fff}.tp-container .highlight_choice{position:absolute;top:4px;left:4px;bottom:4px;width:calc(50% - 4px);background:var(--tp-primary);border-radius:var(--tp-radius-sm);transition:transform .4s var(--tp-ease);box-shadow:0 2px 10px rgba(var(--tp-primary-rgb),.3)}.tp-container .platform .shopee.active~.highlight_choice{transform:translateX(0)}.tp-container .platform .tiktok.active~.highlight_choice{transform:translateX(100%);margin-left:0}.tp-container button.action-btn{width:100%;padding:14px;margin-top:15px;border:none;background:linear-gradient(135deg,var(--tp-primary),var(--tp-accent));color:#fff;font-weight:700;font-size:15px;letter-spacing:.5px;border-radius:var(--tp-radius-md);cursor:pointer;box-shadow:0 6px 20px rgba(var(--tp-primary-rgb),.3);transition:all .3s var(--tp-ease);position:relative;overflow:hidden}.tp-container button.action-btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 10px 25px rgba(var(--tp-primary-rgb),.4)}.tp-container button.action-btn:active{transform:scale(.98)}.tp-container button.action-btn:after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);transition:.5s}.tp-container button.action-btn:hover:after{left:100%}.tp-container .dynamic-upload-container{margin-top:15px}.tp-container .upload-mode-switcher{display:flex;background:rgba(0,0,0,.05);border-radius:12px;padding:4px;position:relative;margin-bottom:15px;border:1px solid rgba(255,255,255,.2)}.tp-container .upload-mode-switcher label{flex:1;text-align:center;padding:8px 10px;font-size:13px;cursor:pointer;z-index:2;transition:color .3s var(--tp-ease);color:var(--tp-text-sub);font-weight:600;border-radius:8px}.tp-container .upload-mode-switcher:before{content:'';position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:transform .3s var(--tp-ease);z-index:1}.tp-container .upload-mode-switcher:has(#modeSwitch:checked):before{transform:translateX(100%)}.tp-container .upload-mode-switcher label.active-mode{color:var(--tp-primary)}.tp-container .drop-zone{border:2px dashed rgba(148,163,184,.4);background:rgba(255,255,255,.3);border-radius:var(--tp-radius-md);padding:40px 20px;text-align:center;transition:all .3s var(--tp-ease);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px;position:relative;overflow:hidden}.tp-container .drop-zone.highlight,.tp-container .drop-zone:hover{border-color:var(--tp-primary);background:rgba(var(--tp-primary-rgb),.08);transform:translateY(-2px);box-shadow:0 8px 20px rgba(var(--tp-primary-rgb),.15)}.tp-container .drop-zone i{font-size:40px;color:var(--tp-secondary);transition:.3s;margin-bottom:5px}.tp-container .drop-zone:hover i{color:var(--tp-primary);transform:scale(1.1)}.tp-container .drop-zone p{margin:0;font-size:14px;color:var(--tp-text-main);font-weight:600}.tp-container .file-list{margin-top:15px;max-height:250px;overflow-y:auto;padding-right:5px;display:flex;flex-direction:column;gap:8px}.tp-container .file-item{display:flex;align-items:center;padding:10px;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.4);border-radius:var(--tp-radius-sm);transition:.2s var(--tp-ease);animation:fadeInItem .3s ease forwards}@keyframes fadeInItem{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}.tp-container .file-item:hover{background:#fff;border-color:var(--tp-primary);transform:translateX(4px);box-shadow:0 4px 12px rgba(0,0,0,.05)}.tp-container .file-thumbnail{width:44px;height:44px;border-radius:8px;margin-right:12px;background-color:#f1f5f9;background-size:cover;background-position:center;flex-shrink:0;border:1px solid rgba(0,0,0,.05)}.tp-container .file-info{display:flex;flex-direction:column;overflow:hidden}.tp-container .file-name{font-size:13px;font-weight:600;color:var(--tp-text-main);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tp-container .file-size{font-size:11px;color:var(--tp-text-sub);margin-top:2px}.tp-container.tp-toast{top:20px;left:50%;transform:translateX(-50%);width:auto;max-width:90vw;z-index:9999999999}.tp-container.tp-toast .toast{background:rgba(255,255,255,.95);backdrop-filter:blur(12px);padding:12px 24px;border-radius:50px;margin-bottom:10px;box-shadow:0 10px 30px rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.5);color:var(--tp-text-main);font-weight:600;display:flex;align-items:center;gap:10px;transform:translateY(-20px) scale(.9);opacity:0;transition:.4s var(--tp-ease)}.tp-container.tp-toast .toast.show{transform:translateY(0) scale(1);opacity:1}.tp-container.tp-toast .toast:before{content:'';width:10px;height:10px;border-radius:50%;display:block}.tp-container.tp-toast .toast.success:before{background:#10b981;box-shadow:0 0 10px #10b981}.tp-container.tp-toast .toast.error:before{background:#ef4444;box-shadow:0 0 10px #ef4444}.tp-container.tp-toast .toast.warning:before{background:#f59e0b;box-shadow:0 0 10px #f59e0b}.tp-container.tp-toast .toast.info:before{background:var(--tp-primary);box-shadow:0 0 10px var(--tp-primary)}</style><div class="tp-container tp-toast"></div><div class="tp-container tp-main"><div class="header"><div class="time">00:00:00</div><div class="help">Hướng Dẫn</div><div class="theme-switcher"><button class="btn-theme light-mode active"data-theme="light">☀️</button> <button class="btn-theme dark-mode"data-theme="dark">🌙</button></div></div><div class="list-screen"><div class="box-screen setting"data-screen="setting">⚙️</div><div class="box-screen main"data-screen="main">🏠</div><div class="box-screen online"data-screen="online">📡</div></div><div class="content-screen"><div class="screen screen-setting"><div class="box custom-name show"><p>Tên Gọi Của Bạn</p><input class="input-custom-name"placeholder="Nhập tên gọi..."></div></div><div class="screen screen-main active"><div class="list-function active"></div><div class="layout-function"><div class="back">Quay lại Menu</div><div class="box flash_sale"id="flash_sale_layout"><h3 style="margin-bottom:20px;text-align:center;color:var(--tp-primary)">Thiết Lập Flash Sale</h3><div class="program_id"style="margin-bottom:15px"><label style="font-size:.9em;color:var(--tp-text-sub);display:block;margin-bottom:5px">Link Chương Trình</label> <input class="product_url"placeholder="Paste link hoặc ID vào đây..."><div class="platform flex flex-row"><label class="shopee"for="shopee">SHOPEE</label> <label class="tiktok"for="tiktok">TIKTOK</label><div class="highlight_choice"></div></div></div><div class="input_prompt"><div class="prompt_value shopee_prompt flex flex-column"><input type="number"class="value-count"placeholder="Số lượng khung (VD: 5)"> <textarea class="value-flashsale"placeholder="Nhập tên sản phẩm & số lượng..."></textarea></div><div class="prompt_value tiktok_prompt"><textarea placeholder="Nhập thời gian chạy..."class="value-time"></textarea></div></div><button class="excuse-button action-btn"data-action="flash_sale">Kích Hoạt Flash Sale 🚀</button></div><div class="box doi_hinh_phan_loai show"id="doi_hinh_phan_loai_layout"><h3 style="margin-bottom:20px;text-align:center;color:var(--tp-primary)">Đổi Hình Phân Loại</h3><div class="product_info"><label style="font-size:.9em;color:var(--tp-text-sub);display:block;margin-bottom:5px">Danh sách ID Sản Phẩm</label> <textarea type="text"class="product_url"placeholder="Mỗi dòng 1 ID sản phẩm..."></textarea></div><div class="input_prompt"><div class="dynamic-upload-container"></div></div><button class="excuse-button action-btn"data-action="doi_hinh_phan_loai">Bắt Đầu Xử Lý ⚡</button></div></div></div><div class="screen screen-online"><h3 style="margin-bottom:15px;color:var(--tp-accent)">Kết Nối Server</h3><p style="color:var(--tp-text-sub)">Trạng thái Socket.IO...</p></div></div></div>`;
+    const HTML_UI = `<style>:root{--tp-font:'Segoe UI',system-ui,-apple-system,sans-serif;--tp-radius-xl:24px;--tp-radius-md:16px;--tp-radius-sm:12px;--tp-primary:#3b82f6;--tp-primary-rgb:59,130,246;--tp-secondary:#64748b;--tp-accent:#60a5fa;--tp-glass-bg:rgba(255, 255, 255, 0.75);--tp-glass-border:rgba(255, 255, 255, 0.6);--tp-glass-highlight:rgba(255, 255, 255, 0.4);--tp-glass-shadow:0 8px 32px 0 rgba(31, 38, 135, 0.15);--tp-blur:blur(16px) saturate(180%);--tp-text-main:#1e293b;--tp-text-sub:#475569;--tp-text-inv:#ffffff;--tp-ease:cubic-bezier(0.34, 1.56, 0.64, 1);--tp-ease-smooth:cubic-bezier(0.4, 0, 0.2, 1);--tp-chat-user-bg:var(--tp-primary);--tp-chat-ai-bg:rgba(255, 255, 255, 0.8);--tp-chat-border:rgba(255, 255, 255, 0.5)}.shopee-theme{--tp-primary:#ee4d2d;--tp-primary-rgb:238,77,45;--tp-accent:#ff7350;--tp-glass-shadow:0 8px 32px 0 rgba(238, 77, 45, 0.15)}.lazada-theme{--tp-primary:#0f146d;--tp-primary-rgb:15,20,109;--tp-accent:#f5008f;--tp-glass-shadow:0 8px 32px 0 rgba(15, 20, 109, 0.2)}.tiktok-theme{--tp-primary:#000000;--tp-primary-rgb:0,0,0;--tp-accent:#25F4EE;--tp-secondary:#FE2C55;--tp-glass-shadow:0 8px 32px 0 rgba(0, 0, 0, 0.2)}.dark-mode-active,.tp-container .btn-theme.dark-mode.active~.content-screen{--tp-glass-bg:rgba(17, 25, 40, 0.85);--tp-glass-border:rgba(255, 255, 255, 0.1);--tp-text-main:#f1f5f9;--tp-text-sub:#94a3b8;--tp-glass-shadow:0 8px 32px 0 rgba(0, 0, 0, 0.5)}.tp-container{font-family:var(--tp-font);box-sizing:border-box;color:var(--tp-text-main)}.tp-container *{box-sizing:border-box;outline:0;user-select:none;-webkit-font-smoothing:antialiased}.tp-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;border:none;border-radius:var(--tp-radius-md);font-weight:600;font-size:14px;cursor:pointer;transition:all .2s var(--tp-ease);background:rgba(255,255,255,.5);color:var(--tp-text-main);box-shadow:0 2px 5px rgba(0,0,0,.05)}.tp-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1);background:#fff}.tp-btn:active{transform:scale(.96)}.tp-btn.primary{background:var(--tp-primary);color:#fff}.tp-btn.primary:hover{background:var(--tp-accent);box-shadow:0 4px 15px rgba(var(--tp-primary-rgb),.4)}.tp-btn.danger{background:#ef4444;color:#fff}.tp-btn.ghost{background:0 0;box-shadow:none}.tp-btn.ghost:hover{background:rgba(0,0,0,.05)}.tp-btn.icon-only{padding:8px;width:36px;height:36px;border-radius:50%}.tp-input,.tp-select{padding:10px 14px;border-radius:var(--tp-radius-sm);border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.6);color:var(--tp-text-main);font-size:14px;outline:0;width:100%;transition:.3s}.tp-input:focus,.tp-select:focus{background:#fff;border-color:var(--tp-primary)}.tp-tag{display:inline-block;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;background:rgba(0,0,0,.1);color:var(--tp-text-sub)}.tp-tag.blue{background:rgba(59,130,246,.15);color:#2563eb}.tp-tag.red{background:rgba(239,68,68,.15);color:#dc2626}.tp-checkbox{display:inline-flex;align-items:center;cursor:pointer;margin-right:15px;position:relative}.tp-checkbox input{display:none}.tp-checkbox .checkmark{width:20px;height:20px;background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.5);border-radius:6px;margin-right:10px;transition:all .3s;display:flex;align-items:center;justify-content:center}.tp-checkbox input:checked~.checkmark{background:var(--tp-primary);border-color:var(--tp-primary)}.tp-checkbox .checkmark:after{content:'✔';font-size:12px;color:#fff;transform:scale(0);transition:.2s}.tp-checkbox input:checked~.checkmark:after{transform:scale(1)}.tp-checkbox .label-text{font-size:14px;font-weight:600}.tp-container.tp-main{position:fixed;top:2.5vh;bottom:2.5vh;left:0;width:clamp(360px,35vw,550px);background:var(--tp-glass-bg);backdrop-filter:var(--tp-blur);-webkit-backdrop-filter:var(--tp-blur);border:1px solid var(--tp-glass-border);box-shadow:var(--tp-glass-shadow);border-radius:0 var(--tp-radius-xl) var(--tp-radius-xl) 0;z-index:999999999;display:flex;flex-direction:column;padding:24px;transform:translateX(-120%);transition:transform .6s var(--tp-ease),opacity .4s ease;opacity:0;pointer-events:none}.tp-container.tp-main.active,.tp-container.tp-main:hover{transform:translateX(0);opacity:1;pointer-events:auto}.tp-container .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-shrink:0}.tp-container .header .time{font-size:1.1rem;font-weight:800;background:linear-gradient(135deg,var(--tp-primary),var(--tp-accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}.tp-container .theme-switcher{background:rgba(0,0,0,.05);border-radius:30px;padding:3px;display:flex;position:relative;width:64px;height:32px}.tp-container .btn-theme{width:26px;height:26px;border-radius:50%;border:none;background:0 0;cursor:pointer;position:absolute;top:3px;transition:.4s;display:flex;align-items:center;justify-content:center;opacity:.5}.tp-container .btn-theme.active{background:#fff;opacity:1;transform:scale(1.1);box-shadow:0 2px 8px rgba(0,0,0,.15)}.tp-container .btn-theme.light-mode{left:4px}.tp-container .btn-theme.dark-mode{right:4px}.tp-container .list-screen{display:flex;gap:8px;margin-bottom:20px;padding:4px;background:rgba(255,255,255,.3);border-radius:var(--tp-radius-md)}.tp-container .box-screen{flex:1;text-align:center;padding:8px 0;border-radius:var(--tp-radius-sm);cursor:pointer;transition:all .3s;font-size:1.2rem;color:var(--tp-text-sub)}.tp-container .box-screen:hover{background:rgba(255,255,255,.5);transform:translateY(-2px)}.tp-container .box-screen.active{background:#fff;color:var(--tp-primary);box-shadow:0 4px 12px rgba(0,0,0,.05);transform:translateY(0) scale(1.05)}.tp-container .content-screen{flex:1;position:relative;overflow:hidden;background:rgba(255,255,255,.4);border-radius:var(--tp-radius-md);border:1px solid rgba(255,255,255,.3)}.tp-container .screen{position:absolute;width:100%;height:100%;padding:15px;overflow-y:auto;transition:transform .5s var(--tp-ease-smooth),opacity .4s;opacity:0;pointer-events:none;display:flex;flex-direction:column}.tp-container .screen.active{transform:translateX(0);opacity:1;pointer-events:auto}.tp-container .screen:not(.active){transform:translateX(50px)}.tp-container .list-function{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;width:100%;align-content:start}.tp-container .list-function:not(.active){display:none}.tp-container .box-function{background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.5);border-radius:var(--tp-radius-sm);padding:15px 10px;text-align:center;cursor:pointer;min-height:90px;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:all .3s;box-shadow:0 4px 6px rgba(0,0,0,.02)}.tp-container .box-function:hover{background:#fff;transform:translateY(-5px);border-color:var(--tp-primary);color:var(--tp-primary)}.tp-container .layout-function{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,.85);backdrop-filter:blur(10px);z-index:20;transform:translateX(100%);transition:.4s var(--tp-ease-smooth);display:flex;flex-direction:column;padding:20px}.tp-container .layout-function.active{transform:translateX(0)}.tp-container .back{align-self:flex-start;margin-bottom:20px;padding:8px 16px;border-radius:20px;background:rgba(0,0,0,.05);cursor:pointer;font-weight:600;color:var(--tp-text-sub);transition:.2s;display:flex;align-items:center;gap:6px}.tp-container .back:hover{background:var(--tp-primary);color:#fff;padding-right:20px}.tp-container .box{display:none;animation:slideUp .4s;height:100%;overflow-y:auto}.tp-container .box.show{display:block;height:fit-content}@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.tp-container.tp-toast{top:20px;left:50%;transform:translateX(-50%);width:auto;max-width:90vw;z-index:9999999999;position:fixed;pointer-events:none}.tp-container.tp-toast .toast{background:rgba(255,255,255,.95);backdrop-filter:blur(12px);padding:12px 24px;border-radius:50px;margin-bottom:10px;box-shadow:0 10px 30px rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.5);color:var(--tp-text-main);font-weight:600;display:flex;align-items:center;gap:10px;transform:translateY(-20px) scale(.9);opacity:0;transition:.4s;pointer-events:auto}.tp-container.tp-toast .toast.show{transform:translateY(0) scale(1);opacity:1}.tp-container.tp-toast .toast:before{content:'';width:10px;height:10px;border-radius:50%;display:block}.tp-container.tp-toast .toast.success:before{background:#10b981;box-shadow:0 0 10px #10b981}.tp-container.tp-toast .toast.error:before{background:#ef4444;box-shadow:0 0 10px #ef4444}.tp-container.tp-toast .toast.info:before{background:var(--tp-primary);box-shadow:0 0 10px var(--tp-primary)}.tp-container.tp-chat-panel{position:fixed;top:2.5vh;bottom:2.5vh;left:calc(clamp(360px,35vw,550px) + 20px);width:380px;background:var(--tp-glass-bg);backdrop-filter:var(--tp-blur);-webkit-backdrop-filter:var(--tp-blur);border:1px solid var(--tp-glass-border);box-shadow:var(--tp-glass-shadow);border-radius:var(--tp-radius-xl);z-index:999999998;display:flex;flex-direction:column;transform:translateX(-50px);opacity:0;pointer-events:none;transition:all .5s var(--tp-ease)}.tp-container.tp-main.active~.tp-container.tp-chat-panel.active{transform:translateX(0);opacity:1;pointer-events:auto}.tp-chat-header{padding:15px 20px;border-bottom:1px solid rgba(255,255,255,.3);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}.tp-chat-mode-switch{background:rgba(0,0,0,.05);border-radius:8px;padding:3px;display:flex;gap:4px;border:1px solid rgba(255,255,255,.2)}.tp-mode-btn{flex:1;border:none;background:0 0;padding:6px 12px;font-size:12px;font-weight:700;color:var(--tp-text-sub);border-radius:6px;cursor:pointer;transition:.3s}.tp-mode-btn.active{background:#fff;color:var(--tp-primary);box-shadow:0 2px 6px rgba(0,0,0,.1)}.tp-chat-body{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:15px;scroll-behavior:smooth}.tp-msg{max-width:85%;padding:10px 14px;border-radius:12px;font-size:14px;line-height:1.5;position:relative;word-wrap:break-word;animation:msgPop .3s var(--tp-ease);box-shadow:0 2px 5px rgba(0,0,0,.05)}@keyframes msgPop{from{opacity:0;transform:translateY(10px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}.tp-msg.user{align-self:flex-end;background:var(--tp-chat-user-bg);color:#fff;border-bottom-right-radius:2px}.tp-msg.ai{align-self:flex-start;background:var(--tp-chat-ai-bg);color:var(--tp-text-main);border:1px solid var(--tp-chat-border);border-bottom-left-radius:2px}.tp-msg.other{align-self:flex-start;background:#f1f5f9;color:var(--tp-text-main);border:1px solid rgba(0,0,0,.05);border-bottom-left-radius:2px}.tp-msg.system{align-self:center;font-size:12px;background:rgba(0,0,0,.05);color:var(--tp-text-sub);border-radius:20px;padding:4px 12px;border:none;box-shadow:none}.tp-msg-sender{font-size:10px;font-weight:700;color:var(--tp-text-sub);margin-bottom:2px;display:block}.tp-chat-img{max-width:100%;border-radius:8px;margin-top:4px;border:1px solid rgba(0,0,0,.1);cursor:pointer}.tp-file-attachment{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.5);padding:6px 10px;border-radius:6px;margin-top:4px;font-size:12px;text-decoration:none;color:var(--tp-primary);font-weight:600}.tp-file-attachment:hover{background:#fff}.tp-chat-footer{padding:15px;border-top:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.2);flex-shrink:0;display:flex;flex-direction:column;gap:10px}.tp-chat-input-area{display:flex;gap:8px;align-items:flex-end;background:rgba(255,255,255,.6);border-radius:var(--tp-radius-md);padding:8px;border:1px solid rgba(255,255,255,.4);transition:.3s}.tp-chat-input-area:focus-within{background:#fff;border-color:var(--tp-primary);box-shadow:0 4px 12px rgba(var(--tp-primary-rgb),.15)}.tp-chat-textarea{flex:1;border:none;background:0 0;padding:8px;font-family:var(--tp-font);font-size:14px;resize:none;max-height:100px;min-height:24px;outline:0;color:var(--tp-text-main)}.tp-upload-progress{height:2px;background:var(--tp-primary);width:0%;transition:width .3s;position:absolute;bottom:0;left:0}.typing-dots{display:inline-flex;gap:4px}.typing-dots span{width:6px;height:6px;background:var(--tp-text-sub);border-radius:50%;animation:dotBounce 1.4s infinite ease-in-out both}.typing-dots span:nth-child(1){animation-delay:-.32s}.typing-dots span:nth-child(2){animation-delay:-.16s}@keyframes dotBounce{0%,100%,80%{transform:scale(0)}40%{transform:scale(1)}}</style><div class="tp-container tp-toast"></div><div class="tp-container tp-main"id="tpMainPanel"><div class="header"><div class="time">00:00:00</div><button class="tp-btn icon-only ghost"id="toggleChatBtn"title="Chat"style="font-size:18px">💬</button><div class="checkout"><button class="tp-btn primary"style="padding:6px 12px;font-size:12px">CHECK OUT</button></div><div class="theme-switcher"><button class="btn-theme light-mode active"data-theme="light">☀️</button> <button class="btn-theme dark-mode"data-theme="dark">🌙</button></div></div><div class="list-screen"><div class="box-screen setting"data-screen="setting">⚙️</div><div class="box-screen main"data-screen="main">🏠</div><div class="box-screen online"data-screen="online">📡</div></div><div class="content-screen"><div class="screen screen-setting"><div class="box custom-name show"><p>Tên Hiển Thị</p><input class="input-custom-name tp-input"placeholder="Nhập tên gọi..."></div></div><div class="screen screen-main active"><div class="list-function active"></div><div class="layout-function"><div class="back">Quay lại Menu</div><div class="box flash_sale"id="flash_sale_layout"><h3 style="margin-bottom:20px;text-align:center;color:var(--tp-primary)">Flash Sale</h3><div class="program_id"style="margin-bottom:15px"><label>Link Chương Trình</label> <input class="product_url tp-input"placeholder="Paste link/ID..."><div class="platform flex flex-row"style="margin-top:10px;display:flex;gap:10px"><button class="tp-btn ghost shopee active"style="flex:1">SHOPEE</button> <button class="tp-btn ghost tiktok"style="flex:1">TIKTOK</button></div></div><div class="input_prompt"><div class="prompt_value shopee_prompt active"><input type="number"class="value-count tp-input"placeholder="Số lượng khung"> <textarea class="value-flashsale tp-input"placeholder="Tên SP & Số lượng..."></textarea></div></div><button class="excuse-button action-btn tp-btn primary"style="width:100%;margin-top:15px"data-action="flash_sale">Kích Hoạt 🚀</button></div><div class="box doi_hinh_phan_loai show"id="doi_hinh_phan_loai_layout"><h3 style="margin-bottom:20px;text-align:center;color:var(--tp-primary)">Đổi Hình</h3><div class="product_info"><label>Danh sách ID</label> <textarea class="product_url tp-input"placeholder="Mỗi dòng 1 ID..."></textarea></div><div class="dynamic-upload-container"></div><button class="excuse-button action-btn tp-btn primary"style="width:100%;margin-top:15px"data-action="doi_hinh_phan_loai">Bắt Đầu ⚡</button></div></div></div><div class="screen screen-online"><div class="server-status"style="text-align:center;margin-bottom:20px"><p>Trạng Thái: <span class="status-text tp-tag red">Offline</span></p><p style="font-size:11px;color:var(--tp-text-sub);margin-top:5px">URL: <span class="url-text">...</span></p></div><div class="box auto-save-check-in show"><label class="tp-checkbox"><input type="checkbox"class="input-auto-save-check-in"> <span class="checkmark"></span> <span class="label-text">Tự Động Check-in</span></label></div></div></div></div><div class="tp-container tp-chat-panel"id="tpChatPanel"><div class="tp-chat-header"><div class="tp-chat-mode-switch"><button class="tp-mode-btn active"data-mode="ai">🤖 AI</button> <button class="tp-mode-btn"data-mode="global">🌏 Global</button></div><div style="display:flex;gap:5px"><button class="tp-btn icon-only ghost"id="clearChat"title="Clear">🗑️</button></div></div><div class="tp-chat-body"id="tpChatBody"><div class="tp-msg system">Xin chào! Tôi có thể giúp gì?</div></div><div class="tp-chat-footer"><input type="file"id="chatFileInput"style="display:none"multiple="multiple"><div class="tp-upload-progress"id="chatUploadProgress"></div><div class="tp-chat-input-area"><button class="tp-btn ghost icon-only"id="btnChatAttach"title="Gửi File"style="width:30px;height:30px;padding:0">📎</button> <textarea class="tp-chat-textarea"id="tpChatInput"placeholder="Nhập tin nhắn..."rows="1"></textarea> <button class="tp-btn primary icon-only"id="tpChatSend"style="width:32px;height:32px;padding:0">➤</button></div></div></div>`;
 
     // Khởi tạo biến toàn cục
     var INFO_PAGE = null;
@@ -1582,82 +1582,123 @@
       return info;
     }
 
-    async function connectServer() {
-      var ngrokURL = null;
-      async function getNgrokURL() {
-        // Đường dẫn "Raw" của file trên GitHub hoặc đường dẫn GitHub Pages
-        // Nếu dùng GitHub Pages: https://pntan.github.io/ngrok-url.json
-        // Nếu dùng Raw GitHub: https://raw.githubusercontent.com/pntan/pntan.github.io/main/ngrok-url.json
+    // Biến socket đã được khai báo ở đầu file (var socket = null;) nên nó là toàn cục trong phạm vi UserScript này.
+    // Bạn có thể gọi socket.emit() ở bất kỳ hàm nào khác (nhớ kiểm tra if(socket) trước khi dùng).
 
-        const url = 'https://pntan.github.io/ngrokServer'; // Khuyên dùng link này nếu đã bật GitHub Pages
-        // const url = 'https://raw.githubusercontent.com/pntan/pntan.github.io/main/ngrok-url.json'; // Link này update tức thì hơn (không bị cache của CDN GitHub Pages)
+    async function connectServer() {
+      // Hàm con: Lấy URL mới nhất từ GitHub
+      async function getNgrokURL() {
+        var time = Date.now();
+        const url = `https://pntan.github.io/ngrokServer.json?timestamp=${time}`; // Link GitHub Pages (JSON)
+        // const url = 'https://raw.githubusercontent.com/pntan/pntan.github.io/main/ngrok-url.json'; // Link Raw (Backup)
+
+        console.log(url);
 
         try {
           const response = await fetch(url, {
             cache: "no-store"
-          }); // no-store để tránh cache cũ
+          }); // no-store quan trọng để tránh cache trình duyệt
           if (!response.ok) throw new Error('Network response was not ok');
-
           const data = await response.json();
           return data.url;
         } catch (error) {
-          console.error('Lỗi khi fetch URL:', error);
+          console.error('Lỗi khi fetch URL từ GitHub:', error);
           return null;
         }
       }
 
-      async function connectSocket(url) {
-        return new Promise((resolve, reject) => {
-          socket = io(url, {
-            reconnectionAttempts: 5,
-            timeout: 5000,
-            transports: ["websocket", "polling"],
-            extraHeaders: {
-              "ngrok-skip-browser-warning": "69420" // Giá trị bất kỳ
-            },
-          });
+      // Hàm con: Khởi tạo kết nối Socket
+      // isRetry: Biến cờ để biết đây là lần thử kết nối lại hay lần đầu (để tránh lặp vô hạn)
+      function initSocket(url, isFromCache) {
+        // Nếu đã có kết nối cũ, đóng lại để tránh trùng lặp
+        if (socket) {
+          socket.close();
+          socket = null;
+        }
 
-          console.log(socket);
+        boxAlert(`ĐANG THỬ KẾT NỐI ĐẾN: ${url}`, 'log');
 
-          socket.on('connect', () => {
-            boxAlert(`KẾT NỐI SOCKET THÀNH CÔNG!`, 'success');
-            boxToast('Kết nối Socket thành công!', 'success', 5000);
-            resolve(true);
-          });
+        // Gán vào biến toàn cục socket
+        socket = io(url, {
+          reconnectionAttempts: 3, // Thử lại vài lần trước khi báo lỗi hẳn
+          timeout: 5000,
+          transports: ["websocket", "polling"],
+          extraHeaders: {
+            "ngrok-skip-browser-warning": "69420"
+          },
+        });
 
-          socket.on('connect_error', (error) => {
-            boxAlert(`LỖI KẾT NỐI SOCKET: ${error.message}`, 'error');
-            boxToast(`Lỗi kết nối Socket: ${error.message}`, 'error', 7000);
-            reject(error);
-          });
+        // --- CÁC SỰ KIỆN LẮNG NGHE ---
 
-          socket.on('disconnect', (reason) => {
-            boxAlert(`SOCKET BỊ NGẮT KẾT NỐI: ${reason}`, 'warn');
-            boxToast(`Socket bị ngắt kết nối: ${reason}`, 'warn', 7000);
-          });
+        socket.on('connect', () => {
+          boxAlert(`KẾT NỐI SOCKET THÀNH CÔNG!`, 'success');
+          boxToast('Kết nối Server thành công!', 'success', 3000);
 
-          socket.on('reconnect_attempt', (attempt) => {
-            boxAlert(`ĐANG THỬ KẾT NỐI LẠI SOCKET (Lần ${attempt})...`, 'log');
-            boxToast(`Đang thử kết nối lại Socket (Lần ${attempt})...`, 'info', 5000);
-          });
+          // Cập nhật UI
+          $(".server-status .status-text").text("Đã kết nối").css("color", "var(--tp-success)");
+          $(".server-status .url-text").text(url);
 
-          socket.on('reconnect_failed', () => {
-            boxAlert(`KHÔNG THỂ KẾT NỐI LẠI SOCKET!`, 'error');
-            boxToast(`Không thể kết nối lại Socket!`, 'error', 7000);
-          });
+          // Nếu kết nối thành công bằng URL mới (không phải cache), thì lưu lại vào Storage
+          if (!isFromCache) {
+            setConfig('server_url', url);
+          }
+        });
+
+        socket.on('connect_error', async (error) => {
+          boxAlert(`LỖI KẾT NỐI (${isFromCache ? 'Cache' : 'Mới'}): ${error.message}`, 'warn');
+
+          // QUAN TRỌNG: Logic tự động làm mới
+          // Nếu đang dùng URL từ Cache mà bị lỗi -> Có thể Server đã đổi Link -> Lấy Link mới
+          if (isFromCache) {
+            boxAlert("URL trong Cache có vẻ đã chết. Đang lấy URL mới từ GitHub...", "info");
+            $(".server-status .status-text").text("Đang cập nhật Server...");
+
+            // Ngắt kết nối hiện tại ngay lập tức
+            socket.off(); // Gỡ bỏ các listener cũ để tránh memory leak
+            socket.close();
+
+            // Lấy URL mới
+            const newUrl = await getNgrokURL();
+            if (newUrl) {
+              // Gọi lại hàm khởi tạo với URL mới, đánh dấu isFromCache = false
+              initSocket(newUrl, false);
+            } else {
+              boxAlert("Không lấy được URL mới từ GitHub.", "error");
+              $(".server-status .status-text").text("Lỗi GitHub");
+            }
+          } else {
+            // Nếu URL MỚI lấy từ GitHub mà vẫn lỗi -> Server sập hẳn hoặc GitHub chưa update
+            boxToast(`Không thể kết nối Server!`, 'error', 5000);
+            $(".server-status .status-text").text("Kết Nối Thất Bại").css("color", "var(--tp-error)");
+            $(".server-status .url-text").text("");
+          }
+        });
+
+        socket.on('disconnect', (reason) => {
+          // Chỉ báo lỗi nếu không phải do client chủ động đóng (để đổi server)
+          if (reason !== "io client disconnect") {
+            boxAlert(`SOCKET MẤT KẾT NỐI: ${reason}`, 'warn');
+            $(".server-status .status-text").text("Mất Kết Nối");
+          }
         });
       }
 
-      boxAlert(`ĐANG KẾT NỐI SERVER...`, 'log');
-      ngrokURL = getConfig("server_url") || await getNgrokURL();
+      // --- BẮT ĐẦU LOGIC CHÍNH ---
 
-      if (ngrokURL) {
-        boxAlert(`KẾT NỐI SERVER THÀNH CÔNG: ${ngrokURL}`, 'success');
-        setConfig('server_url', ngrokURL);
-        connectSocket(ngrokURL);
+      // 1. Lấy URL từ LocalStorage trước
+      const cachedURL = getConfig("server_url");
+
+      if (cachedURL) {
+        // Nếu có Cache, thử kết nối bằng Cache trước (isFromCache = true)
+        initSocket(cachedURL, true);
       } else {
-        boxAlert(`KHÔNG THỂ KẾT NỐI SERVER!`, 'error');
-        localStorage.removeItem('TP_CONFIG_server_url');
+        // Nếu không có Cache (lần đầu chạy), lấy từ GitHub (isFromCache = false)
+        const newURL = await getNgrokURL();
+        if (newURL) {
+          initSocket(newURL, false);
+        } else {
+          boxAlert("Không tìm thấy cấu hình Server!", "error");
+        }
       }
     }
 
@@ -1741,17 +1782,28 @@
         var name = getConfig("custom_name");
         if (name && name.length > 0) {
           $(".tp-container.tp-main .screen.screen-setting input.input-custom-name").val(name);
-        }else{
+        } else {
           var randomString = `User${Math.random().toString(36).substring(2, 8)}`;
           setConfig("custom_name", randomString);
+
           $(".tp-container.tp-main .screen.screen-setting input.input-custom-name").val(randomString);
         }
+      }
+
+      var auto_save_check_in = () => {
+        var auto_save = getConfig("auto_save_check_in");
+        if (auto_save === null)
+          setConfig("auto_save_check_in", false);
+
+        auto_save = getConfig("auto_save_check_in");
+        $(".tp-container.tp-main .screen.screen-online .box.auto-save-check-in .tp-checkbox input.input-auto-save-check-in").prop("checked", auto_save);
       }
 
       theme_mode();
       screen_display();
       theme_color();
       custom_name();
+      auto_save_check_in();
       return true;
     }
 
@@ -1779,6 +1831,7 @@
      * @description 'Khởi tạo chương trình'
      */
     async function INIT() {
+      await connectServer();
       // 1. Lấy thông tin trang
       INFO_PAGE = await getInfoPage();
 
@@ -1796,7 +1849,6 @@
       if (init_config && init_ui) {
         boxAlert("KHỞI TẠO TƯƠNG TÁC");
         INIT_FUNCTION();
-        connectServer();
       }
     }
 
@@ -1873,25 +1925,88 @@
         window.open("https://github.com/pntan/TOOLv3/blob/main/README.md#h%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-s%E1%BB%AD-d%E1%BB%A5ng", "_blank");
       })
 
-      // Theo dõi chuột (sử dụng class thay vì css trực tiếp)
-      $("body").on("mousemove", function(e) {
-        var x = e.clientX;
-        var bodyWidth = $("body").width();
+      // Xử lý nút Check-out
+      console.log($(".tp-container.tp-main .header .checkout"));
+      $(".tp-container.tp-main .header .checkout").on("click", function() {
+        const name = getConfig("custom_name");
+        if (!name || name === "Unknown") {
+          boxToast("Vui lòng nhập tên trước khi Check-out", "error");
+          return;
+        }
 
-        if (x <= X_LIMIT) {
-          $(".tp-container.tp-main").css({
-            "left": "0",
-            "right": ""
-          }).addClass("active");
-        } else if (X_LIMIT >= bodyWidth - x) {
-          $(".tp-container.tp-main").css({
-            "right": "0",
-            "left": ""
-          }).addClass("active");
+        const now = new Date();
+        const todayDate = now.toISOString().split('T')[0];
+        const currentTime = now.toLocaleTimeString('en-GB', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        });
+
+        // Gửi lệnh lên Server
+        if (socket && socket.connected) {
+          boxAlert("Đang gửi yêu cầu Check-out...", "info");
+          socket.emit('save_check_out', {
+            name: name,
+            date: todayDate,
+            time: currentTime
+          });
         } else {
-          $(".tp-container.tp-main").removeClass("active");
+          boxToast("Mất kết nối Server, không thể Check-out!", "error");
+        }
+      })
+
+      let closeTimer = null;
+      let isMouseOverPanels = false;
+      const sidebarPanels = $("#tpMainPanel, #tpChatPanel");
+
+      // 1. Theo dõi trạng thái chuột TRÊN PANEL (Để giữ menu mở khi đang dùng)
+      sidebarPanels.on("mouseenter", function() {
+        isMouseOverPanels = true;
+        clearTimeout(closeTimer);
+        closeTimer = null;
+      });
+
+      sidebarPanels.on("mouseleave", function() {
+        isMouseOverPanels = false;
+        attemptClose(); // Chuột ra khỏi panel -> Thử đóng
+      });
+
+      // 2. Theo dõi tọa độ chuột TOÀN CỤC (Để mở menu từ mép)
+      $("body").on("mousemove", function(e) {
+        const x = e.clientX;
+        const isSidebarOpen = $("#tpMainPanel, #tpChatPanel").hasClass("tp-sidebar-open");
+
+        // VÙNG KÍCH HOẠT: 15px tính từ mép trái
+        if (x <= 1) {
+          clearTimeout(closeTimer); // Hủy lệnh đóng nếu có
+          closeTimer = null;
+
+          if (!isSidebarOpen) {
+            $("#tpMainPanel").addClass("active tp-sidebar-open");
+            $("#tpChatPanel").addClass("active tp-sidebar-open");
+          }
+        }
+        // NẾU RA KHỎI VÙNG 15px
+        else if (isSidebarOpen) {
+          // Nếu Sidebar đang mở, mà chuột không ở mép (x > 15)
+          // VÀ chuột cũng KHÔNG nằm trên Panel (isMouseOverPanels = false)
+          // => Thì chuẩn bị đóng
+          if (!isMouseOverPanels) {
+            attemptClose();
+          }
         }
       });
+
+      // Hàm đóng (có delay để tránh nhấp nháy khi di chuột nhanh)
+      function attemptClose() {
+        if (!closeTimer) {
+          closeTimer = setTimeout(() => {
+            $("#tpMainPanel").removeClass("active tp-sidebar-open");
+            $("#tpChatPanel").removeClass("active tp-sidebar-open");
+            closeTimer = null;
+          }, 300); // 300ms delay: Đủ thời gian để lỡ tay di ra ngoài rồi quay lại
+        }
+      }
 
       /**
        * @func check_in
@@ -1947,10 +2062,73 @@
         }
       }
 
+      function auto_save_check_in() {
+        var date = GM_getValue('TP_GLOBAL_LAST_CHECK_IN_DATE', null);
+        var time = GM_getValue('TP_GLOBAL_LAST_CHECK_IN_TIME', null);
+        var name = getConfig("custom_name") || "Unknown";
+
+        function startHeartbeat() {
+          const sendPing = () => {
+            // Lấy tên mỗi lần gửi để đảm bảo nếu user đổi tên thì cập nhật ngay
+            // const name = getConfig("custom_name");
+
+            if (!name || name === "Unknown") return; // Chưa có tên thì không gửi
+
+            if (socket && socket.connected) {
+              const now = new Date();
+              const todayDate = now.toISOString().split('T')[0];
+              const currentTime = now.toLocaleTimeString('en-GB', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+              });
+
+              socket.emit('IAM_ALIVE', {
+                name: name, // Đây là khóa chính để Server nhận diện
+                date: todayDate,
+                time: currentTime
+              });
+            }
+          };
+
+          // Gửi mỗi 10 giây (Server sẽ nhận 6 tin/phút, rất nhẹ)
+          setInterval(sendPing, 60000);
+          sendPing();
+        }
+
+        if (getConfig("auto_save_check_in") && date && time) {
+          if (date && time) {
+            socket.emit('save_check_in', {
+              name: name,
+              date: date,
+              time: time,
+            });
+
+            startHeartbeat();
+
+            socket.on("check_in_saved", (data) => {
+              if (data.status == "success") {
+                boxAlert(`Đã tự động lưu giờ check in: ${date} ${time}`, "success");
+              } else {
+                boxAlert(`Lỗi khi lưu giờ check in: ${data.message}`, "error");
+              }
+            });
+          }
+        }
+      }
+
       check_in((result) => {
         $(".tp-container.tp-main .header").prepend(`
             <span class="check-in">(CHECK IN: ${result.launchTime})</span>
           `)
+
+        auto_save_check_in();
+      })
+
+      // Kiểm tra có lưu giờ check in không
+      $(".tp-container.tp-main .screen.screen-online .box.auto-save-check-in .tp-checkbox input.input-auto-save-check-in").on("change", function() {
+        setConfig("auto_save_check_in", $(this).is(":checked"));
+        auto_save_check_in();
       })
 
       // Chạy đồng hồ (Giữ nguyên)
@@ -1966,6 +2144,12 @@
       }
 
       runTime();
+
+      // Lưu tên tùy chỉnh
+      $(".tp-container.tp-main .screen.screen-setting input.input-custom-name").on("input", function() {
+        var name = $(this).val().trim();
+        setConfig("custom_name", name);
+      });
 
       // Chọn loại sàn làm flash sale
       $(".tp-container.tp-main #flash_sale_layout .platform .shopee").on("click", function() {
@@ -2244,6 +2428,303 @@
         }, false);
       }
       setupFileUploader();
+
+      /**
+       * @func initSegmentSwitch
+       * @description Kích hoạt hiệu ứng trượt cho tất cả .tp-segment-switch
+       * Hỗ trợ số lượng options không giới hạn (2, 3, 10...)
+       */
+      function initSegmentSwitch() {
+        // Tìm tất cả các switch trong giao diện
+        const switches = document.querySelectorAll('.tp-segment-switch');
+
+        switches.forEach(sw => {
+          const inputs = sw.querySelectorAll('input[type="radio"]');
+          const labels = sw.querySelectorAll('label');
+          const glider = sw.querySelector('.glider');
+
+          if (!glider || inputs.length === 0) return;
+
+          // Hàm cập nhật vị trí
+          const updateGlider = (checkedInput) => {
+            // Tìm index của input đang checked
+            let index = Array.from(inputs).indexOf(checkedInput);
+            if (index === -1) index = 0; // Default fallback
+
+            // Tính toán width: 100% chia cho số lượng options
+            const percentage = 100 / inputs.length;
+
+            // Cập nhật CSS cho glider
+            glider.style.width = `calc(${percentage}% - 8px)`; // Trừ padding container (4px * 2)
+            glider.style.transform = `translateX(${index * 100}%) translateX(${index * 8}px)`; // Offset padding
+            // *Lưu ý: Cách tính trên là tương đối. Cách chính xác nhất dùng offsetLeft:
+
+            // Cách tính chính xác tuyệt đối theo Pixel (Tốt hơn)
+            const targetLabel = labels[index];
+            if (targetLabel) {
+              glider.style.width = `${targetLabel.offsetWidth}px`;
+              glider.style.transform = `translateX(${targetLabel.offsetLeft - 4}px)`; // -4 là padding left của container
+            }
+
+            // Cập nhật class active cho label chữ màu trắng
+            labels.forEach(l => l.classList.remove('active'));
+            if (labels[index]) labels[index].classList.add('active');
+          };
+
+          // 1. Gán sự kiện click
+          inputs.forEach(input => {
+            input.addEventListener('change', (e) => {
+              updateGlider(e.target);
+            });
+          });
+
+          // 2. Khởi tạo lần đầu (tìm cái đang checked)
+          const currentChecked = sw.querySelector('input:checked') || inputs[0];
+          // Cần delay nhỏ để DOM render xong width
+          setTimeout(() => updateGlider(currentChecked), 50);
+        });
+      }
+
+      // =========================================================================
+      // [NEW] LOGIC CHAT SYSTEM (AI + GLOBAL + UPLOAD)
+      // =========================================================================
+
+      // 1. UI Handlers: Bật tắt Panel
+      $("#toggleChatBtn").on("click", function() {
+        $("#tpChatPanel").toggleClass("active");
+        $(this).toggleClass("active");
+      });
+      $("#closeChat").on("click", function() {
+        $("#tpChatPanel").removeClass("active");
+        $("#toggleChatBtn").removeClass("active");
+      });
+      // Auto resize textarea
+      $("#tpChatInput").on("input", function() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+        if (this.value === '') this.style.height = 'auto';
+      });
+
+      // 2. Chuyển đổi chế độ (AI <-> Global)
+      $(".tp-mode-btn").on("click", function() {
+        const mode = $(this).data("mode");
+        $(".tp-mode-btn").removeClass("active");
+        $(this).addClass("active");
+
+        CURRENT_CHAT_MODE = mode;
+        $("#tpChatBody").empty(); // Xóa màn hình
+
+        if (mode === 'ai') {
+          appendMessage("🤖 Chế độ AI Assistant. Hỏi tôi bất cứ điều gì!", "system");
+        } else {
+          appendMessage("🌏 Chế độ Chat Nội Bộ. Đang kết nối...", "system");
+          if (socket && socket.connected) {
+            socket.emit('join-global-chat'); // Lấy lịch sử cũ
+          }
+        }
+      });
+
+      // 3. Hàm hiển thị tin nhắn (Render)
+      function appendMessage(content, type, senderName = null, isHtml = false) {
+        const chatBody = $("#tpChatBody");
+        let msgHtml = '';
+
+        if (type === 'system') {
+          msgHtml = `<div class="tp-msg system">${content}</div>`;
+        } else if (type === 'other') {
+          msgHtml = `
+                        <div class="tp-msg other">
+                            <span class="tp-msg-sender">${senderName}</span>
+                            ${isHtml ? content : $('<div>').text(content).html()} 
+                        </div>`;
+        } else {
+          // User hoặc AI
+          msgHtml = `<div class="tp-msg ${type}">${isHtml ? content : $('<div>').text(content).html()}</div>`;
+        }
+
+        chatBody.append(msgHtml);
+        chatBody.scrollTop(chatBody[0].scrollHeight);
+      }
+
+      function showTyping() {
+        const chatBody = $("#tpChatBody");
+        const typingDiv = $(`<div class="tp-msg ai typing" id="aiTyping"><div class="typing-dots"><span></span><span></span><span></span></div></div>`);
+        chatBody.append(typingDiv);
+        chatBody.scrollTop(chatBody[0].scrollHeight);
+      }
+
+      function removeTyping() {
+        $("#aiTyping").remove();
+      }
+
+      // 4. Xử lý Gửi tin nhắn
+      async function handleSendMessage() {
+        const input = $("#tpChatInput");
+        const text = input.val().trim();
+        if (!text) return;
+
+        input.val('').css('height', 'auto'); // Reset
+
+        if (CURRENT_CHAT_MODE === 'ai') {
+          // --- AI MODE ---
+          appendMessage(text, 'user');
+          showTyping();
+
+          if (socket && socket.connected) {
+            socket.emit('chat-request', {
+              message: text,
+              user: getConfig("custom_name"),
+              context: await getInfoPage()
+            });
+          } else {
+            removeTyping();
+            appendMessage("Lỗi kết nối Server", "system");
+          }
+        } else {
+          // --- GLOBAL MODE ---
+          if (socket && socket.connected) {
+            socket.emit('send-global-chat', {
+              sender: getConfig("custom_name"),
+              message: text,
+              type: 'text'
+            });
+          } else {
+            boxToast("Mất kết nối Server Chat!", "error");
+          }
+        }
+      }
+
+      $("#tpChatSend").on("click", handleSendMessage);
+      $("#tpChatInput").on("keydown", function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          handleSendMessage();
+        }
+      });
+      $("#clearChat").on("click", () => $("#tpChatBody").html('<div class="tp-msg system">Đã xóa lịch sử.</div>'));
+
+      // 5. Xử lý Upload File (Global Chat)
+      $("#btnChatAttach").click(() => {
+        if (CURRENT_CHAT_MODE !== 'global') {
+          boxToast("Chuyển sang chế độ Global để gửi file!", "warning");
+          return;
+        }
+        $("#chatFileInput").click();
+      });
+
+      $("#chatFileInput").change(function() {
+        const files = this.files;
+        if (files.length === 0) return;
+
+        const formData = new FormData();
+        Array.from(files).forEach(file => formData.append('files', file));
+
+        $("#chatUploadProgress").css("width", "50%"); // Fake loading
+
+        // Lấy URL upload HTTP (dựa trên URL socket)
+        let apiUrl = socket.io.uri + "/upload";
+
+        $.ajax({
+          url: apiUrl,
+          type: 'POST',
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function(response) {
+            $("#chatUploadProgress").css("width", "100%");
+            setTimeout(() => $("#chatUploadProgress").css("width", "0%"), 500);
+
+            if (response.fileNames && response.fileNames.length > 0) {
+              response.fileNames.forEach((fileName) => {
+                const fullUrl = socket.io.uri + "/uploads/" + fileName;
+                const isImage = fileName.match(/\.(jpeg|jpg|gif|png)$/i) != null;
+
+                if (socket && socket.connected) {
+                  socket.emit('send-global-chat', {
+                    sender: getConfig("custom_name"),
+                    message: fileName,
+                    type: isImage ? 'image' : 'file',
+                    url: fullUrl
+                  });
+                }
+              });
+            }
+          },
+          error: function(err) {
+            $("#chatUploadProgress").css("width", "0%");
+            boxToast("Upload thất bại", "error");
+          }
+        });
+        $(this).val('');
+      });
+
+      // A. AI Response
+      socket.on('chat-response', (data) => {
+        if (CURRENT_CHAT_MODE !== 'ai') return;
+        removeTyping(); // Tắt typing
+
+        if (data && data.reply) {
+
+          let contentToDisplay = data.reply;
+          let isHtml = false;
+
+          if (data.imageUrl) {
+            // Nếu có URL ảnh, thêm thẻ <img> vào nội dung
+            contentToDisplay += `
+                      <div style="margin-top: 10px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 10px;">
+                          <img src="${data.imageUrl}" class="tp-chat-img" onclick="window.open('${data.imageUrl}')" style="max-width: 100%; border-radius: 8px; cursor: pointer;">
+                          <p style="font-size: 11px; margin-top: 5px; color: var(--tp-text-sub);">Click để xem ảnh gốc: ${data.imageUrl}</p>
+                      </div>`;
+            isHtml = true;
+          }
+
+          // Hiển thị nội dung
+          appendMessage(contentToDisplay, 'ai', null, isHtml);
+
+          // Xử lý action (ví dụ: mở giao diện Flash Sale)
+          if (data.action) {
+            console.log("AI trigger action:", data.action);
+            // Thêm nút xác nhận nếu không phải action tạo ảnh
+            if (data.action !== 'generate_image') {
+              const actionBtn = $(`<button class="tp-btn primary" style="margin-top:5px; width:100%">Thực hiện: ${data.action}</button>`);
+              actionBtn.click(() => excuseFunction(data.action));
+              $("#tpChatBody").append(actionBtn);
+            }
+          }
+        } else {
+          appendMessage("Lỗi xử lý từ phía Server.", "system");
+        }
+      });
+
+      // B. Global Chat Receive
+      socket.on('receive-global-chat', (data) => {
+        if (CURRENT_CHAT_MODE !== 'global') return;
+        const myName = getConfig("custom_name");
+        const isMe = data.sender === myName;
+
+        let contentDisplay = data.message;
+        if (data.type === 'image') contentDisplay = `<img src="${data.url}" class="tp-chat-img" onclick="window.open('${data.url}')">`;
+        else if (data.type === 'file') contentDisplay = `<a href="${data.url}" target="_blank" class="tp-file-attachment">📄 ${data.message} ⬇️</a>`;
+
+        if (isMe) appendMessage(contentDisplay, 'user', null, true);
+        else appendMessage(contentDisplay, 'other', data.sender, true);
+      });
+
+      // C. History
+      socket.on('global-chat-history', (history) => {
+        if (CURRENT_CHAT_MODE !== 'global') return;
+        $("#tpChatBody").empty();
+        history.forEach(data => {
+          const myName = getConfig("custom_name");
+          const isMe = data.sender === myName;
+          let contentDisplay = data.message;
+          if (data.type === 'image') contentDisplay = `<img src="${data.url}" class="tp-chat-img" onclick="window.open('${data.url}')">`;
+          else if (data.type === 'file') contentDisplay = `<a href="${data.url}" target="_blank" class="tp-file-attachment">📄 ${data.message}</a>`;
+
+          if (isMe) appendMessage(contentDisplay, 'user', null, true);
+          else appendMessage(contentDisplay, 'other', data.sender, true);
+        });
+      });
     }
 
     // Bắt đầu

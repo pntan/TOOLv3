@@ -1,795 +1,910 @@
 <style>
-    :root {
-        /* --- CORE CONFIGURATION --- */
-        --tp-font: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        --tp-radius-xl: 24px;
-        --tp-radius-md: 16px;
-        --tp-radius-sm: 12px;
-
-        /* Default Theme (Neutral/Blue) */
-        --tp-primary: #3b82f6;
-        --tp-primary-rgb: 59, 130, 246;
-        --tp-secondary: #64748b;
-        --tp-accent: #60a5fa;
-
-        /* Glassmorphism Surface */
-        --tp-glass-bg: rgba(255, 255, 255, 0.75);
-        --tp-glass-border: rgba(255, 255, 255, 0.6);
-        --tp-glass-highlight: rgba(255, 255, 255, 0.4);
-        --tp-glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-        --tp-blur: blur(16px) saturate(180%);
-
-        /* Text Colors */
-        --tp-text-main: #1e293b;
-        --tp-text-sub: #475569;
-        --tp-text-inv: #ffffff;
-
-        /* Animations */
-        --tp-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
-        /* Spring effect */
-        --tp-ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    /* --- PLATFORM THEMES (DYNAMIC OVERRIDES) --- */
-    /* Khi class cha có .shopee-theme */
-    .shopee-theme {
-        --tp-primary: #ee4d2d;
-        /* Shopee Orange */
-        --tp-primary-rgb: 238, 77, 45;
-        --tp-accent: #ff7350;
-        --tp-glass-shadow: 0 8px 32px 0 rgba(238, 77, 45, 0.15);
-    }
-
-    /* Khi class cha có .lazada-theme */
-    .lazada-theme {
-        --tp-primary: #0f146d;
-        /* Lazada Blue */
-        --tp-primary-rgb: 15, 20, 109;
-        --tp-accent: #f5008f;
-        /* Lazada Pink Accent */
-        --tp-glass-shadow: 0 8px 32px 0 rgba(15, 20, 109, 0.2);
-    }
-
-    /* Khi class cha có .tiktok-theme */
-    .tiktok-theme {
-        --tp-primary: #000000;
-        /* TikTok Black */
-        --tp-primary-rgb: 0, 0, 0;
-        --tp-accent: #25F4EE;
-        /* TikTok Teal */
-        --tp-secondary: #FE2C55;
-        /* TikTok Red */
-        --tp-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-    }
-
-    /* --- DARK MODE OVERRIDES --- */
-    .tp-container .btn-theme.dark-mode.active~.content-screen,
-    .dark-mode-active {
-        --tp-glass-bg: rgba(17, 25, 40, 0.85);
-        --tp-glass-border: rgba(255, 255, 255, 0.1);
-        --tp-text-main: #f1f5f9;
-        --tp-text-sub: #94a3b8;
-        --tp-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-    }
-
-    /* --- RESET & LAYOUT --- */
-    .tp-container {
-        font-family: var(--tp-font);
-        box-sizing: border-box;
-        color: var(--tp-text-main);
-    }
-
-    .tp-container * {
-        box-sizing: border-box;
-        outline: none;
-        user-select: none;
-        -webkit-font-smoothing: antialiased;
-    }
-
-    /* --- MAIN SIDEBAR (FLOATING GLASS ISLAND) --- */
-    .tp-container.tp-main {
-        position: fixed;
-        top: 2.5vh;
-        bottom: 2.5vh;
-        left: 0;
-        /* Responsive Width: Tối thiểu 360px, Ưu tiên 35vw, Tối đa 500px */
-        width: clamp(360px, 35vw, 550px);
-
-        background: var(--tp-glass-bg);
-        backdrop-filter: var(--tp-blur);
-        -webkit-backdrop-filter: var(--tp-blur);
-        border: 1px solid var(--tp-glass-border);
-        box-shadow: var(--tp-glass-shadow);
-        border-radius: 0 var(--tp-radius-xl) var(--tp-radius-xl) 0;
-
-        z-index: 999999999;
-        display: flex;
-        flex-direction: column;
-        padding: 24px;
-
-        /* Animation Entrance */
-        transform: translateX(-120%);
-        transition: transform 0.6s var(--tp-ease), opacity 0.4s ease;
-        opacity: 0;
-        pointer-events: none;
-    }
-
-    .tp-container.tp-main.active,
-    .tp-container.tp-main:hover {
-        transform: translateX(0);
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    /* --- HEADER AREA --- */
-    .tp-container .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-        flex-shrink: 0;
-    }
-
-    .tp-container .header .time {
-        font-size: 1.1rem;
-        font-weight: 800;
-        background: linear-gradient(135deg, var(--tp-primary), var(--tp-accent));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        filter: drop-shadow(0 2px 4px rgba(var(--tp-primary-rgb), 0.2));
-    }
-
-    .tp-container .theme-switcher {
-        background: rgba(0, 0, 0, 0.05);
-        border-radius: 30px;
-        padding: 3px;
-        display: flex;
-        position: relative;
-        width: 64px;
-        height: 32px;
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-
-    .tp-container .btn-theme {
-        width: 26px;
-        height: 26px;
-        border-radius: 50%;
-        border: none;
-        background: transparent;
-        cursor: pointer;
-        font-size: 14px;
-        position: absolute;
-        top: 3px;
-        transition: 0.4s var(--tp-ease);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0.5;
-    }
-
-    .tp-container .btn-theme.active {
-        background: #fff;
-        opacity: 1;
-        transform: scale(1.1);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    .tp-container .btn-theme.light-mode {
-        left: 4px;
-    }
-
-    .tp-container .btn-theme.dark-mode {
-        right: 4px;
-    }
-
-    /* Correct active positions */
-    .tp-container .btn-theme.light-mode.active {
-        left: 4px;
-    }
-
-    .tp-container .btn-theme.dark-mode.active {
-        right: 4px;
-    }
-
-    /* --- NAVIGATION TABS --- */
-    .tp-container .list-screen {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 20px;
-        padding: 4px;
-        background: rgba(255, 255, 255, 0.3);
-        border-radius: var(--tp-radius-md);
-    }
-
-    .tp-container .box-screen {
-        flex: 1;
-        text-align: center;
-        padding: 8px 0;
-        border-radius: var(--tp-radius-sm);
-        cursor: pointer;
-        transition: all 0.3s var(--tp-ease);
-        font-size: 1.2rem;
-        color: var(--tp-text-sub);
-    }
-
-    .tp-container .box-screen:hover {
-        background: rgba(255, 255, 255, 0.5);
-        transform: translateY(-2px);
-    }
-
-    .tp-container .box-screen.active {
-        background: #fff;
-        color: var(--tp-primary);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        transform: translateY(0) scale(1.05);
-    }
-
-    /* --- CONTENT SCREENS --- */
-    .tp-container .content-screen {
-        flex: 1;
-        position: relative;
-        overflow: hidden;
-        background: rgba(255, 255, 255, 0.4);
-        border-radius: var(--tp-radius-md);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-
-    .tp-container .screen {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        padding: 15px;
-        overflow-y: auto;
-        transition: transform 0.5s var(--tp-ease-smooth), opacity 0.4s;
-        opacity: 0;
-        pointer-events: none;
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* Smooth Slide Animation */
-    .tp-container .screen.active {
-        transform: translateX(0);
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    .tp-container .screen:not(.active) {
-        transform: translateX(50px);
-    }
-
-    /* --- FUNCTION GRID --- */
-    .tp-container .list-function {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-        gap: 12px;
-        width: 100%;
-        align-content: start;
-    }
-
-    .tp-container .list-function:not(.active) {
-        display: none;
-    }
-
-    .tp-container .box-function {
-        background: rgba(255, 255, 255, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        border-radius: var(--tp-radius-sm);
-        padding: 15px 10px;
-        text-align: center;
-        cursor: pointer;
-        min-height: 90px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        transition: all 0.3s var(--tp-ease);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-    }
-
-    .tp-container .box-function:hover {
-        background: #fff;
-        transform: translateY(-5px);
-        border-color: var(--tp-primary);
-        color: var(--tp-primary);
-        box-shadow: 0 10px 20px rgba(var(--tp-primary-rgb), 0.15);
-    }
-
-    /* --- DETAIL LAYOUT (SLIDE-IN) --- */
-    .tp-container .layout-function {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(10px);
-        z-index: 20;
-        transform: translateX(100%);
-        transition: 0.4s var(--tp-ease-smooth);
-        display: flex;
-        flex-direction: column;
-        padding: 20px;
-    }
-
-    .tp-container .layout-function.active {
-        transform: translateX(0);
-    }
-
-    .tp-container .back {
-        align-self: flex-start;
-        margin-bottom: 20px;
-        padding: 8px 16px;
-        border-radius: 20px;
-        background: rgba(0, 0, 0, 0.05);
-        cursor: pointer;
-        font-weight: 600;
-        color: var(--tp-text-sub);
-        transition: 0.2s;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .tp-container .back:before {
-        content: '❮';
-        font-size: 0.8em;
-    }
-
-    .tp-container .back:hover {
-        background: var(--tp-primary);
-        color: #fff;
-        padding-right: 20px;
-    }
-
-    .tp-container .box {
-        display: none;
-        animation: slideUp 0.4s var(--tp-ease);
-        height: 100%;
-        overflow-y: auto;
-    }
-
-    .tp-container .box.show {
-        display: block;
-    }
-
-    @keyframes slideUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* --- INPUTS & FORMS --- */
-    .tp-container input,
-    .tp-container textarea {
-        width: 100%;
-        padding: 12px 16px;
-        margin-bottom: 12px;
-        border: 2px solid transparent;
-        border-radius: var(--tp-radius-sm);
-        background: rgba(255, 255, 255, 0.7);
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
-        font-size: 14px;
-        transition: 0.3s;
-        color: var(--tp-text-main);
-    }
-
-    .tp-container input:focus,
-    .tp-container textarea:focus {
-        background: #fff;
-        border-color: var(--tp-primary);
-        box-shadow: 0 0 0 4px rgba(var(--tp-primary-rgb), 0.1);
-    }
-
-    /* Platform Toggle Styled */
-    .tp-container .platform {
-        background: rgba(0, 0, 0, 0.04);
-        border-radius: var(--tp-radius-md);
-        padding: 4px;
-        position: relative;
-        display: flex;
-        margin-bottom: 20px !important;
-    }
-
-    .tp-container .platform label {
-        flex: 1;
-        text-align: center;
-        padding: 10px;
-        z-index: 2;
-        cursor: pointer;
-        transition: 0.3s;
-        color: var(--tp-text-sub);
-        font-weight: 700;
-    }
-
-    .tp-container .platform label.active {
-        color: #fff;
-    }
-
-    .tp-container .highlight_choice {
-        position: absolute;
-        top: 4px;
-        left: 4px;
-        bottom: 4px;
-        width: calc(50% - 4px);
-        background: var(--tp-primary);
-        border-radius: var(--tp-radius-sm);
-        transition: transform 0.4s var(--tp-ease);
-        box-shadow: 0 2px 10px rgba(var(--tp-primary-rgb), 0.3);
-    }
-
-    /* Override logic transform */
-    .tp-container .platform .shopee.active~.highlight_choice {
-        transform: translateX(0);
-    }
-
-    .tp-container .platform .tiktok.active~.highlight_choice {
-        transform: translateX(100%);
-        margin-left: 0;
-    }
-
-    /* Modern Action Button */
-    .tp-container button.action-btn {
-        width: 100%;
-        padding: 14px;
-        margin-top: 15px;
-        border: none;
-        background: linear-gradient(135deg, var(--tp-primary), var(--tp-accent));
-        color: #fff;
-        font-weight: 700;
-        font-size: 15px;
-        letter-spacing: 0.5px;
-        border-radius: var(--tp-radius-md);
-        cursor: pointer;
-        box-shadow: 0 6px 20px rgba(var(--tp-primary-rgb), 0.3);
-        transition: all 0.3s var(--tp-ease);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .tp-container button.action-btn:hover {
-        transform: translateY(-2px) scale(1.02);
-        box-shadow: 0 10px 25px rgba(var(--tp-primary-rgb), 0.4);
-    }
-
-    .tp-container button.action-btn:active {
-        transform: scale(0.98);
-    }
-
-    /* Hiệu ứng Shine khi hover */
-    .tp-container button.action-btn:after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-        transition: 0.5s;
-    }
-
-    .tp-container button.action-btn:hover:after {
-        left: 100%;
-    }
-
-    /* --- FILE UPLOAD AREA --- */
-    /* --- UPLOAD CONTAINER (Glassmorphism) --- */
-    .tp-container .dynamic-upload-container {
-        margin-top: 15px;
-    }
-
-    /* 1. SWITCHER (Segmented Control Style) */
-    .tp-container .upload-mode-switcher {
-        display: flex;
-        background: rgba(0, 0, 0, 0.05);
-        border-radius: 12px;
-        padding: 4px;
-        position: relative;
-        margin-bottom: 15px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .tp-container .upload-mode-switcher label {
-        flex: 1;
-        text-align: center;
-        padding: 8px 10px;
-        font-size: 13px;
-        cursor: pointer;
-        z-index: 2;
-        transition: color 0.3s var(--tp-ease);
-        color: var(--tp-text-sub);
-        font-weight: 600;
-        border-radius: 8px;
-    }
-
-    /* Hiệu ứng nền trượt cho Switcher */
-    .tp-container .upload-mode-switcher:before {
-        content: '';
-        position: absolute;
-        top: 4px;
-        bottom: 4px;
-        left: 4px;
-        width: calc(50% - 4px);
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        transition: transform 0.3s var(--tp-ease);
-        z-index: 1;
-    }
-
-    /* Khi checkbox checked -> Trượt nền sang phải */
-    .tp-container .upload-mode-switcher:has(#modeSwitch:checked):before {
-        transform: translateX(100%);
-    }
-
-    /* Active Text Color */
-    .tp-container .upload-mode-switcher label.active-mode {
-        color: var(--tp-primary);
-    }
-
-    /* 2. DROP ZONE (Dashed Glass) */
-    .tp-container .drop-zone {
-        border: 2px dashed rgba(148, 163, 184, 0.4);
-        background: rgba(255, 255, 255, 0.3);
-        border-radius: var(--tp-radius-md);
-        padding: 40px 20px;
-        text-align: center;
-        transition: all 0.3s var(--tp-ease);
-        cursor: pointer;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .tp-container .drop-zone:hover,
-    .tp-container .drop-zone.highlight {
-        border-color: var(--tp-primary);
-        background: rgba(var(--tp-primary-rgb), 0.08);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(var(--tp-primary-rgb), 0.15);
-    }
-
-    .tp-container .drop-zone i {
-        font-size: 40px;
-        color: var(--tp-secondary);
-        transition: 0.3s;
-        margin-bottom: 5px;
-    }
-
-    .tp-container .drop-zone:hover i {
-        color: var(--tp-primary);
-        transform: scale(1.1);
-    }
-
-    .tp-container .drop-zone p {
-        margin: 0;
-        font-size: 14px;
-        color: var(--tp-text-main);
-        font-weight: 600;
-    }
-
-    /* 3. FILE LIST (Scrollable Glass List) */
-    .tp-container .file-list {
-        margin-top: 15px;
-        max-height: 250px;
-        overflow-y: auto;
-        padding-right: 5px;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .tp-container .file-item {
-        display: flex;
-        align-items: center;
-        padding: 10px;
-        background: rgba(255, 255, 255, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        border-radius: var(--tp-radius-sm);
-        transition: 0.2s var(--tp-ease);
-        animation: fadeInItem 0.3s ease forwards;
-    }
-
-    @keyframes fadeInItem {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .tp-container .file-item:hover {
-        background: #fff;
-        border-color: var(--tp-primary);
-        transform: translateX(4px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-
-    .tp-container .file-thumbnail {
-        width: 44px;
-        height: 44px;
-        border-radius: 8px;
-        margin-right: 12px;
-        background-color: #f1f5f9;
-        background-size: cover;
-        background-position: center;
-        flex-shrink: 0;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-    }
-
-    .tp-container .file-info {
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-    }
-
-    .tp-container .file-name {
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--tp-text-main);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .tp-container .file-size {
-        font-size: 11px;
-        color: var(--tp-text-sub);
-        margin-top: 2px;
-    }
-
-    /* --- TOAST NOTIFICATIONS --- */
-    .tp-container.tp-toast {
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: auto;
-        max-width: 90vw;
-        z-index: 9999999999;
-    }
-
-    .tp-container.tp-toast .toast {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(12px);
-        padding: 12px 24px;
-        border-radius: 50px;
-        margin-bottom: 10px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        color: var(--tp-text-main);
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        transform: translateY(-20px) scale(0.9);
-        opacity: 0;
-        transition: 0.4s var(--tp-ease);
-    }
-
-    .tp-container.tp-toast .toast.show {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-    }
-
-    .tp-container.tp-toast .toast:before {
-        content: '';
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        display: block;
-    }
-
-    .tp-container.tp-toast .toast.success:before {
-        background: #10b981;
-        box-shadow: 0 0 10px #10b981;
-    }
-
-    .tp-container.tp-toast .toast.error:before {
-        background: #ef4444;
-        box-shadow: 0 0 10px #ef4444;
-    }
-
-    .tp-container.tp-toast .toast.warning:before {
-        background: #f59e0b;
-        box-shadow: 0 0 10px #f59e0b;
-    }
-
-    .tp-container.tp-toast .toast.info:before {
-        background: var(--tp-primary);
-        box-shadow: 0 0 10px var(--tp-primary);
-    }
+  :root {
+    /* --- CORE CONFIGURATION --- */
+    --tp-font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --tp-radius-xl: 24px;
+    --tp-radius-md: 16px;
+    --tp-radius-sm: 12px;
+    --tp-primary: #3b82f6;
+    --tp-primary-rgb: 59, 130, 246;
+    --tp-secondary: #64748b;
+    --tp-accent: #60a5fa;
+    --tp-glass-bg: rgba(255, 255, 255, 0.75);
+    --tp-glass-border: rgba(255, 255, 255, 0.6);
+    --tp-glass-highlight: rgba(255, 255, 255, 0.4);
+    --tp-glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    --tp-blur: blur(16px) saturate(180%);
+    --tp-text-main: #1e293b;
+    --tp-text-sub: #475569;
+    --tp-text-inv: #ffffff;
+    --tp-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --tp-ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* CHAT COLORS */
+    --tp-chat-user-bg: var(--tp-primary);
+    --tp-chat-ai-bg: rgba(255, 255, 255, 0.8);
+    --tp-chat-border: rgba(255, 255, 255, 0.5);
+  }
+
+  /* THEMES */
+  .shopee-theme {
+    --tp-primary: #ee4d2d;
+    --tp-primary-rgb: 238, 77, 45;
+    --tp-accent: #ff7350;
+    --tp-glass-shadow: 0 8px 32px 0 rgba(238, 77, 45, 0.15);
+  }
+
+  .lazada-theme {
+    --tp-primary: #0f146d;
+    --tp-primary-rgb: 15, 20, 109;
+    --tp-accent: #f5008f;
+    --tp-glass-shadow: 0 8px 32px 0 rgba(15, 20, 109, 0.2);
+  }
+
+  .tiktok-theme {
+    --tp-primary: #000000;
+    --tp-primary-rgb: 0, 0, 0;
+    --tp-accent: #25F4EE;
+    --tp-secondary: #FE2C55;
+    --tp-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  .dark-mode-active,
+  .tp-container .btn-theme.dark-mode.active~.content-screen {
+    --tp-glass-bg: rgba(17, 25, 40, 0.85);
+    --tp-glass-border: rgba(255, 255, 255, 0.1);
+    --tp-text-main: #f1f5f9;
+    --tp-text-sub: #94a3b8;
+    --tp-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  /* BASE LAYOUT */
+  .tp-container {
+    font-family: var(--tp-font);
+    box-sizing: border-box;
+    color: var(--tp-text-main);
+  }
+
+  .tp-container * {
+    box-sizing: border-box;
+    outline: 0;
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* --- REUSABLE COMPONENTS --- */
+  /* Buttons */
+  .tp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: var(--tp-radius-md);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s var(--tp-ease);
+    background: rgba(255, 255, 255, 0.5);
+    color: var(--tp-text-main);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+
+  .tp-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: #fff;
+  }
+
+  .tp-btn:active {
+    transform: scale(0.96);
+  }
+
+  .tp-btn.primary {
+    background: var(--tp-primary);
+    color: #fff;
+  }
+
+  .tp-btn.primary:hover {
+    background: var(--tp-accent);
+    box-shadow: 0 4px 15px rgba(var(--tp-primary-rgb), 0.4);
+  }
+
+  .tp-btn.danger {
+    background: #ef4444;
+    color: #fff;
+  }
+
+  .tp-btn.ghost {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .tp-btn.ghost:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  .tp-btn.icon-only {
+    padding: 8px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+  }
+
+  /* Inputs/Selects */
+  .tp-select,
+  .tp-input {
+    padding: 10px 14px;
+    border-radius: var(--tp-radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.6);
+    color: var(--tp-text-main);
+    font-size: 14px;
+    outline: none;
+    width: 100%;
+    transition: 0.3s;
+  }
+
+  .tp-select:focus,
+  .tp-input:focus {
+    background: #fff;
+    border-color: var(--tp-primary);
+  }
+
+  /* Tags/Badges */
+  .tp-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: rgba(0, 0, 0, 0.1);
+    color: var(--tp-text-sub);
+  }
+
+  .tp-tag.blue {
+    background: rgba(59, 130, 246, 0.15);
+    color: #2563eb;
+  }
+
+  .tp-tag.red {
+    background: rgba(239, 68, 68, 0.15);
+    color: #dc2626;
+  }
+
+  /* CHECKBOX & TOGGLES (Giữ nguyên logic cũ) */
+  .tp-checkbox {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    margin-right: 15px;
+    position: relative;
+  }
+
+  .tp-checkbox input {
+    display: none;
+  }
+
+  .tp-checkbox .checkmark {
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, .4);
+    border: 1px solid rgba(255, 255, 255, .5);
+    border-radius: 6px;
+    margin-right: 10px;
+    transition: all .3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tp-checkbox input:checked~.checkmark {
+    background: var(--tp-primary);
+    border-color: var(--tp-primary);
+  }
+
+  .tp-checkbox .checkmark:after {
+    content: '✔';
+    font-size: 12px;
+    color: #fff;
+    transform: scale(0);
+    transition: .2s;
+  }
+
+  .tp-checkbox input:checked~.checkmark:after {
+    transform: scale(1);
+  }
+
+  .tp-checkbox .label-text {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* --- MAIN SIDEBAR --- */
+  .tp-container.tp-main {
+    position: fixed;
+    top: 2.5vh;
+    bottom: 2.5vh;
+    left: 0;
+    width: clamp(360px, 35vw, 550px);
+    background: var(--tp-glass-bg);
+    backdrop-filter: var(--tp-blur);
+    -webkit-backdrop-filter: var(--tp-blur);
+    border: 1px solid var(--tp-glass-border);
+    box-shadow: var(--tp-glass-shadow);
+    border-radius: 0 var(--tp-radius-xl) var(--tp-radius-xl) 0;
+    z-index: 999999999;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    transform: translateX(-120%);
+    transition: transform .6s var(--tp-ease), opacity .4s ease;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .tp-container.tp-main.active,
+  .tp-container.tp-main:hover {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* --- HEADER --- */
+  .tp-container .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+  }
+
+  .tp-container .header .time {
+    font-size: 1.1rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--tp-primary), var(--tp-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Theme Switcher */
+  .tp-container .theme-switcher {
+    background: rgba(0, 0, 0, .05);
+    border-radius: 30px;
+    padding: 3px;
+    display: flex;
+    position: relative;
+    width: 64px;
+    height: 32px;
+  }
+
+  .tp-container .btn-theme {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: none;
+    background: 0 0;
+    cursor: pointer;
+    position: absolute;
+    top: 3px;
+    transition: .4s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: .5;
+  }
+
+  .tp-container .btn-theme.active {
+    background: #fff;
+    opacity: 1;
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+  }
+
+  .tp-container .btn-theme.light-mode {
+    left: 4px;
+  }
+
+  .tp-container .btn-theme.dark-mode {
+    right: 4px;
+  }
+
+  /* NAV TABS */
+  .tp-container .list-screen {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 4px;
+    background: rgba(255, 255, 255, .3);
+    border-radius: var(--tp-radius-md);
+  }
+
+  .tp-container .box-screen {
+    flex: 1;
+    text-align: center;
+    padding: 8px 0;
+    border-radius: var(--tp-radius-sm);
+    cursor: pointer;
+    transition: all .3s;
+    font-size: 1.2rem;
+    color: var(--tp-text-sub);
+  }
+
+  .tp-container .box-screen:hover {
+    background: rgba(255, 255, 255, .5);
+    transform: translateY(-2px);
+  }
+
+  .tp-container .box-screen.active {
+    background: #fff;
+    color: var(--tp-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .05);
+    transform: translateY(0) scale(1.05);
+  }
+
+  /* CONTENT SCREENS */
+  .tp-container .content-screen {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 255, 255, .4);
+    border-radius: var(--tp-radius-md);
+    border: 1px solid rgba(255, 255, 255, .3);
+  }
+
+  .tp-container .screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    overflow-y: auto;
+    transition: transform .5s var(--tp-ease-smooth), opacity .4s;
+    opacity: 0;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tp-container .screen.active {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .tp-container .screen:not(.active) {
+    transform: translateX(50px);
+  }
+
+  /* FUNCTION GRID */
+  .tp-container .list-function {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 12px;
+    width: 100%;
+    align-content: start;
+  }
+
+  .tp-container .list-function:not(.active) {
+    display: none;
+  }
+
+  .tp-container .box-function {
+    background: rgba(255, 255, 255, .6);
+    border: 1px solid rgba(255, 255, 255, .5);
+    border-radius: var(--tp-radius-sm);
+    padding: 15px 10px;
+    text-align: center;
+    cursor: pointer;
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: all .3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, .02);
+  }
+
+  .tp-container .box-function:hover {
+    background: #fff;
+    transform: translateY(-5px);
+    border-color: var(--tp-primary);
+    color: var(--tp-primary);
+  }
+
+  /* LAYOUT SLIDE-IN */
+  .tp-container .layout-function {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, .85);
+    backdrop-filter: blur(10px);
+    z-index: 20;
+    transform: translateX(100%);
+    transition: .4s var(--tp-ease-smooth);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .tp-container .layout-function.active {
+    transform: translateX(0);
+  }
+
+  .tp-container .back {
+    align-self: flex-start;
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, .05);
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--tp-text-sub);
+    transition: .2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tp-container .back:hover {
+    background: var(--tp-primary);
+    color: #fff;
+    padding-right: 20px;
+  }
+
+  .tp-container .box {
+    display: none;
+    animation: slideUp .4s;
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  .tp-container .box.show {
+    display: block;
+    height: fit-content;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* TOAST */
+  .tp-container.tp-toast {
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    max-width: 90vw;
+    z-index: 9999999999;
+    position: fixed;
+    pointer-events: none;
+  }
+
+  .tp-container.tp-toast .toast {
+    background: rgba(255, 255, 255, .95);
+    backdrop-filter: blur(12px);
+    padding: 12px 24px;
+    border-radius: 50px;
+    margin-bottom: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
+    border: 1px solid rgba(255, 255, 255, .5);
+    color: var(--tp-text-main);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transform: translateY(-20px) scale(.9);
+    opacity: 0;
+    transition: .4s;
+    pointer-events: auto;
+  }
+
+  .tp-container.tp-toast .toast.show {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+
+  .tp-container.tp-toast .toast:before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: block;
+  }
+
+  .tp-container.tp-toast .toast.success:before {
+    background: #10b981;
+    box-shadow: 0 0 10px #10b981;
+  }
+
+  .tp-container.tp-toast .toast.error:before {
+    background: #ef4444;
+    box-shadow: 0 0 10px #ef4444;
+  }
+
+  .tp-container.tp-toast .toast.info:before {
+    background: var(--tp-primary);
+    box-shadow: 0 0 10px var(--tp-primary);
+  }
+
+  /* =========================================
+       NEW: AI & GLOBAL CHAT PANEL (Right Side)
+       ========================================= */
+  .tp-container.tp-chat-panel {
+    position: fixed;
+    top: 2.5vh;
+    bottom: 2.5vh;
+    left: calc(clamp(360px, 35vw, 550px) + 20px);
+    /* Bên phải Main Panel */
+    width: 380px;
+    background: var(--tp-glass-bg);
+    backdrop-filter: var(--tp-blur);
+    -webkit-backdrop-filter: var(--tp-blur);
+    border: 1px solid var(--tp-glass-border);
+    box-shadow: var(--tp-glass-shadow);
+    border-radius: var(--tp-radius-xl);
+    z-index: 999999998;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(-50px);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.5s var(--tp-ease);
+  }
+
+  /* Khi Main Active thì Chat có thể Active */
+  .tp-container.tp-main.active~.tp-container.tp-chat-panel.active {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Chat Header */
+  .tp-chat-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  /* Mode Switcher */
+  .tp-chat-mode-switch {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    padding: 3px;
+    display: flex;
+    gap: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .tp-mode-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--tp-text-sub);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .tp-mode-btn.active {
+    background: #fff;
+    color: var(--tp-primary);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Chat Body */
+  .tp-chat-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    scroll-behavior: smooth;
+  }
+
+  /* Messages */
+  .tp-msg {
+    max-width: 85%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    position: relative;
+    word-wrap: break-word;
+    animation: msgPop 0.3s var(--tp-ease);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+
+  @keyframes msgPop {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.95);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .tp-msg.user {
+    align-self: flex-end;
+    background: var(--tp-chat-user-bg);
+    color: #fff;
+    border-bottom-right-radius: 2px;
+  }
+
+  .tp-msg.ai {
+    align-self: flex-start;
+    background: var(--tp-chat-ai-bg);
+    color: var(--tp-text-main);
+    border: 1px solid var(--tp-chat-border);
+    border-bottom-left-radius: 2px;
+  }
+
+  .tp-msg.other {
+    align-self: flex-start;
+    background: #f1f5f9;
+    color: var(--tp-text-main);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom-left-radius: 2px;
+  }
+
+  .tp-msg.system {
+    align-self: center;
+    font-size: 12px;
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--tp-text-sub);
+    border-radius: 20px;
+    padding: 4px 12px;
+    border: none;
+    box-shadow: none;
+  }
+
+  .tp-msg-sender {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--tp-text-sub);
+    margin-bottom: 2px;
+    display: block;
+  }
+
+  .tp-chat-img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+  }
+
+  .tp-file-attachment {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 6px 10px;
+    border-radius: 6px;
+    margin-top: 4px;
+    font-size: 12px;
+    text-decoration: none;
+    color: var(--tp-primary);
+    font-weight: 600;
+  }
+
+  .tp-file-attachment:hover {
+    background: #fff;
+  }
+
+  /* Chat Footer */
+  .tp-chat-footer {
+    padding: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tp-chat-input-area {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: var(--tp-radius-md);
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    transition: 0.3s;
+  }
+
+  .tp-chat-input-area:focus-within {
+    background: #fff;
+    border-color: var(--tp-primary);
+    box-shadow: 0 4px 12px rgba(var(--tp-primary-rgb), 0.15);
+  }
+
+  .tp-chat-textarea {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 8px;
+    font-family: var(--tp-font);
+    font-size: 14px;
+    resize: none;
+    max-height: 100px;
+    min-height: 24px;
+    outline: none;
+    color: var(--tp-text-main);
+  }
+
+  .tp-upload-progress {
+    height: 2px;
+    background: var(--tp-primary);
+    width: 0%;
+    transition: width 0.3s;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+
+  /* Typing Dots */
+  .typing-dots {
+    display: inline-flex;
+    gap: 4px;
+  }
+
+  .typing-dots span {
+    width: 6px;
+    height: 6px;
+    background: var(--tp-text-sub);
+    border-radius: 50%;
+    animation: dotBounce 1.4s infinite ease-in-out both;
+  }
+
+  .typing-dots span:nth-child(1) {
+    animation-delay: -0.32s;
+  }
+
+  .typing-dots span:nth-child(2) {
+    animation-delay: -0.16s;
+  }
+
+  @keyframes dotBounce {
+
+    0%,
+    80%,
+    100% {
+      transform: scale(0);
+    }
+
+    40% {
+      transform: scale(1);
+    }
+  }
 </style>
 
 <div class="tp-container tp-toast"></div>
 
-<div class="tp-container tp-main">
-    <div class="header">
-        <div class="time">00:00:00</div>
-        <div class="help">Hướng Dẫn</div>
-        <div class="theme-switcher">
-            <button class="btn-theme light-mode active" data-theme="light">☀️</button>
-            <button class="btn-theme dark-mode" data-theme="dark">🌙</button>
-        </div>
+<div class="tp-container tp-main" id="tpMainPanel">
+  <div class="header">
+    <div class="time">00:00:00</div>
+    <button class="tp-btn icon-only ghost" id="toggleChatBtn" title="Chat" style="font-size: 18px">💬</button>
+
+    <div class="checkout"><button class="tp-btn primary" style="padding: 6px 12px; font-size:12px">CHECK OUT</button></div>
+    <div class="theme-switcher">
+      <button class="btn-theme light-mode active" data-theme="light">☀️</button>
+      <button class="btn-theme dark-mode" data-theme="dark">🌙</button>
+    </div>
+  </div>
+
+  <div class="list-screen">
+    <div class="box-screen setting" data-screen="setting">⚙️</div>
+    <div class="box-screen main" data-screen="main">🏠</div>
+    <div class="box-screen online" data-screen="online">📡</div>
+  </div>
+
+  <div class="content-screen">
+    <div class="screen screen-setting">
+      <div class="box custom-name show">
+        <p>Tên Hiển Thị</p>
+        <input class="input-custom-name tp-input" placeholder="Nhập tên gọi..." />
+      </div>
     </div>
 
-    <div class="list-screen">
-        <div class="box-screen setting" data-screen="setting">⚙️</div>
-        <div class="box-screen main" data-screen="main">🏠</div>
-        <div class="box-screen online" data-screen="online">📡</div>
+    <div class="screen screen-main active">
+      <div class="list-function active"></div>
+      <div class="layout-function">
+        <div class="back">Quay lại Menu</div>
+
+        <div class="box flash_sale" id="flash_sale_layout">
+          <h3 style="margin-bottom:20px;text-align:center;color:var(--tp-primary)">Flash Sale</h3>
+          <div class="program_id" style="margin-bottom:15px">
+            <label>Link Chương Trình</label>
+            <input class="product_url tp-input" placeholder="Paste link/ID...">
+            <div class="platform flex flex-row" style="margin-top:10px; display:flex; gap:10px">
+              <button class="tp-btn ghost shopee active" style="flex:1">SHOPEE</button>
+              <button class="tp-btn ghost tiktok" style="flex:1">TIKTOK</button>
+            </div>
+          </div>
+          <div class="input_prompt">
+            <div class="prompt_value shopee_prompt active">
+              <input type="number" class="value-count tp-input" placeholder="Số lượng khung">
+              <textarea class="value-flashsale tp-input" placeholder="Tên SP & Số lượng..."></textarea>
+            </div>
+          </div>
+          <button class="excuse-button action-btn tp-btn primary" style="width:100%; margin-top:15px" data-action="flash_sale">Kích Hoạt 🚀</button>
+        </div>
+
+        <div class="box doi_hinh_phan_loai show" id="doi_hinh_phan_loai_layout">
+          <h3 style="margin-bottom:20px;text-align:center;color:var(--tp-primary)">Đổi Hình</h3>
+          <div class="product_info">
+            <label>Danh sách ID</label>
+            <textarea class="product_url tp-input" placeholder="Mỗi dòng 1 ID..."></textarea>
+          </div>
+          <div class="dynamic-upload-container"></div>
+          <button class="excuse-button action-btn tp-btn primary" style="width:100%; margin-top:15px" data-action="doi_hinh_phan_loai">Bắt Đầu ⚡</button>
+        </div>
+      </div>
     </div>
 
-    <div class="content-screen">
-        <div class="screen screen-setting">
-            <div class="box custom-name show">
-                <input type="text" class="input-custom-name" placeholder="Nhập tên gọi..." />
-            </div>
-        </div>
-
-        <div class="screen screen-main active">
-            <div class="list-function active">
-            </div>
-
-            <div class="layout-function">
-                <div class="back">Quay lại Menu</div>
-
-                <div class="box flash_sale" id="flash_sale_layout">
-                    <h3 style="margin-bottom: 20px; text-align: center; color: var(--tp-primary)">Thiết Lập Flash Sale</h3>
-                    <div class="program_id" style="margin-bottom: 15px;">
-                        <label style="font-size: 0.9em; color: var(--tp-text-sub); display: block; margin-bottom: 5px;">Link Chương Trình</label>
-                        <input type="text" class="product_url" placeholder="Paste link hoặc ID vào đây..." />
-
-                        <div class="platform flex flex-row">
-                            <label class="shopee" for="shopee">SHOPEE</label>
-                            <label class="tiktok" for="tiktok">TIKTOK</label>
-                            <div class="highlight_choice"></div>
-                        </div>
-                    </div>
-
-                    <div class="input_prompt">
-                        <div class="prompt_value shopee_prompt flex flex-column">
-                            <input type="number" class="value-count" placeholder="Số lượng khung (VD: 5)" />
-                            <textarea class="value-flashsale" placeholder="Nhập tên sản phẩm & số lượng..."></textarea>
-                        </div>
-                        <div class="prompt_value tiktok_prompt">
-                            <textarea placeholder="Nhập thời gian chạy..." class="value-time"></textarea>
-                        </div>
-                    </div>
-
-                    <button class="excuse-button action-btn" data-action="flash_sale">Kích Hoạt Flash Sale 🚀</button>
-                </div>
-
-                <div class="box doi_hinh_phan_loai show" id="doi_hinh_phan_loai_layout">
-                    <h3 style="margin-bottom: 20px; text-align: center; color: var(--tp-primary)">Đổi Hình Phân Loại</h3>
-                    <div class="product_info">
-                        <label style="font-size: 0.9em; color: var(--tp-text-sub); display: block; margin-bottom: 5px;">Danh sách ID Sản Phẩm</label>
-                        <textarea type="text" class="product_url" placeholder="Mỗi dòng 1 ID sản phẩm..."></textarea>
-                    </div>
-
-                    <div class="input_prompt">
-                        <div class="dynamic-upload-container"></div>
-                    </div>
-
-                    <button class="excuse-button action-btn" data-action="doi_hinh_phan_loai">Bắt Đầu Xử Lý ⚡</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="screen screen-online">
-            <h3 style="margin-bottom: 15px; color: var(--tp-accent)">Kết Nối Server</h3>
-            <p style="color: var(--tp-text-sub)">Trạng thái Socket.IO...</p>
-        </div>
+    <div class="screen screen-online">
+      <div class="server-status" style="text-align:center; margin-bottom:20px">
+        <p>Trạng Thái: <span class="status-text tp-tag red">Offline</span></p>
+        <p style="font-size:11px; color:var(--tp-text-sub); margin-top:5px">URL: <span class="url-text">...</span></p>
+      </div>
+      <div class="box auto-save-check-in show">
+        <label class="tp-checkbox">
+          <input type="checkbox" class="input-auto-save-check-in">
+          <span class="checkmark"></span>
+          <span class="label-text">Tự Động Check-in</span>
+        </label>
+      </div>
     </div>
+  </div>
+</div>
+
+<div class="tp-container tp-chat-panel" id="tpChatPanel">
+  <div class="tp-chat-header">
+    <div class="tp-chat-mode-switch">
+      <button class="tp-mode-btn active" data-mode="ai">🤖 AI</button>
+      <button class="tp-mode-btn" data-mode="global">🌏 Global</button>
+    </div>
+    <div style="display:flex; gap:5px">
+      <button class="tp-btn icon-only ghost" id="clearChat" title="Clear">🗑️</button>
+      <!-- <button class="tp-btn icon-only ghost" id="closeChat" title="Close">✕</button> -->
+    </div>
+  </div>
+
+  <div class="tp-chat-body" id="tpChatBody">
+    <div class="tp-msg system">Xin chào! Tôi có thể giúp gì?</div>
+  </div>
+
+  <div class="tp-chat-footer">
+    <input type="file" id="chatFileInput" style="display: none;" multiple>
+    <div class="tp-upload-progress" id="chatUploadProgress"></div>
+
+    <div class="tp-chat-input-area">
+      <button class="tp-btn ghost icon-only" id="btnChatAttach" title="Gửi File" style="width:30px; height:30px; padding:0">📎</button>
+      <textarea class="tp-chat-textarea" id="tpChatInput" placeholder="Nhập tin nhắn..." rows="1"></textarea>
+      <button class="tp-btn primary icon-only" id="tpChatSend" style="width:32px; height:32px; padding:0">➤</button>
+    </div>
+  </div>
 </div>
