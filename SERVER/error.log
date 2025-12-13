@@ -1,3 +1,22 @@
 2025-12-12 10:07:00 [error]: Lỗi khi kết nối Ngrok:
 2025-12-12 11:11:30 [error]: Lỗi khi kết nối Ngrok:
 2025-12-12 11:11:39 [error]: Lỗi khi kết nối Ngrok:
+2025-12-12 17:40:15 [error]: ❌ Lỗi Manual Check-out TanPhan:
+2025-12-13 11:48:40 [error]: Lỗi khi xử lý check-in cho TanPhan: invalid_grant: Invalid JWT Signature.
+2025-12-13 14:51:56 [error]: [IMAGEN] Lỗi tạo ảnh cho TanPhan:
+2025-12-13 14:55:24 [error]: [IMAGEN] Lỗi tạo ảnh cho TanPhan:
+2025-12-13 16:32:40 [error]: ❌ [BATCH FAIL] Lỗi ghi sheet cho TanPhan:
+2025-12-13 16:32:50 [error]: ❌ [BATCH FAIL] Lỗi ghi sheet cho TanPhan:
+2025-12-13 16:33:10 [error]: ❌ Lỗi Auto Check-out TanPhan:
+2025-12-13 16:33:51 [error]: ❌ [BATCH FAIL] Lỗi ghi sheet cho TanPhan:
+2025-12-13 16:33:51 [error]: ❌ Lỗi Auto Check-out TanPhan:
+2025-12-13 16:34:10 [error]: ❌ Lỗi Auto Check-out TanPhan:
+2025-12-13 16:34:51 [error]: ❌ [BATCH FAIL] Lỗi ghi sheet cho TanPhan:
+2025-12-13 16:34:51 [error]: ❌ Lỗi Auto Check-out TanPhan:
+2025-12-13 16:35:10 [error]: ❌ Lỗi Auto Check-out TanPhan:
+2025-12-13 16:36:02 [error]: ❌ Lỗi Auto Check-out TanPhan:
+2025-12-13 16:36:02 [error]: ❌ [BATCH FAIL] Lỗi ghi sheet cho TanPhan:
+2025-12-13 16:36:10 [error]: ❌ Lỗi Auto Check-out TanPhan:
+2025-12-13 16:36:40 [error]: ❌ [BATCH FAIL] Lỗi ghi sheet cho TanPhan:
+2025-12-13 16:36:40 [error]: ❌ Lỗi Auto Check-out TanPhan:
+2025-12-13 16:37:21 [error]: ❌ Lỗi Auto Check-out TanPhan:

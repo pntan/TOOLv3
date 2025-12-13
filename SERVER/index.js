@@ -33,6 +33,8 @@ const TIMEOUT_CHECKOUT = 2 * 60 * 1000; // 2 phút
 const PORT = process.env.PORT || 3000;
 const NGROK_TOKEN = process.env.NGROK_AUTH_TOKEN;
 
+let gsheetQueue = {};
+
 // 4. Khởi tạo Express App và HTTP Server
 const app = express();
 const httpServer = http.createServer(app);
@@ -144,6 +146,118 @@ async function saveBackup() {
   await FILE.writeJson("cham_cong.json", userStates);
 }
 
+function startSheetBatchWriter() {
+  setInterval(async () => {
+    const usersToUpdate = Object.keys(gsheetQueue);
+    if (usersToUpdate.length === 0) return; // Không có gì để ghi
+
+    logger.info(`[BATCH WRITER] Bắt đầu ghi ${usersToUpdate.length} user lên Google Sheet...`);
+
+    for (const name of usersToUpdate) {
+      const data = gsheetQueue[name];
+      const sheetName = `CHẤM CÔNG - ${name}`;
+
+      try {
+        // BƯỚC 1: Đọc dữ liệu cột A (Ngày) và B (Check-in)
+        const range = `${sheetName}!A:B`;
+        const existingData = await GGSHEET.readSheet(range);
+
+        // Tìm dòng của ngày hôm nay
+        let rowIndex = -1;
+        let existingCheckIn = null;
+
+        // Dòng đầu tiên (index 0) là tiêu đề, nên duyệt từ 1
+        for (let i = 0; i < existingData.length; i++) {
+          const row = existingData[i];
+          if (row[0] === data.date) {
+            rowIndex = i; // Lấy index (0-based)
+            // Lấy giờ check-in hiện tại (row[1] là cột B)
+            existingCheckIn = row[1] || null;
+            break;
+          }
+        }
+
+        if (rowIndex !== -1) {
+          // TRƯỜNG HỢP 1: DÒNG NGÀY HÔM NAY ĐÃ TỒN TẠI
+          const rowNumber = rowIndex + 1; // Dòng Excel (1-based)
+          let valuesToUpdate = [];
+          let rangeToUpdate = '';
+
+          // 1a. Ghi Check-in (Cột B) nếu nó trống
+          if (data.checkIn && !existingCheckIn) {
+            // Logic: Đã có ngày (A) nhưng chưa có Check-in (B) -> Phải ghi vào B
+            rangeToUpdate = `${sheetName}!B${rowNumber}`;
+            valuesToUpdate.push([data.checkIn]);
+
+            // Lệnh update đầu tiên
+            await GGSHEET.updateSheet(rangeToUpdate, valuesToUpdate);
+            logger.info(`[BATCH] Ghi Check-in ${data.checkIn} cho ${name} tại B${rowNumber}`);
+          }
+
+          // 1b. Ghi Check-out (Cột C)
+          if (data.checkOut) {
+            rangeToUpdate = `${sheetName}!C${rowNumber}`;
+            valuesToUpdate = [[data.checkOut]];
+
+            // Lệnh update thứ hai (luôn ghi muộn nhất)
+            await GGSHEET.updateSheet(rangeToUpdate, valuesToUpdate);
+            logger.info(`[BATCH] Cập nhật Check-out ${data.checkOut} cho ${name} tại C${rowNumber}`);
+          }
+
+        } else {
+          // TRƯỜNG HỢP 2: DÒNG NGÀY HÔM NAY CHƯA TỒN TẠI -> APPEND DÒNG MỚI
+          const values = [data.date, data.checkIn || "", data.checkOut || ""];
+          await GGSHEET.appendSheet(sheetName, [values]);
+          logger.info(`[BATCH] Tạo dòng mới cho ${name}: ${data.date} (${data.checkIn}-${data.checkOut})`);
+        }
+
+        // XÓA KHỎI QUEUE KHI GHI THÀNH CÔNG
+        delete gsheetQueue[name];
+
+      } catch (error) {
+        logger.error(`❌ [BATCH FAIL] Lỗi ghi sheet cho ${name}:`, error.message);
+        // Giữ lại trong Queue để thử lại ở lần chạy tiếp theo
+      }
+    }
+    logger.info(`[BATCH WRITER] Hoàn tất quá trình ghi. Queue còn ${Object.keys(gsheetQueue).length} user.`);
+  }, 60000);
+}
+startSheetBatchWriter();
+
+function updateCheckInQueue(name, date, time) {
+  const queueData = gsheetQueue[name] || {
+    date: date,
+    checkIn: null,
+    checkOut: null,
+    status: 'pending'
+  };
+
+  // Logic Check-in: Lấy SỚM NHẤT
+  const currentCI = queueData.checkIn;
+  if (!currentCI || time < currentCI) {
+    queueData.checkIn = time;
+  }
+
+  gsheetQueue[name] = queueData;
+}
+
+function updateCheckOutQueue(name, date, time) {
+  const queueData = gsheetQueue[name] || {
+    date: date,
+    checkIn: null,
+    checkOut: null,
+    status: 'pending'
+  };
+
+  // Logic Check-out: Lấy MUỘN NHẤT
+  const currentCO = queueData.checkOut;
+  if (!currentCO || time > currentCO) {
+    queueData.checkOut = time;
+  }
+
+  gsheetQueue[name] = queueData;
+}
+
 // 9. Xử lý kết nối Socket.IO
 io.on('connection', (socket) => {
   logger.info(`[Socket.IO] Người dùng đã kết nối: ${socket.id}`);
@@ -165,117 +279,92 @@ io.on('connection', (socket) => {
     logger.info(`[Socket.IO] Người dùng đã ngắt kết nối: ${socket.id}`);
   });
 
-  // --- SỰ KIỆN LƯU CHECK-IN (ĐÃ CẬP NHẬT KIỂM TRA TRÙNG) ---
+  // --- 1. SỰ KIỆN LƯU CHECK-IN (CHỈ GHI VÀO QUEUE) ---
   socket.on("save_check_in", async (data) => {
-    const sheetName = `CHẤM CÔNG - ${data.name}`;
     logger.info(`[Socket.IO] ${data.name} yêu cầu check-in ngày ${data.date}`);
+    const sheetName = `CHẤM CÔNG - ${data.name}`;
+    let message = 'Giờ check-in đã được ghi nhận. Đang chờ cập nhật Sheet.';
+    let status = 'info';
 
     try {
-      // BƯỚC 1: Đọc dữ liệu cột A (Cột chứa ngày tháng) của Sheet nhân viên đó
-      // Nếu Sheet chưa tồn tại, hàm readSheet (V3) trả về mảng rỗng [], code vẫn chạy tốt.
-      const existingRows = await GGSHEET.readSheet(`${sheetName}!A:A`);
+      // KIỂM TRA TRÙNG LẶP TRỰC TIẾP TRÊN SHEET (Để phản hồi ngay lập tức)
+      // Đây là API call duy nhất được giữ lại để đảm bảo User không bị Check-in 2 lần
+      const existingData = await GGSHEET.readSheet(`${sheetName}!A:B`);
+      let isAlreadyCheckedIn = false;
 
-      // existingRows trả về dạng: [['2023-10-01'], ['2023-10-02'], ...]
-      // Ta dùng .flat() để biến nó thành mảng 1 chiều: ['2023-10-01', '2023-10-02', ...]
-      const existingDates = existingRows.flat();
-
-      // BƯỚC 2: Kiểm tra trùng lặp
-      if (existingDates.includes(data.date)) {
-        logger.warn(`[Socket.IO] Bỏ qua: ${data.name} đã check-in ngày ${data.date} trước đó.`);
-        
-        // Gửi phản hồi về Client (Dùng status 'warning' hoặc 'info' để Client hiển thị màu vàng/xanh)
-        socket.emit('check_in_saved', {
-          status: 'warning', 
-          message: `Hôm nay (${data.date}) bạn đã check-in rồi, không cần lưu lại!`
-        });
-        
-        return; // DỪNG LẠI TẠI ĐÂY, KHÔNG GHI TIẾP
+      for (const row of existingData) {
+        if (row[0] === data.date && row[1]) { // [1] là cột B (Check-in time)
+          isAlreadyCheckedIn = true;
+          break;
+        }
       }
 
-      // BƯỚC 3: Nếu chưa có, tiến hành Ghi (Append)
-      await GGSHEET.appendSheet(sheetName, [
-        [data.date, data.time]
-      ]);
+      if (isAlreadyCheckedIn) {
+        message = `Hôm nay (${data.date}) bạn đã Check-in lúc ${existingData.find(r => r[0] === data.date)[1]} rồi!`;
+        status = 'warning';
+      } else {
+        // GHI NHẬN VÀO QUEUE
+        updateCheckInQueue(data.name, data.date, data.time);
 
-      logger.info(`[Socket.IO] Đã lưu check-in mới cho ${data.name}`);
-      
-      socket.emit('check_in_saved', {
-        status: 'success',
-        message: 'Giờ check-in đã được lưu thành công.'
-      });
+        // Cập nhật RAM (userStates) để kích hoạt logic Auto-Check-out
+        userStates[data.name] = {
+          lastPing: Date.now(),
+          date: data.date,
+          timeStr: data.time,
+          isSaved: false
+        };
+        saveBackup();
+      }
 
     } catch (error) {
-      logger.error(`Lỗi khi xử lý check-in cho ${data.name}:`, error);
-      socket.emit('check_in_saved', {
-        status: 'error',
-        message: 'Lỗi Server: Không thể lưu giờ check-in.'
-      });
+      logger.error(`Lỗi Check-in cho ${data.name}:`, error.message);
+      message = 'Lỗi Server: Không thể xử lý yêu cầu Check-in.';
+      status = 'error';
     }
+
+    socket.emit('check_in_saved', {
+      status: status,
+      message: message
+    });
   });
 
-  socket.on('IAM_ALIVE', (data) => {
+  // --- 2. SỰ KIỆN PING (IAM_ALIVE) ---
+  socket.on('client_ping', (data) => {
+    // 1. Cập nhật RAM (userStates) cho logic Timeout (Giữ nguyên)
     const userName = data.name;
-    // Bỏ qua nếu không có tên
     if (!userName || userName === "Unknown") return;
 
-    // 1. Cập nhật vào RAM
     userStates[userName] = {
-      lastPing: Date.now(),     // Thời điểm mới nhất
+      lastPing: Date.now(),
       date: data.date,
       timeStr: data.time,
-      isSaved: false            // Chưa lưu vào Sheet
+      isSaved: false
     };
+    saveBackup();
 
-    // 2. LƯU NGAY XUỐNG Ổ CỨNG (Chống sập nguồn)
-    // Thao tác này rất nhanh với file JSON nhỏ, không lo lag
-    saveBackup(); 
-    
-    logger.info(`[Ping] ${userName} - ${data.time}`);
+    // 2. CẬP NHẬT QUEUE CHO CHECK-OUT (LẤY MUỘN NHẤT)
+    updateCheckOutQueue(data.name, data.date, data.time);
   });
 
+
+  // --- 3. SỰ KIỆN LƯU CHECK-OUT (CHỈ GHI VÀO QUEUE) ---
   socket.on("save_check_out", async (data) => {
     logger.info(`[Socket.IO] ${data.name} chủ động Check-out.`);
 
-    // 1. Cập nhật RAM & Ổ cứng trước (để tránh Auto-checkout chạy đè)
+    // GHI NHẬN VÀO QUEUE (LẤY MUỘN NHẤT)
+    updateCheckOutQueue(data.name, data.date, data.time);
+
+    // Đánh dấu đã lưu trong RAM (để Grim Reaper không chạy)
     if (userStates[data.name]) {
-      userStates[data.name].isSaved = true; // Đánh dấu đã xong
-      saveBackup(); // Lưu xuống ổ cứng
+      userStates[data.name].isSaved = true;
+      delete userStates[data.name]; // Xóa khỏi RAM vì đã chủ động check out
     }
+    saveBackup();
 
-    // 2. Ghi vào Google Sheet
-    const sheetName = `CHẤM CÔNG - ${data.name}`;
-    try {
-      // Logic tìm dòng ngày hôm nay để update giờ về
-      const existingRows = await GGSHEET.readSheet(`${sheetName}!A:A`);
-      const existingDates = existingRows ? existingRows.flat() : [];
-      const rowIndex = existingDates.indexOf(data.date);
-
-      if (rowIndex !== -1) {
-        // Có Check-in -> Update cột C (Giờ về)
-        const rowNumber = rowIndex + 1;
-        await GGSHEET.updateSheet(`${sheetName}!C${rowNumber}`, [[data.time]]);
-        logger.info(`✅ [Manual] Đã cập nhật giờ về cho ${data.name}`);
-      } else {
-        // Không có Check-in -> Tạo dòng mới: [Ngày, "", Giờ về]
-        await GGSHEET.appendSheet(sheetName, [[data.date, "", data.time]]);
-        logger.info(`✅ [Manual] Check-out không Check-in cho ${data.name}`);
-      }
-
-      socket.emit('check_out_saved', {
-        status: 'success',
-        message: 'Đã check-out thành công!'
-      });
-
-      // 3. Dọn dẹp RAM (User đã về, không cần theo dõi nữa)
-      if (userStates[data.name]) {
-          delete userStates[data.name];
-          saveBackup(); // Cập nhật lại file backup (đã xóa user)
-      }
-
-    } catch (error) {
-      logger.error(`❌ Lỗi Manual Check-out ${data.name}:`, error.message);
-      socket.emit('check_out_saved', { status: 'error', message: 'Lỗi Server' });
-    }
+    socket.emit('check_out_saved', {
+      status: 'info',
+      message: 'Đã ghi nhận Check-out. Đang chờ cập nhật Sheet.'
+    });
   });
 
   // --- CHAT AI VÀ TẠO ẢNH ---
