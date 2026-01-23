@@ -24,6 +24,14 @@
 			this._name = "Công Cụ Hỗ Trợ";
 			this._version = "v4.0.0";
 			this._theme = "default";
+			this._host = window.location;
+			this._platform = this.host.toString().includes("shopee")
+				? "shopee"
+				: this.host.toString().includes("tiktok")
+					? "tiktok"
+					: this.host.toString().includes("lazada")
+						? "lazada"
+						: "unknow";
 		}
 
 		set theme(theme) {
@@ -36,11 +44,77 @@
 		get name() {
 			return this._name;
 		}
+
 		get version() {
 			return this._version;
 		}
+
 		get theme() {
 			return this._theme;
+		}
+
+		get host() {
+			return this._host;
+		}
+
+		get platform() {
+			return this._platform;
+		}
+	}
+
+	class Logs {
+		constructor() {
+			this.element = $(".tp-v4-container #console");
+		}
+	}
+
+	class TestFunction {
+		constructor() {
+			this._name = "Chức Năng Thử Nghiệm";
+			this._platform = ["shopee", "tiktok", "lazada"];
+			this.Component = new Component();
+		}
+
+		renderConfig() {
+			return `
+        ${this.Component.Input("text", "Thử nghiệp, nhập gì cũng được")}
+      `;
+		}
+
+		get platform() {
+			return this._platform;
+		}
+
+		get name() {
+			return this._name;
+		}
+
+		run(params) {
+			console.log("CHỨC NĂNG THỬ NGHIỆM");
+			console.log(params);
+		}
+	}
+
+	class Feature {
+		constructor() {
+			this.ProgramConfig = new ProgramConfig();
+			this.Logs = new Logs();
+			this.TestFunction = new TestFunction();
+		}
+
+		/* Hàm lọc chức năng theo Platform hiện tại */
+		getAvailableFeatures() {
+			const currentPlatform = this.ProgramConfig.platform;
+			let list = [];
+			// Lấy tất cả thuộc tính của class Feature
+			Object.keys(this).forEach((key) => {
+				const func = this[key];
+				// Kiểm tra nếu object đó có thuộc tính platforms và hỗ trợ platform hiện tại
+				if (func.platform && func.platform.includes(currentPlatform)) {
+					list.push(func);
+				}
+			});
+			return list;
 		}
 	}
 
@@ -177,7 +251,7 @@
 				.join("");
 
 			return `
-				<select class="${className}" id="${id}" style="${style}" ${dataAttrs}>
+				<select class="${className}" id="${id}" style="border: none; border-radius: 100px ${style}" ${dataAttrs}>
 					${optionsHtml}
 				</select>
 			`;
@@ -207,194 +281,637 @@
 
 	class UI {
 		constructor() {
+			this.Feature = new Feature();
 			this.Component = new Component();
 			this.Config = new ProgramConfig();
-      this._panel_side = "left";
+			this._panel_side = "left";
 			this.init();
 		}
-    
-    get panel_side() { return this._panel_side; }
-    set panel_side(side) { 
-      this._panel_side = side;
-      $(".tp-v4-main").attr("data-side", side);
-    }
+
+		get panel_side() {
+			return this._panel_side;
+		}
+		set panel_side(side) {
+			this._panel_side = side;
+			$(".tp-v4-main").attr("data-side", side);
+		}
 
 		init() {
 			$("head").append(this.style());
 			$("body").append(this.layout());
-      this.bindEvent();
+			this.bindEvent();
 		}
 
 		layout() {
-      const isLeft = this.panel_side == "left";
-			return `
-        <div class="tp-v4-container tp-v4-main" data-side="left" data-platform="default" data-mode="light" 
-            style="position: fixed; ${isLeft ? "left" : "right"}: 20px; top: 20px; bottom: 20px; width: 380px; max-width: 90vw; border-radius: var(--tp-radius);">
-            
-            <div class="tp-v4-main-header" style="padding: 20px; border-bottom: 1px solid var(--tp-border);">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <h2 style="margin:0; font-size: 1.2rem; color: var(--tp-primary);">${this.Config.name}</h2>
-                        <small style="opacity: 0.5;">Phiên bản hệ thống: ${this.Config.version}</small>
-                    </div>
-                    <div class="tp-v4-switcher" style="display:flex; flex-direction: column; gap: 8px; align-items: flex-end;">
-                        <div class="tp-v4-modes" style="background: rgba(0,0,0,0.05); padding: 4px; border-radius: 20px;">
-                            <button class="tp-v4-mode-btn active" data-mode="light">☀️</button>
-                            <button class="tp-v4-mode-btn" data-mode="dark">🌙</button>
-                        </div>
-                        <select class="tp-v4-platform-select" id="tp-v4-platform-change" style="background: none; border: 1px solid var(--tp-border); border-radius: 5px; color: var(--tp-text); font-size: 11px;">
-                            <option value="default">Mặc định</option>
-                            <option value="shopee">Shopee</option>
-                            <option value="tiktok">TikTok</option>
-                            <option value="lazada">Lazada</option>
-                        </select>
-                    </div>
-                </div>
+			const mainLayout = `
+        <div class="tp-v4-container tp-v4-main">
+          <div class="tp-v4-main-header">
+            <div class="tp-v4-main-header-left">
+              <span>${this.Config.name}</span>
+              <span>${this.Config.version}</span>
             </div>
+            <div class="tp-v4-main-header-right"></div>
+          </div>
 
-            <div class="tp-v4-main-tab" style="display: flex; padding: 10px; gap: 5px;">
-                <div class="tp-v4-main-tab-box active" data-tab="setting">Cài Đặt</div>
-                <div class="tp-v4-main-tab-box" data-tab="main">Chức Năng</div>
-                <div class="tp-v4-main-tab-box" data-tab="debug">DEBUG</div>
+          <div class="tp-v4-main-tab">
+            <div class="tp-v4-main-tab-box active" data-tab="online">
+              <p>Online</p>
             </div>
-
-            <div class="tp-v4-main-content" style="flex: 1; overflow-y: auto; padding: 15px;">
-                <div class="tab-pane" id="pane-setting">
-                    ${this.Component.Card(
-											"Bản Quyền",
-											this.Component.Div(`
-                        <label style="font-size:11px; opacity:0.7">License Key</label>
-                        <div style="display:flex; gap:8px; margin-top:5px;">
-                            ${this.Component.Input("text", "XXXX-XXXX-XXXX", "", "tp-input-full", "", "flex:1; background: rgba(0,0,0,0.05); border: 1px solid var(--tp-border); color: var(--tp-text); padding: 8px; border-radius: 8px;")}
-                            ${this.Component.Button("Active", "", "", "background: var(--tp-primary); color: #fff; border:none; border-radius:8px; padding:0 15px; cursor:pointer;")}
-                        </div>
-                    `),
-										)}
-                </div>
-                
-                <div class="tab-pane" id="pane-main" style="display:none">
-                    <div style="display: grid; grid-template-columns: 1fr; gap: 12px;">
-                        <div class="func-card" style="padding:20px; background: rgba(var(--tp-primary-rgb), 0.1); border-radius:15px; border-left: 4px solid var(--tp-primary); cursor:pointer">
-                            <h4 style="margin:0">📦 Quản lý kho sản phẩm</h4>
-                            <p style="margin:5px 0 0; font-size:12px; opacity:0.7">Đồng bộ tồn kho nhanh chóng</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tab-pane" id="pane-debug" style="display:none">
-                    <div class="debug-terminal" style="background: rgba(0,0,0,0.8); color: #00ff00; padding: 15px; font-family: monospace; font-size: 12px; border-radius: 10px; min-height: 200px;">
-                        <div style="color: #aaa;">[${new Date().toLocaleTimeString()}] System Initialize...</div>
-                        <div>> Ready for commands.</div>
-                    </div>
-                </div>
+            <div class="tp-v4-main-tab-box" data-tab="offline">
+              <p>Offline</p>
             </div>
-
-            <div class="tp-v4-dock" style="padding: 15px; border-top: 1px solid var(--tp-border); display: flex; align-items: center; gap: 12px;">
-                <div class="player-disc" style="width:40px; height:40px; background: linear-gradient(45deg, var(--tp-primary), #ccc); border-radius: 50%; display:grid; place-items:center; animation: rotate 3s linear infinite;">💿</div>
-                <div style="flex:1 overflow:hidden">
-                    <div style="font-weight:600; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Chill Lofi Radio 2024</div>
-                    <div style="font-size:10px; opacity:0.5;">02:45 / 04:00</div>
-                </div>
+            <div class="tp-v4-main-tab-box" data-tab="setting">
+              <p>Cài Đặt</p>
             </div>
+            <div class="tp-v4-main-tab-box" data-tab="dev">
+              <p>DEV</p>
+            </div>
+          </div>
+
+          <div class="tp-v4-main-tab-sreen">
+            <div class="tp-v4-main-screen-content screen-online">
+              <div class="tp-v4-main-list-feature">
+                ${this.renderFeatureCard()}
+              </div>
+              <div class="tp-v4-main-layout-feature"></div>
+            </div>
+          </div>
         </div>
       `;
+
+			const dockLayout = `
+        <div class="tp-v4-container tp-v4-dock show">
+          <div class="tp-v4-dock-feature">
+            <div class="tp-v4-dock-feature-box">
+              <p>Chức năng 1</p>
+            </div>
+            <div class="tp-v4-dock-feature-box">
+              <p>Chức năng 2</p>
+            </div>
+            <div class="tp-v4-dock-feature-box">
+              <p>Chức năng 3</p>
+            </div>
+            <div class="tp-v4-dock-feature-box">
+              <p>Chức năng 4</p>
+            </div>
+            <div class="tp-v4-dock-feature-box">
+              <p>Chức năng 5</p>
+            </div>
+            <div class="tp-v4-dock-feature-box">
+              <p>Chức năng 6</p>
+            </div>
+            <div class="tp-v4-dock-feature-box">
+              <p>Chức năng 7</p>
+            </div>
+            <div class="tp-v4-dock-feature-box">
+              <p>Chức năng 8</p>
+            </div>
+            <div class="tp-v4-dock-feature-box">
+              <p>Chức năng 9</p>
+            </div>
+            <div class="tp-v4-dock-feature-box">
+              <p>Chức năng 10</p>
+            </div>
+          </div>
+          <div class="tp-v4-dock-player">
+            <div class="tp-player-dashboard">
+              <div class="tp-player-info">
+                <div class="tp-song-thumb"></div>
+                <div class="tp-song-detail">
+                  <b>Lofi Study Radio</b>
+                  <span>ChilledCow • 02:45 / 04:00</span>
+                </div>
+                <div class="tp-player-controls">
+                  <span>⏮</span>
+                  <span class="tp-play-btn">▶️</span>
+                  <span>⏭</span>
+                  <span style="font-size: 12px; opacity: 0.5;">🔊</span>
+                </div>
+              </div>
+              <div class="tp-player-seekbar">
+                <div class="tp-player-progress"></div>
+              </div>
+            </div>
+
+            <div class="tp-player-playlist">
+              <div class="tp-playlist-item active">
+                <span>1. Lofi Study Session</span>
+                <span>04:00</span>
+              </div>
+              <div class="tp-playlist-item">
+                <span>2. Midnight City Night</span>
+                <span>03:20</span>
+              </div>
+              <div class="tp-playlist-item">
+                <span>3. Coffee Shop Ambience</span>
+                <span>05:15</span>
+              </div>
+              <div class="tp-playlist-item">
+                <span>4. Rainy Night in Tokyo</span>
+                <span>04:45</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+			return mainLayout + dockLayout;
 		}
 
 		style() {
-			return `
+			const mainStyle = `
         <style>
-            :root {
-                --tp-primary: #0088ff;
-                --tp-primary-rgb: 0, 136, 255;
-                --tp-bg-rgba: rgba(255, 255, 255, 0.7);
-                --tp-text: #1d1d1f;
-                --tp-border: rgba(200, 200, 200, 0.3);
-                --tp-radius: 20px;
-                --tp-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-            }
+          :root {
+            --tp-primary: #0088ff80;
+            --tp-bg-main: #e0e0e080;
+            --tp-bg-white: #ffffff80;
+            --tp-bg-card: #f8f9fa80;
+            --tp-border: #dddddd;
+            --tp-radius-lg: 20px;
+            --tp-radius-md: 15px;
+            --tp-radius-sm: 10px;
+          }
 
-            /* Biến thể sàn */
-            [data-platform="shopee"] { --tp-primary: #ee4d2d; --tp-primary-rgb: 238, 77, 45; }
-            [data-platform="tiktok"] { --tp-primary: #fe2c55; --tp-primary-rgb: 254, 44, 85; }
-            [data-platform="lazada"] { --tp-primary: #10142c; --tp-primary-rgb: 16, 20, 44; }
-            [data-platform="sapo"] { --tp-primary: #0088ff; --tp-primary-rgb: 0, 136, 255; }
+          .tp-v4-container {
+            position: fixed;
+            z-index: 999999999;
+            user-select: none;
+          }
 
-            /* Dark Mode Glass */
-            [data-mode="dark"] {
-                --tp-bg-rgba: rgba(30, 30, 30, 0.75);
-                --tp-text: #f5f5f7;
-                --tp-border: rgba(80, 80, 80, 0.4);
-            }
+          .tp-v4-container * {
+            transition: 0.5s;
+          }
 
-            .tp-v4-main {
-                font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-                color: var(--tp-text);
-                background: var(--tp-bg-rgba) !important;
-                backdrop-filter: blur(12px) saturate(180%) !important;
-                -webkit-backdrop-filter: blur(12px) saturate(180%) !important;
-                border: 1px solid var(--tp-border) !important;
-                box-shadow: var(--tp-shadow) !important;
-                transition: all 0.3s ease;
-                display: flex;
-                flex-direction: column;
-                /* Luôn nằm trên cùng tuyệt đối */
-                z-index: 2147483647 !important; 
-            }
+          /* Container chính */
+          .tp-v4-main {
+            position: fixed;
+            z-index: 999999;
+            width: auto;
+            max-width: 40vw;
+            height: 90%;
+            top: 5%;
+            padding: 1vw;
+            background: var(--tp-bg-main);
+            backdrop-filter: blur(10px);
+            border-radius: var(--tp-radius-md);
+            display: flex;
+            flex-direction: column;
+            gap: 1vh;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+          }
 
-            .tp-v4-main[data-side="left"] { left: -400px; right: auto; }
-            .tp-v4-main[data-side="right"] { right: -400px; left: auto; }
+          .tp-v4-main, .tp-v4-main[data-side="left"]{
+            left: -100%;
+            right: auto;            
+            padding-left: 2vw;
+          }
 
-            .tp-v4-main.is-active[data-side="left"] { transform: translateX(415px); }
-            .tp-v4-main.is-active[data-side="right"] { transform: translateX(-415px); }
+          .tp-v4-main[data-side="right"]{
+            right: -100;
+            left: auto;
+            padding-right: 2vw;
+          }
 
-            /* Hiệu ứng Tab mượt mà */
-            .tp-v4-main-tab-box {
-                flex: 1;
-                text-align: center;
-                padding: 12px 5px;
-                cursor: pointer;
-                border-radius: 12px;
-                transition: 0.3s;
-                font-size: 13px;
-                font-weight: 600;
-                opacity: 0.6;
-            }
-            .tp-v4-main-tab-box.active {
-                background: rgba(var(--tp-primary-rgb), 0.2);
-                color: var(--tp-primary);
-                opacity: 1;
-            }
+          .tp-v4-main.active, .tp-v4-main[data-side="left"].active{
+            left: 0;
+            right: auto;            
+            padding-left: 2vw;
+          }
 
-            .tp-v4-card {
-                background: rgba(255, 255, 255, 0.1);
-                border: 1px solid var(--tp-border);
-                border-radius: 15px;
-                margin-bottom: 15px;
-                overflow: hidden;
-            }
+          .tp-v4-main[data-side="right"].active{
+            right: 0;
+            left: auto;
+            padding-right: 2vw;
+          }
 
-            /* Switcher & Buttons */
-            .tp-v4-mode-btn {
-                background: none; border: none; cursor: pointer; padding: 5px; 
-                border-radius: 50%; transition: 0.2s;
-            }
-            .tp-v4-mode-btn.active { background: rgba(var(--tp-primary-rgb), 0.2); }
-            
-            /* Custom Scrollbar */
-            .tp-v4-main-content::-webkit-scrollbar { width: 4px; }
-            .tp-v4-main-content::-webkit-scrollbar-thumb { background: var(--tp-primary); border-radius: 10px; }
+          /* Header */
+          .tp-v4-main-header {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+            gap: 1vw;
+            background: var(--tp-bg-white);
+            padding: 1vw;
+            border-radius: 100px;
+          }
+
+          .tp-v4-main-header-left {
+            display: flex;
+            flex-direction: column;
+          }
+
+          .tp-v4-main-header-left span:first-child {
+            font-weight: 700;
+          }
+
+          .tp-v4-main-header-left span:last-child {
+            font-size: 0.75rem;
+            opacity: 0.6;
+          }
+
+          /* Tab System */
+          .tp-v4-main-tab {
+            width: 90%;
+            display: flex;
+            align-items: center;
+            border-radius: var(--tp-radius-sm);
+            margin: 0 auto;
+            overflow: hidden;
+            gap: 1vw;
+          }
+
+          .tp-v4-main-tab-box {
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            border-radius: 10px;
+            font-weight: 700;
+          }
+
+          .tp-v4-main-tab-box p {
+            margin: 0;
+            transition: 0.3s;
+            pointer-events: none;
+            padding: 1vh 1vw;
+          }
+
+          .tp-v4-main-tab-box:hover {
+            background: rgba(0, 0, 0, 0.05);
+          }
+
+          .tp-v4-main-tab-box:hover p {
+            transform: scale(1.1);
+            color: var(--tp-primary);
+          }
+
+          .tp-v4-main-tab-box.active {
+            background: var(--tp-primary);
+            color: white;
+          }
+
+          /* Screen Content */
+          .tp-v4-main-tab-sreen {
+            flex: 1;
+            background: var(--tp-bg-white);
+            border-radius: var(--tp-radius-lg);
+            overflow-y: auto;
+            padding: 1vw;
+          }
+
+          /* Function Cards */
+          .tp-v4-func-card {
+            padding: 15px;
+            background: var(--tp-bg-card);
+            border-radius: var(--tp-radius-sm);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--tp-border);
+            transition: 0.2s;
+          }
+
+          .tp-v4-func-card:hover {
+            border-color: var(--tp-primary);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+          }
+
+          /* Nút bấm */
+          .tp-run-btn {
+            background: var(--tp-primary);
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+          }
+
+          .tp-run-btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+          }
+
+          .tp-run-btn:active {
+            transform: translateY(0) scale(0.95);
+          }
         </style>
       `;
+
+			const dockStyle = `
+        <style>
+          /* Container chính của Dock */
+          .tp-v4-dock {
+            position: fixed;
+            bottom: -100px;
+            /* Ẩn mặc định */
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(15px) saturate(180%);
+            -webkit-backdrop-filter: blur(15px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 100px;
+            /* Bo tròn dạng viên thuốc */
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            z-index: 9999999;
+            transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          }
+
+          /* Khi Dock hiển thị */
+          .tp-v4-dock.show {
+            bottom: 25px;
+          }
+
+          /* Vùng chức năng */
+          .tp-v4-dock-feature {
+            display: flex;
+            gap: 10px;
+            padding-right: 15px;
+            border-right: 1px solid rgba(0,0,0,0.1);
+            max-width: 400px; /* Giới hạn chiều ngang vùng chức năng */
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+          }
+          
+          .tp-v4-dock-feature::-webkit-scrollbar {
+            display: none;
+          }
+
+          .tp-v4-dock-feature-box {
+            flex-shrink: 0; /* KHÔNG cho phép bóp méo hình tròn */
+            min-width: 100px; /* Chiều rộng tối thiểu để chứa chữ */
+            height: 38px;
+            padding: 0 15px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px; /* Chuyển từ tròn sang bo góc chữ nhật */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            scroll-snap-align: start;
+            transition: 0.3s;
+          }
+
+          .tp-v4-dock-feature-box p {
+            margin: 0;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap; /* Buộc chữ trên 1 hàng */
+            overflow: hidden;
+            text-overflow: ellipsis; /* Hiện dấu ... nếu quá dài   */
+            max-width: 120px;
+          }
+
+          .tp-v4-dock-feature-box:hover {
+            background: var(--tp-primary);
+            color: white !important;
+          }
+
+          .tp-v4-dock-feature:active { cursor: grabbing; }
+
+          .tp-v4-dock-feature-box:hover p {
+            color: #fff;
+          }
+
+          /* --- PLAYER LAYOUT --- */
+          .tp-v4-dock-player {
+              display: flex;
+              align-items: center;
+              gap: 20px;
+              padding-left: 15px;
+              min-width: 500px; /* Tăng độ rộng để chứa 2 phần */
+          }
+
+          /* PHẦN 1: DASHBOARD (Trình điều khiển) */
+          .tp-player-dashboard {
+              flex: 1.2;
+              display: flex;
+              flex-direction: column;
+              gap: 5px;
+          }
+
+          .tp-player-info {
+              display: flex;
+              align-items: center;
+              gap: 10px;
+          }
+
+          .tp-song-thumb {
+              width: 35px; height: 35px;
+              border-radius: 8px;
+              background: #ddd;
+              animation: rotate 5s linear infinite;
+              animation-play-state: paused;
+          }
+          .tp-song-thumb.playing { animation-play-state: running; }
+
+          .tp-song-detail b { font-size: 13px; display: block; color: var(--tp-text); }
+          .tp-song-detail span { font-size: 10px; opacity: 0.6; }
+
+          .tp-player-controls {
+              display: flex;
+              align-items: center;
+              gap: 15px;
+              font-size: 16px;
+          }
+          .tp-player-controls span { cursor: pointer; transition: 0.2s; }
+          .tp-player-controls span:hover { color: var(--tp-primary); transform: scale(1.2); }
+
+          /* Thanh thời gian & Âm lượng */
+          .tp-player-seekbar {
+              width: 100%; height: 4px;
+              background: rgba(0,0,0,0.1);
+              border-radius: 10px;
+              position: relative;
+              cursor: pointer;
+          }
+          .tp-player-progress {
+              width: 40%; height: 100%;
+              background: var(--tp-primary);
+              border-radius: 10px;
+          }
+
+          /* PHẦN 2: PLAYLIST (Danh sách chờ) */
+          .tp-player-playlist {
+              flex: 0.8;
+              height: 50px;
+              overflow-y: auto;
+              border-left: 1px solid rgba(0,0,0,0.1);
+              padding-left: 15px;
+          }
+          .tp-playlist-item {
+              font-size: 11px;
+              padding: 4px 8px;
+              border-radius: 6px;
+              cursor: pointer;
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 2px;
+          }
+          .tp-playlist-item:hover { background: rgba(0,0,0,0.05); }
+          .tp-playlist-item.active { color: var(--tp-primary); font-weight: bold; }
+
+          /* Scrollbar mini cho playlist */
+          .tp-player-playlist::-webkit-scrollbar { width: 3px; }
+          .tp-player-playlist::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+
+          @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+          /* Chế độ tối cho Dock */
+          [data-mode="dark"] .tp-v4-dock {
+            background: rgba(30, 30, 30, 0.7);
+            border-color: rgba(255, 255, 255, 0.1);
+          }
+
+          [data-mode="dark"] .tp-v4-dock-feature-box {
+            background: rgba(255, 255, 255, 0.1);
+          }
+
+          [data-mode="dark"] .tp-v4-dock-feature-box p {
+            color: #eee;
+          }
+        </style>
+      `;
+
+			return mainStyle + dockStyle;
 		}
 
 		bindEvent() {
-      this.max_edge = 10;
-      $("body").on("mousemove", function(e){
-        this.panel_side = e.offsetX <= this.max_edge ? "left" : e.screenX - e.clientX >= this.max_edge ? "right" : "left";
-        console.log(e.screenX - e.offsetX);
-        console.log(this.panel_side);
-      })
-    }
+			this.MAX_EDGE = 15;
+			const self = this;
+			const $panel = $(".tp-v4-main");
+			const $dock = $(".tp-v4-dock");
+
+			// Biến lưu trữ bộ đếm thời gian
+			this.hideTimeout = null;
+
+			$(window).on("mousemove", (e) => {
+				const ww = $(window).width(),
+					wh = $(window).height();
+				const mx = e.clientX,
+					my = e.clientY;
+
+				// KIỂM TRA CÓ ĐANG Ở BIÊN KHÔNG
+				const isNearEdge =
+					mx <= this.MAX_EDGE ||
+					ww - mx <= this.MAX_EDGE ||
+					wh - my <= this.MAX_EDGE;
+
+				if (isNearEdge) {
+					// Nếu chạm biên, hủy ngay lệnh ẩn đang chờ (nếu có) và hiện giao diện
+					clearTimeout(this.hideTimeout);
+
+					if (mx <= this.MAX_EDGE) {
+						this.panel_side = "left";
+						$panel.addClass("active");
+					} else if (ww - mx <= this.MAX_EDGE) {
+						this.panel_side = "right";
+						$panel.addClass("active");
+					}
+
+					if (wh - my <= this.MAX_EDGE) {
+						$dock.addClass("show");
+					}
+				} else {
+					// Nếu KHÔNG ở biên, kiểm tra xem có đang hover trên giao diện không
+					// Nếu không hover, đợi 500ms rồi mới ẩn
+					if (!$panel.is(":hover") && !$dock.is(":hover")) {
+						if (!this.hideTimeout) {
+							this.hideTimeout = setTimeout(() => {
+								$panel.removeClass("active");
+								$dock.removeClass("show");
+								this.hideTimeout = null;
+							}, 500); // 0.5 giây trễ
+						}
+					} else {
+						// Nếu chuột đang nằm trên Panel/Dock, hủy lệnh ẩn
+						clearTimeout(this.hideTimeout);
+						this.hideTimeout = null;
+					}
+				}
+			});
+
+			// Khi di chuột vào trực tiếp Panel/Dock, cũng phải xóa Timeout
+			$panel.add($dock).on("mouseenter", () => {
+				clearTimeout(this.hideTimeout);
+				this.hideTimeout = null;
+			});
+
+			$(`.tp-v4-dock-feature`).on("wheel", function (e) {
+				e.preventDefault();
+				// Cuộn mượt bằng cách cộng dồn tọa độ
+				this.scrollLeft += e.originalEvent.deltaY;
+			});
+
+			// 1. Sự kiện khi nhấn "Kích hoạt" (hiện UI chi tiết hoặc chạy luôn)
+			$(document).on("click", ".tp-run-btn", function () {
+				const funcId = $(this).data("func-id");
+				const $card = $(this).closest(".tp-v4-func-card");
+				const $customUi = $card.find(".tp-func-custom-ui");
+
+				// Tìm object chức năng tương ứng
+				const features = self.Feature.getAvailableFeatures();
+				const funcObj = features.find((f) => f.id === funcId);
+
+				if (!funcObj) return;
+
+				// Nếu chức năng có UI riêng và đang đóng -> Mở ra để nhập liệu
+				if ($customUi.length > 0 && $customUi.is(":hidden")) {
+					$(".tp-func-custom-ui").slideUp(); // Đóng các cái khác
+					$customUi.slideDown();
+					$(this).text("Xác nhận Chạy");
+				} else {
+					// Thu thập dữ liệu từ các input trong UI riêng đó
+					let params = {};
+					if ($customUi.length > 0) {
+						params = {
+							keyword: $customUi.find(".tp-input-keyword").val(),
+							limit: $customUi.find(".tp-input-limit").val(),
+						};
+					}
+
+					// Gọi hàm run của chức năng đó
+					funcObj.run(params);
+
+					// Reset trạng thái nút
+					$customUi.slideUp();
+					$(this).text("Kích hoạt");
+				}
+			});
+		}
+
+		renderFeatureCard() {
+			const features = this.Feature.getAvailableFeatures();
+			if (features.length === 0)
+				return "<p>Không có chức năng cho sàn này.</p>";
+
+			return features
+				.map(
+					(f) => `
+          <div class="tp-v4-func-card" data-func-id="${f.id}">
+              <div class="tp-v4-func-info">
+                  <span class="tp-func-name">${f.name}</span>
+                  <div class="tp-func-custom-ui" style="display:none; margin-top:10px; padding:10px; background:#eee; border-radius:8px;">
+                      ${f.renderConfig ? f.renderConfig() : ""}
+                  </div>
+              </div>
+              <button class="tp-run-btn" data-func-id="${f.id}">Kích hoạt</button>
+          </div>
+      `,
+				)
+				.join("");
+		}
 	}
 
 	class TOOLV4 {
